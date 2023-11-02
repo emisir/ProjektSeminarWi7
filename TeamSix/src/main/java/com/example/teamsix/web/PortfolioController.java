@@ -20,7 +20,7 @@ public class PortfolioController {
         this.portfolioService = portfolioService;
     }
 
-    @GetMapping("/portfolio")
+    @GetMapping()
     @JsonView(Portfolio.DetailView.class)
     public ResponseEntity<List<Portfolio>> getPortfolio() {
         List<Portfolio> portfolio = portfolioService.getAllPortfolio();
@@ -30,13 +30,13 @@ public class PortfolioController {
     }
 
 
-    @PostMapping("/portfolio")
+    @PostMapping("/add")
     public void addPortfolio(@RequestBody Portfolio portfolio){
         portfolioService.addPortfolio(portfolio);
 
 
     }
-    @GetMapping("/portfolio/{id}")
+    @GetMapping("/{id}")
     public Portfolio getPortfolioId(@PathVariable Long id){
         return portfolioService.getPortfoliobyId(id);
 

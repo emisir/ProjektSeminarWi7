@@ -9,8 +9,7 @@ import java.util.List;
 @Table(name = "portfolio")
 @Entity
 public class Portfolio {
-    public static class SummaryView{}
-    public static class DetailView extends SummaryView{}
+    public static class DetailView {}
 
     @Id
     @GeneratedValue
