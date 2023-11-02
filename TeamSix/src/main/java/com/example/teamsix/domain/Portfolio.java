@@ -1,22 +1,29 @@
-package dehsaa.teamsix.teamsix.portfolio;
+package com.example.teamsix.domain;
 
-
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.List;
 
-@Table(name = "portfolioItem")
+@Table(name = "portfolio")
 @Entity
-public class PortfolioItem {
+public class Portfolio {
+    public static class SummaryView{}
+    public static class DetailView extends SummaryView{}
 
     @Id
     @GeneratedValue
-//Variablen
+    @JsonView(Portfolio.DetailView.class)
     private Long id;
+
+    @JsonView(Portfolio.DetailView.class)
     private String wkn;
+    @JsonView(Portfolio.DetailView.class)
     private String name;
+    @JsonView(Portfolio.DetailView.class)
     private Float purchasePrice;
+    @JsonView(Portfolio.DetailView.class)
     private Long quantity;
     @Column(length = 255)
     private String description;
@@ -24,9 +31,21 @@ public class PortfolioItem {
     private String category;
     private Date purchaseDate;
 
-//*Variablen*
 
-//Getter und Setter Methoden
+    public Portfolio(Long id, String wkn, String name, Float purchasePrice, Long quantity, String description, String category, Date purchaseDate) {
+        this.id = id;
+        this.wkn = wkn;
+        this.name = name;
+        this.purchasePrice = purchasePrice;
+        this.quantity = quantity;
+        this.description = description;
+        this.category = category;
+        this.purchaseDate = purchaseDate;
+    }
+
+    public Portfolio() {
+
+    }
 
     public Long getId() {
         return id;
@@ -70,7 +89,7 @@ public class PortfolioItem {
         this.quantity = quantity;
     }
 
-    public List<PortfolioItem> findAll() {
+    public List<Portfolio> findAll() {
         return null;
     }
 
@@ -96,13 +115,7 @@ public class PortfolioItem {
 
     public void setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
+
     }
-
-    //*Getter und Setter Methoden*
-
-
-
-
-
-
 }
+//*Getter und Setter Methoden*

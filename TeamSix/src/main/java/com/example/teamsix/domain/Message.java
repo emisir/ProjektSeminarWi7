@@ -1,33 +1,32 @@
-package dehsaa.teamsix.teamsix.domain;
+package com.example.teamsix.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Table(name = "message")
+@Table
 @Entity
 public class Message {
-
     @Id
     @GeneratedValue
+    private long id;
+    private String message;
 
-    private Long id;
-    private String Message;
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public String getMessage() {
-        return Message;
-    }
-
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     public void setMessage(String message) {
-        Message = message;
+
+        this.message = message;
     }
 }

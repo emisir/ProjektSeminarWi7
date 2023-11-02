@@ -1,9 +1,7 @@
-package dehsaa.teamsix.teamsix.persistence;
+package com.example.teamsix.persistance;
 
-
+import com.example.teamsix.domain.Message;
 import org.springframework.data.repository.ListCrudRepository;
-import dehsaa.teamsix.teamsix.domain.Message;
-
 
 public interface MessageRepository extends ListCrudRepository<Message,Long> {
 }

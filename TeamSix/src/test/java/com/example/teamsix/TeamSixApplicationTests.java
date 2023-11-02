@@ -1,4 +1,4 @@
-package dehsaa.teamsix.teamsix;
+package com.example.teamsix;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
