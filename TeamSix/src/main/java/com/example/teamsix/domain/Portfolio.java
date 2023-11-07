@@ -12,7 +12,7 @@ public class Portfolio {
     public static class DetailView {}
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(Portfolio.DetailView.class)
     private Long id;
 
@@ -31,8 +31,7 @@ public class Portfolio {
     private Date purchaseDate;
 
 
-    public Portfolio(Long id, String wkn, String name, Float purchasePrice, Long quantity, String description, String category, Date purchaseDate) {
-        this.id = id;
+    public Portfolio(String wkn, String name, Float purchasePrice, Long quantity, String description, String category, Date purchaseDate) {
         this.wkn = wkn;
         this.name = name;
         this.purchasePrice = purchasePrice;
