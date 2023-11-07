@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Portfolio")
+@RequestMapping("/portfolio")
 public class PortfolioController {
 
 
@@ -30,17 +30,24 @@ public class PortfolioController {
     }
 
 
-    @PostMapping("/add")
+    @PostMapping()
     public void addPortfolio(@RequestBody Portfolio portfolio){
         portfolioService.addPortfolio(portfolio);
 
 
     }
     @GetMapping("/{id}")
-    public Portfolio getPortfolioId(@PathVariable Long id){
-        return portfolioService.getPortfoliobyId(id);
+    public ResponseEntity<Portfolio> getPortfolioId(@PathVariable Long id) {
+        Portfolio portfolio = portfolioService.getPortfolioById(id);
 
+        if (portfolio != null) {
+            return ResponseEntity.ok(portfolio);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+
 
 }
 

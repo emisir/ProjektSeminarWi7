@@ -1,7 +1,5 @@
-package com.example.teamsix.service;
+package com.example.teamsix.Message;
 
-import com.example.teamsix.domain.Message;
-import com.example.teamsix.persistance.MessageRepository;
 import org.springframework.stereotype.Service;
 @Service
 public class MessageService {

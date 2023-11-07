@@ -1,4 +1,4 @@
-package com.example.teamsix.domain;
+package com.example.teamsix.Message;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

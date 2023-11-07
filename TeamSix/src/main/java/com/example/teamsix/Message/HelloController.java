@@ -1,7 +1,5 @@
-package com.example.teamsix.web;
+package com.example.teamsix.Message;
 
-import com.example.teamsix.domain.Message;
-import com.example.teamsix.service.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
