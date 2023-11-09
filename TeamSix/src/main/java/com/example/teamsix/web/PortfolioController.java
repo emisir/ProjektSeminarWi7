@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/portfolio")
@@ -45,6 +46,11 @@ public class PortfolioController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/aggregateByWkn")
+    public Map<String, List<Portfolio>> getAggregatedPortfoliosByWkn() {
+        return portfolioService.aggregatePortfoliosByWkn();
     }
 
 

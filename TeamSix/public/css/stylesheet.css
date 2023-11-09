@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.table {
+    border-collapse: collapse;
+    /* Zellenränder zusammenführen */
+    width: 100%;
+}
+
+.table th,
+.table td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+}

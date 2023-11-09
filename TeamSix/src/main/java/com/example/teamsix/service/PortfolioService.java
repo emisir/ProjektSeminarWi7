@@ -4,8 +4,10 @@ import com.example.teamsix.domain.Portfolio;
 import com.example.teamsix.persistance.PortfolioRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PortfolioService {
@@ -31,4 +33,11 @@ public class PortfolioService {
 
     }
 
+    public Map<String, List<Portfolio>> aggregatePortfoliosByWkn() {
+        List<Portfolio> portfolios = portfolioRepository.findAll(); // Annahme: Sie erhalten alle Portfolios aus dem Repository
+        return portfolios.stream().collect(Collectors.groupingBy(Portfolio::getWkn));
+    }
+
+
 }
+    
