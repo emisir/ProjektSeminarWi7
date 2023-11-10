@@ -33,10 +33,6 @@ public class PortfolioService {
 
     }
 
-    public Map<String, List<Portfolio>> aggregatePortfoliosByWkn() {
-        List<Portfolio> portfolios = portfolioRepository.findAll(); // Annahme: Sie erhalten alle Portfolios aus dem Repository
-        return portfolios.stream().collect(Collectors.groupingBy(Portfolio::getWkn));
-    }
 
 
 }

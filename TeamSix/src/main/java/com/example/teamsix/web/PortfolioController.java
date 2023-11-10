@@ -48,10 +48,6 @@ public class PortfolioController {
         }
     }
 
-    @GetMapping("/byWkn")
-    public Map<String, List<Portfolio>> getAggregatedPortfoliosByWkn() {
-        return portfolioService.aggregatePortfoliosByWkn();
-    }
 
 
 
