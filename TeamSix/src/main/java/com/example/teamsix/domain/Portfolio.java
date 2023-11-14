@@ -24,8 +24,6 @@ public class Portfolio {
     @JsonManagedReference
     private List<WknTable> purchases;
 
-
-
     public Portfolio(Long id,  String name, String description, String category) {
         this.id = id;
         this.name = name;

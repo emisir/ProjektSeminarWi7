@@ -1,6 +1,5 @@
 package com.example.teamsix.web;
 import com.example.teamsix.domain.Portfolio;
-import com.example.teamsix.domain.PortfolioDetailDTO;
 import com.example.teamsix.persistance.PortfolioInfoProjection;
 import com.example.teamsix.service.PortfolioService;
 import org.springframework.http.HttpStatus;
@@ -46,24 +45,7 @@ public class PortfolioController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<PortfolioDetailDTO> getPortfolioDetails(@PathVariable Long id) {
-        PortfolioDetailDTO portfolioDetails = portfolioService.getPortfolioDetails(id);
-        return ResponseEntity.ok(portfolioDetails);
-    }
-
 }
-
-
-
-
-    //@GetMapping()
-    //@PostMapping()
-    //@DeleteMapping()
-    //@PatchMapping()
-    //@PutMapping()
 
 
 
