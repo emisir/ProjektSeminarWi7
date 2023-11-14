@@ -1,0 +1,57 @@
+:host {
+  display: block;
+  margin-top: 15px;
+  font-family: Arial, sans-serif;
+
+}
+
+
+
+.table-container {
+  position: relative;
+  max-height: 400px;
+  overflow: auto;
+  margin: 30px 30px;
+  margin-bottom: 50px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  /* ein leichter Hintergrund für Kopfzeilen */
+}
+
+
+
+tr:hover {
+  background-color: #f8f8f8;
+
+}
+
+
+
+
+.paginator-container {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #673ab7;
+  /* eine ruhige Farbe für den Paginator */
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  /* zusätzlicher Platz oben und unten */
+}

@@ -1,65 +1,55 @@
 package com.example.teamsix.domain;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import com.example.teamsix.domain.WknTable;
 
-import java.util.Date;
 import java.util.List;
 
 @Table(name = "portfolio")
 @Entity
 public class Portfolio {
-    public static class DetailView {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(Portfolio.DetailView.class)
     private Long id;
 
-    @JsonView(Portfolio.DetailView.class)
-    private String wkn;
-    @JsonView(Portfolio.DetailView.class)
     private String name;
-    @JsonView(Portfolio.DetailView.class)
-    private Float purchasePrice;
-    @JsonView(Portfolio.DetailView.class)
-    private Long quantity;
     @Column(length = 255)
     private String description;
 
     private String category;
-    private Date purchaseDate;
+
+    @OneToMany(mappedBy = "portfolio",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<WknTable> purchases;
 
 
-    public Portfolio(String wkn, String name, Float purchasePrice, Long quantity, String description, String category, Date purchaseDate) {
-        this.wkn = wkn;
+
+    public Portfolio(Long id,  String name, String description, String category) {
+        this.id = id;
         this.name = name;
-        this.purchasePrice = purchasePrice;
-        this.quantity = quantity;
         this.description = description;
         this.category = category;
-        this.purchaseDate = purchaseDate;
+
     }
 
     public Portfolio() {
 
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public Portfolio(Long id ){
         this.id = id;
     }
 
 
-    public String getWkn() {
-        return wkn;
+    public Long getId() {
+        return id;
     }
 
-    public void setWkn(String wkn) {
-        this.wkn = wkn;
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 
@@ -71,25 +61,6 @@ public class Portfolio {
         this.name = name;
     }
 
-    public Float getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(Float purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
-
-    public List<Portfolio> findAll() {
-        return null;
-    }
 
     public String getDescription() {
         return description;
@@ -107,13 +78,14 @@ public class Portfolio {
         this.category = category;
     }
 
-    public Date getPurchaseDate() {
-        return purchaseDate;
+    public List<WknTable> getPurchases() {
+        return purchases;
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
-        this.purchaseDate = purchaseDate;
-
+    public void setPurchases(List<WknTable> purchases) {
+        this.purchases = purchases;
     }
+
+
 }
 //*Getter und Setter Methoden*

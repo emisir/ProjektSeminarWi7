@@ -1,13 +1,13 @@
 package com.example.teamsix.web;
 import com.example.teamsix.domain.Portfolio;
+import com.example.teamsix.domain.PortfolioDetailDTO;
+import com.example.teamsix.persistance.PortfolioInfoProjection;
 import com.example.teamsix.service.PortfolioService;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/portfolio")
@@ -22,9 +22,8 @@ public class PortfolioController {
     }
 
     @GetMapping()
-    @JsonView(Portfolio.DetailView.class)
-    public ResponseEntity<List<Portfolio>> getPortfolio() {
-        List<Portfolio> portfolio = portfolioService.getAllPortfolio();
+    public ResponseEntity<List<PortfolioInfoProjection>> getPortfolio() {
+        List<PortfolioInfoProjection> portfolio = portfolioService.getPortfolioInfo();
         return new ResponseEntity<>(portfolio, HttpStatus.OK);
 
 
@@ -49,7 +48,11 @@ public class PortfolioController {
     }
 
 
-
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<PortfolioDetailDTO> getPortfolioDetails(@PathVariable Long id) {
+        PortfolioDetailDTO portfolioDetails = portfolioService.getPortfolioDetails(id);
+        return ResponseEntity.ok(portfolioDetails);
+    }
 
 }
 

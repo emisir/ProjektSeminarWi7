@@ -1,0 +1,19 @@
+<mat-toolbar color="primary" class="shadow">
+  <span class="header-title" [routerLink]="'/overview'">{{ title }}</span>
+  <span class="spacer"></span>
+  <div *ngFor="let n of menuBarItems" class="navitems-container">
+    <button mat-button color="accent" (click)="routeTo(n.routePath)" [matTooltip]="n.name">
+      {{ n.name }}
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-toolbar color="primary" class="shadow">
+  <span class="header-title" [routerLink]="'/wknTable'">{{ title }}</span>
+  <span class="spacer"></span>
+  <div *ngFor="let n of menuBarItems" class="navitems-container">
+    <button mat-button color="accent" (click)="routeTo(n.routePath)" [matTooltip]="n.name">
+      {{ n.name }}
+    </button>
+  </div>
+</mat-toolbar>
