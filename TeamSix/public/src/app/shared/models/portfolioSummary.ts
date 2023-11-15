@@ -1,5 +1,5 @@
 
-export interface TotalValues {
+export interface PortfolioSummary {
     wkn: string;
     totalQuantity: Int16Array;
     totalPrice: Float32Array;

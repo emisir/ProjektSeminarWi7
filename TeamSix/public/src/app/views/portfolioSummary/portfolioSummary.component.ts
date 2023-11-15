@@ -2,17 +2,17 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
-import { TotalValues } from 'src/app/shared/models/totalValues';
-import { TotalValuesService } from 'src/app/shared/services/http/totalValues.service';
+import { PortfolioSummary } from 'src/app/shared/models/portfolioSummary';
+import { PortfolioSummaryService } from 'src/app/shared/services/http/portfolioSummary.service';
 
 
 @Component({
-  selector: 'app-totalValues',
-  templateUrl: './totalValues.component.html',
-  styleUrls: ['./totalValues.component.scss'],
+  selector: 'app-portfolioSummary',
+  templateUrl: './portfolioSummary.component.html',
+  styleUrls: ['./portfolioSummary.component.scss'],
 })
 
-export class totalValuesComponent implements OnInit, OnDestroy {
+export class portfolioSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -22,16 +22,16 @@ export class totalValuesComponent implements OnInit, OnDestroy {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  public totalValuesList: TotalValues[] = [];
+  public portfolioSummaryList: PortfolioSummary[] = [];
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private totalValueService: TotalValuesService) { } // private productsHttpService: ProductHttpService
+  constructor(private portfolioSummaryService: PortfolioSummaryService) { } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
-    this.totalValueService
+    this.portfolioSummaryService
       .getTotalValuesList()
-      .subscribe((response: TotalValues[]) => {
-        this.totalValuesList = response;
+      .subscribe((response: PortfolioSummary[]) => {
+        this.portfolioSummaryList = response;
       });
   }
 

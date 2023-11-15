@@ -19,18 +19,15 @@
           <th>Wkn</th>
           <th>Kaufdatum</th>
           <th>Anzahl</th>
-          <th>Gesamtanzahl</th>
-
           <th>Kaufpreis</th>
           <th>Gesamtpreis</th>
         </tr>
         <tr *ngFor="let purchase of portfolioDetail.purchases">
-          <td>{{ purchase.wkn}}</td>
+          <td><a routerLink="summary">{{ purchase.wkn}}</a></td>
           <td>{{ purchase.purchaseDate | date }}</td>
           <td>{{ purchase.quantity }}</td>
-          <td>{{ purchase.totalQuantity }}</td>
           <td>{{ purchase.purchasePrice | currency : '€ ' }}</td>
-          <td>{{ purchase.totalPrice | currency : '€ ' }}</td>
+          <td>{{ purchase.purchasePrice * purchase.quantity | currency : '€ ' }}</td>
 
         </tr>
       </table>

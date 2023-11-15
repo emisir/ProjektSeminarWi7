@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { MenuBarComponent } from './shared/components/menu-bar/menu-bar.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { portfolioItemComponent } from './views/portfolioItem/portfolioItem.component';
-import { totalValuesComponent } from './views/totalValues/totalValues.component';
+import { portfolioSummaryComponent } from './views/portfolioSummary/portfolioSummary.component';
 
 import { DetailComponent } from './views/detail/detail.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
@@ -21,7 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
     DetailComponent,
     ImpressumComponent,
     portfolioItemComponent,
-    totalValuesComponent
+    portfolioSummaryComponent
   ],
   imports: [
     BrowserModule,

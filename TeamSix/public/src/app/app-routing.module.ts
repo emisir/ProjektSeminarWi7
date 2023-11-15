@@ -4,7 +4,7 @@ import { DetailComponent } from './views/detail/detail.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
 import { portfolioItemComponent } from './views/portfolioItem/portfolioItem.component';
-import { totalValuesComponent } from './views/totalValues/totalValues.component';
+import { portfolioSummaryComponent } from './views/portfolioSummary/portfolioSummary.component';
 
 const routes: Routes = [
   {
@@ -15,14 +15,14 @@ const routes: Routes = [
   {
     path: 'portfolioItem',
     component: portfolioItemComponent,
-  }, 
+  },
   {
     path: 'detail/:id',
     component: DetailComponent,
   },
   {
-    path: 'portfolioItem/totalValues',
-    component: totalValuesComponent,
+    path: 'overview/:id/summary',
+    component: portfolioSummaryComponent,
   },
   {
     path: 'impressum',

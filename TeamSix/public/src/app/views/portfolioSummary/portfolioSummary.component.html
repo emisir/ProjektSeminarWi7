@@ -1,11 +1,11 @@
 <mat-toolbar color="primary">
-  <span class="header-title" [routerLink]="'/portfolioItem/totalValues'">Total Values</span>
+  <span class="header-title" [routerLink]="'/:id/summary'">Summary</span>
   <span class="spacer"></span>
 </mat-toolbar>
 
 <div class="container">
   <div class="table-container">
-    <table mat-table [dataSource]="totalValuesList" class="table" matSort matSortActive="created" matSortDisableClear
+    <table mat-table [dataSource]="portfolioSummaryList" class="table" matSort matSortActive="created" matSortDisableClear
       matSortDirection="desc" class="mat-elevation-z8">
 
       <!-- WKN Column -->

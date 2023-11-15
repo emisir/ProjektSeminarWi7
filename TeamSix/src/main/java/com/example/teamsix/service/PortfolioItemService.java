@@ -36,37 +36,6 @@ public class PortfolioItemService {
     }
 
 
-        public Map<String, Map<String, Object>> totalValues() {
-            List<PortfolioItem> portfolioItems = portfolioItemRepository.findAll();
 
-            // Gruppierung nach WKN und Aggregation der Portfolio-Items
-            return portfolioItems.stream()
-                    .collect(Collectors.groupingBy(PortfolioItem::getWkn,
-                            Collectors.collectingAndThen(
-                                    Collectors.toList(),
-                                    portfolioItemList -> {
-                                        // Berechnung des Durchschnittspreises und der Gesamtanzahl
-                                        float averagePrice = (float) portfolioItemList.stream()
-                                                .mapToDouble(PortfolioItem::getPurchasePrice)
-                                                .average()
-                                                .orElse(0.0);
-                                        long totalQuantity = portfolioItemList.stream()
-                                                .mapToLong(PortfolioItem::getQuantity)
-                                                .sum();
-                                        float totalPrice = (float) portfolioItemList.stream()
-                                                .mapToDouble(portfolioItem -> portfolioItem.getPurchasePrice() * portfolioItem.getQuantity())
-                                                .sum();
-
-                                        // Erstellen einer Map mit den aggregierten Daten
-                                        return Map.of(
-                                                "wkn", portfolioItemList.get(0).getWkn(),
-                                                "totalQuantity", totalQuantity,
-                                                "averagePrice", averagePrice,
-                                                "totalPrice", totalPrice
-                                        );
-                                    }
-                            )
-                    ));
-        }
 
 }

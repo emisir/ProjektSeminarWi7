@@ -19,8 +19,6 @@ public class PortfolioItemController {
         this.portfolioItemService = portfolioItemService;
     }
 
-
-
     @PostMapping()
     public void addValues(@RequestBody PortfolioItem portfolioItem){
         portfolioItemService.addValues(portfolioItem);
@@ -42,11 +40,6 @@ public class PortfolioItemController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @GetMapping("/totalValues")
-    public Map<String, Map<String, Object>> getTotalValues() {
-        return portfolioItemService.totalValues();
     }
 
     @GetMapping("/aggregation")

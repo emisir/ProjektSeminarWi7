@@ -9,7 +9,7 @@
 </mat-toolbar>
 
 <mat-toolbar color="primary" class="shadow">
-  <span class="header-title" [routerLink]="'/wknTable'">{{ title }}</span>
+  <span class="header-title" [routerLink]="'/portfolioItem'">{{ title }}</span>
   <span class="spacer"></span>
   <div *ngFor="let n of menuBarItems" class="navitems-container">
     <button mat-button color="accent" (click)="routeTo(n.routePath)" [matTooltip]="n.name">

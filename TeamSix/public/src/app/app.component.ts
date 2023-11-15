@@ -19,8 +19,8 @@ export class AppComponent {
       routePath: 'portfolioItem'
     },
     {
-      name:'TotalValues',
-      routePath:'portfolioItem/totalValues'
+      name:'Summary',
+      routePath:'overview/:id/summary'
     },
 
     {
