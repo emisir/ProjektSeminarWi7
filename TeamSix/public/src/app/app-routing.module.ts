@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DetailComponent } from './views/detail/detail.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
-import { wknTableComponent } from './views/wknTable/wknTable.component';
+import { portfolioItemComponent } from './views/portfolioItem/portfolioItem.component';
 import { totalValuesComponent } from './views/totalValues/totalValues.component';
 
 const routes: Routes = [
@@ -11,17 +11,18 @@ const routes: Routes = [
     path: 'overview',
     component: OverviewComponent,
   },
+
   {
-    path: 'wknTable',
-    component: wknTableComponent,
-  },
+    path: 'portfolioItem',
+    component: portfolioItemComponent,
+  }, 
   {
-    path: 'wknTable/totalValues',
-    component: totalValuesComponent,
-  },
-  {
-    path: ':detail/:id',
+    path: 'detail/:id',
     component: DetailComponent,
+  },
+  {
+    path: 'portfolioItem/totalValues',
+    component: totalValuesComponent,
   },
   {
     path: 'impressum',

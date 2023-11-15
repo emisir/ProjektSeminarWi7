@@ -24,20 +24,27 @@ export class PurchaseDTO {
   wkn: string;
   purchaseDate: Date;
   quantity: number;
+  totalQuantity: number;
   purchasePrice: number;
   totalPrice: number;
+  averagePrice: number;
 
   constructor(
     wkn: string,
     purchaseDate: Date,
     quantity: number,
+    totalQuantity: number,
     purchasePrice: number,
-    totalPrice: number
+    totalPrice: number,
+    averagePrice: number
+
   ) {
     this.wkn = wkn;
     this.purchaseDate = purchaseDate;
+    this.totalQuantity = totalQuantity;
     this.quantity = quantity;
     this.purchasePrice = purchasePrice;
     this.totalPrice = totalPrice;
+    this.averagePrice = averagePrice;
   }
 }

@@ -1,11 +1,11 @@
 <mat-toolbar color="primary">
-  <span class="header-title" [routerLink]="'/wknTable'">Wkn Tabelle</span>
+  <span class="header-title" [routerLink]="'/portfolioItem'">Portfolio Item</span>
   <span class="spacer"></span>
 </mat-toolbar>
 
 <div class="container">
   <div class="table-container">
-    <table mat-table [dataSource]="wknTableList" class="table" matSort matSortActive="created" matSortDisableClear
+    <table mat-table [dataSource]="portfolioItemList" class="table" matSort matSortActive="created" matSortDisableClear
       matSortDirection="desc" class="mat-elevation-z8">
 
       <!-- WKN Column -->
@@ -32,7 +32,7 @@
         <td mat-cell *matCellDef="let row">{{ row.purchasePrice | currency:'EUR '}}</td>
       </ng-container>
 
-    
+
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

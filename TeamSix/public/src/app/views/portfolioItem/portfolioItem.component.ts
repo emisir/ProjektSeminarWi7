@@ -2,17 +2,17 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
-import { WknTable } from 'src/app/shared/models/wknTable';
-import { WknTableService } from 'src/app/shared/services/http/wknTable.service';
+import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
+import { PortfolioItemService } from 'src/app/shared/services/http/portfolioItem.service';
 
 
 @Component({
-  selector: 'app-wknTable',
-  templateUrl: './wknTable.component.html',
-  styleUrls: ['./wknTable.component.scss'],
+  selector: 'app-portfolio',
+  templateUrl: './portfolioItem.component.html',
+  styleUrls: ['./portfolioItem.component.scss'],
 })
 
-export class wknTableComponent implements OnInit, OnDestroy {
+export class portfolioItemComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -22,16 +22,16 @@ export class wknTableComponent implements OnInit, OnDestroy {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  public wknTableList: WknTable[] = [];
+  public portfolioItemList: PortfolioItem[] = [];
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private wknTableService: WknTableService) { } // private productsHttpService: ProductHttpService
+  constructor(private portfolioItemService: PortfolioItemService) { } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
-    this.wknTableService
-      .getWknTableList()
-      .subscribe((response: WknTable[]) => {
-        this.wknTableList = response;
+    this.portfolioItemService
+      .getPortfolioItemList()
+      .subscribe((response: PortfolioItem[]) => {
+        this.portfolioItemList = response;
       });
   }
 

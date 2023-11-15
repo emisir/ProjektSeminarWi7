@@ -2,7 +2,6 @@ package com.example.teamsix.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import com.example.teamsix.domain.WknTable;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class Portfolio {
 
     @OneToMany(mappedBy = "portfolio",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<WknTable> purchases;
+    private List<PortfolioItem> purchases;
 
     public Portfolio(Long id,  String name, String description, String category) {
         this.id = id;
@@ -76,11 +75,11 @@ public class Portfolio {
         this.category = category;
     }
 
-    public List<WknTable> getPurchases() {
+    public List<PortfolioItem> getPurchases() {
         return purchases;
     }
 
-    public void setPurchases(List<WknTable> purchases) {
+    public void setPurchases(List<PortfolioItem> purchases) {
         this.purchases = purchases;
     }
 

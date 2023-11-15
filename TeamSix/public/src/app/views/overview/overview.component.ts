@@ -14,7 +14,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = [ 'name', 'description', 'category'];
+  displayedColumns: string[] = ['name', 'description', 'category'];
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -23,7 +23,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public portfolioList: Portfolio[] = [];
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private portfolioService: PortfolioService) {} // private productsHttpService: ProductHttpService
+  constructor(private portfolioService: PortfolioService) { } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
     this.portfolioService

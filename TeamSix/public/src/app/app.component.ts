@@ -15,8 +15,12 @@ export class AppComponent {
       routePath: 'overview',
     },
     {
-      name: 'WknTable',
-      routePath: 'wknTable'
+      name: 'PortfolioItem',
+      routePath: 'portfolioItem'
+    },
+    {
+      name:'TotalValues',
+      routePath:'portfolioItem/totalValues'
     },
 
     {

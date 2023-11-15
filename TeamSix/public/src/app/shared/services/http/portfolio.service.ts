@@ -9,11 +9,10 @@ import { PortfolioDetailDTO } from '../../models/portfolioDetailDTO';
 })
 export class PortfolioService {
   private apiUrl = 'http://localhost:8081/portfolio';
-  private detailApiUrl = 'http://localhost:8081/portfolio/detail'; // URL ohne {id}
   portfolioList: Portfolio[] = [];
   public portfolioDetail: PortfolioDetailDTO[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public getPortfolioList(): Observable<Portfolio[]> {
     return this.http.get<Portfolio[]>(this.apiUrl);
@@ -21,7 +20,7 @@ export class PortfolioService {
 
   // Die Methode getDetailPortfolioList erwartet jetzt eine ID als Parameter
   public getDetailPortfolioList(id: number): Observable<PortfolioDetailDTO> {
-    const urlWithId = `${this.detailApiUrl}/${id}`;
+    const urlWithId = `${this.apiUrl}/${id}`;
     return this.http.get<PortfolioDetailDTO>(urlWithId);
   }
 }

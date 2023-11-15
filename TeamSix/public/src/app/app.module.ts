@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuBarComponent } from './shared/components/menu-bar/menu-bar.component';
 import { OverviewComponent } from './views/overview/overview.component';
-import { wknTableComponent } from './views/wknTable/wknTable.component';
+import { portfolioItemComponent } from './views/portfolioItem/portfolioItem.component';
 import { totalValuesComponent } from './views/totalValues/totalValues.component';
 
 import { DetailComponent } from './views/detail/detail.component';
@@ -20,7 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
     OverviewComponent,
     DetailComponent,
     ImpressumComponent,
-    wknTableComponent,
+    portfolioItemComponent,
     totalValuesComponent
   ],
   imports: [

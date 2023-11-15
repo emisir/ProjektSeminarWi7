@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class TotalValuesService {
-  private apiUrl = 'http://localhost:8081/wknTable/totalValues'
+  private apiUrl = 'http://localhost:8081/portfolioItem/totalValues'
   totalValuesList: TotalValues[] = [];
 
   constructor(private http: HttpClient) { }

@@ -5,30 +5,36 @@
 
 <div class="container">
   <div class="table-container">
-      <div *ngIf="portfolioDetail">
+    <div *ngIf="portfolioDetail">
 
 
 
-        <h2>{{ portfolioDetail.name }}</h2>
-        <p>{{ portfolioDetail.description }}</p>
-        <!-- Weitere Details hier anzeigen -->
+      <h2>{{ portfolioDetail.name }}</h2>
+      <p>{{ portfolioDetail.description }}</p>
+      <!-- Weitere Details hier anzeigen -->
 
-        <h3>Käufe:</h3>
-        <table>
-          <tr>
-            <th>Kaufdatum</th>
-            <th>Anzahl</th>
-            <th>Kaufpreis</th>
-            <th>Gesamtpreis</th>
-          </tr>
-          <tr *ngFor="let purchase of portfolioDetail.purchases">
-            <td>{{ purchase.purchaseDate | date }}</td>
-            <td>{{ purchase.quantity }}</td>
-            <td>{{ purchase.purchasePrice | currency : '€ ' }}</td>
-            <td>{{ purchase.totalPrice | currency : '€ ' }}</td>
-          </tr>
-        </table>
-      </div>
+      <h3>Käufe:</h3>
+      <table>
+        <tr>
+          <th>Wkn</th>
+          <th>Kaufdatum</th>
+          <th>Anzahl</th>
+          <th>Gesamtanzahl</th>
+
+          <th>Kaufpreis</th>
+          <th>Gesamtpreis</th>
+        </tr>
+        <tr *ngFor="let purchase of portfolioDetail.purchases">
+          <td>{{ purchase.wkn}}</td>
+          <td>{{ purchase.purchaseDate | date }}</td>
+          <td>{{ purchase.quantity }}</td>
+          <td>{{ purchase.totalQuantity }}</td>
+          <td>{{ purchase.purchasePrice | currency : '€ ' }}</td>
+          <td>{{ purchase.totalPrice | currency : '€ ' }}</td>
+
+        </tr>
+      </table>
+    </div>
   </div>
 
 </div>

@@ -4,10 +4,10 @@ import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Portfolio } from 'src/app/shared/models/portfolio';
-import { WknTable } from 'src/app/shared/models/wknTable';
+import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
 import { PortfolioDetailDTO } from 'src/app/shared/models/portfolioDetailDTO';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
-import { WknTableService } from 'src/app/shared/services/http/wknTable.service';
+import { PortfolioItemService } from 'src/app/shared/services/http/portfolioItem.service';
 
 @Component({
   selector: 'app-detail',
@@ -30,7 +30,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   public portfolioDetail: PortfolioDetailDTO | undefined;
 
   public portfolioList: Portfolio[] = [];
-  public wknTableList: WknTable[] = [];
+  public portfolioItemList: PortfolioItem[] = [];
   public portfolioDetailList: PortfolioDetailDTO[] = [];
 
 
@@ -38,10 +38,11 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(public portfolioService: PortfolioService, private wknTableService: WknTableService, private route: ActivatedRoute) {
-
+  constructor(public portfolioService: PortfolioService, private portfolioItemService: PortfolioItemService, private route: ActivatedRoute) {
+    
 
   };
+
   showDetails(row: Portfolio): void {
     const portfolioId = 1;
     this.portfolioService.getDetailPortfolioList(portfolioId).subscribe((detail) => {
@@ -58,16 +59,21 @@ export class DetailComponent implements OnInit, OnDestroy {
       .subscribe((response: PortfolioDetailDTO) => {
         this.portfolioDetailList = [response];
       });
-    this.route.params.subscribe(params => {
-      const id = +params['id']; // '+' konvertiert den Parameter in eine Zahl
-      this.portfolioService.getDetailPortfolioList(id).subscribe(detail => {
-        this.portfolioDetail = detail;
-      });
+      this.route.params.subscribe(params => {
+        const id = +params['id']; // Convert to number
+        console.log("Portfolio ID:", id); // Debug
+        if (!isNaN(id)) {
+          this.portfolioService.getDetailPortfolioList(id).subscribe(detail => {
+            this.portfolioDetail = detail;
+          });
+        } else {
+          console.error("Invalid ID:", id);
+        }
     });
-    this.wknTableService
-      .getWknTableList()
-      .subscribe((response: WknTable[]) => {
-        this.wknTableList = response;
+    this.portfolioItemService
+      .getPortfolioItemList()
+      .subscribe((response: PortfolioItem[]) => {
+        this.portfolioItemList = response;
       })
   }
 

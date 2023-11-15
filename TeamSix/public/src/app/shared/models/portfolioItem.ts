@@ -1,5 +1,5 @@
 
-export interface WknTable {
+export interface PortfolioItem {
     id: BigInteger;
     wkn: string;
     purchasePrice: Float32Array;

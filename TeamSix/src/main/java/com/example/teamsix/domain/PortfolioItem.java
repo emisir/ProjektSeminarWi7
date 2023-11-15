@@ -2,15 +2,13 @@ package com.example.teamsix.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
-import javax.sound.sampled.Port;
 import java.util.Date;
 
 @Entity
 @Table(name = "wkntable")
-public class WknTable {
+public class PortfolioItem {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -26,14 +24,14 @@ public class WknTable {
     @JsonBackReference
     private Portfolio portfolio;
 
-    public WknTable() {
+    public PortfolioItem() {
     }
 
-    public WknTable(Long id) {
+    public PortfolioItem(Long id) {
         this.id = id;
     }
 
-    public WknTable(Long id, String wkn, Float purchasePrice, Long quantity, Date purchaseDate) {
+    public PortfolioItem(Long id, String wkn, Float purchasePrice, Long quantity, Date purchaseDate) {
         this.id = id;
         this.wkn = wkn;
         this.purchasePrice = purchasePrice;
@@ -92,4 +90,5 @@ public class WknTable {
     public Float getTotalPrice() {
         return quantity * purchasePrice;
     }
+
 }
