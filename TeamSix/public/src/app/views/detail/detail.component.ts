@@ -21,7 +21,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['wkn', 'name', 'description', 'category','totalQuantity','averagePrice', 'purchaseDate', 'quantity', 'purchasePrice', 'totalPrice'];
+  displayedColumns: string[] = ['id', 'wkn', 'name', 'description', 'category', 'totalQuantity', 'averagePrice', 'purchaseDate', 'quantity', 'purchasePrice', 'totalPrice'];
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -39,15 +39,13 @@ export class DetailComponent implements OnInit, OnDestroy {
   private toDestroy$: Subject<void> = new Subject<void>();
 
   constructor(public portfolioService: PortfolioService, private portfolioItemService: PortfolioItemService, private route: ActivatedRoute) {
-    
+
 
   };
 
   showDetails(row: Portfolio): void {
     const portfolioId = 1;
     this.portfolioService.getDetailPortfolioList(portfolioId).subscribe((detail) => {
-      // Hier kannst du die Detailinformationen anzeigen, z.B. in einem Dialog oder einer anderen Ansicht
-      console.log(detail); // Zum Testen: Gib die Detailinformationen in der Konsole aus
     });
   }
 
@@ -59,16 +57,15 @@ export class DetailComponent implements OnInit, OnDestroy {
       .subscribe((response: PortfolioDetailDTO) => {
         this.portfolioDetailList = [response];
       });
-      this.route.params.subscribe(params => {
-        const id = +params['id']; // Convert to number
-        console.log("Portfolio ID:", id); // Debug
-        if (!isNaN(id)) {
-          this.portfolioService.getDetailPortfolioList(id).subscribe(detail => {
-            this.portfolioDetail = detail;
-          });
-        } else {
-          console.error("Invalid ID:", id);
-        }
+    this.route.params.subscribe(params => {
+      const id = +params['id']; // Convert to number
+      if (!isNaN(id)) {
+        this.portfolioService.getDetailPortfolioList(id).subscribe(detail => {
+          this.portfolioDetail = detail;
+        });
+      } else {
+        console.error("Invalid ID:", id);
+      }
     });
     this.portfolioItemService
       .getPortfolioItemList()

@@ -3,6 +3,7 @@ import { Portfolio } from '../../models/portfolio';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { PortfolioDetailDTO } from '../../models/portfolioDetailDTO';
+import { PortfolioSummary } from '../../models/portfolioSummary';
 
 @Injectable({
   providedIn: 'root',
@@ -22,5 +23,9 @@ export class PortfolioService {
   public getDetailPortfolioList(id: number): Observable<PortfolioDetailDTO> {
     const urlWithId = `${this.apiUrl}/${id}`;
     return this.http.get<PortfolioDetailDTO>(urlWithId);
+  }
+  public getPortfolioSummary(id: number): Observable<PortfolioSummary[]> {
+    const urlWithId = `${this.apiUrl}/${id}/summary`;
+    return this.http.get<PortfolioSummary[]>(urlWithId);
   }
 }

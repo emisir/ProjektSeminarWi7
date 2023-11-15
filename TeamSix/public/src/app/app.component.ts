@@ -20,7 +20,7 @@ export class AppComponent {
     },
     {
       name:'Summary',
-      routePath:'overview/:id/summary'
+      routePath:'summary/:id'
     },
 
     {

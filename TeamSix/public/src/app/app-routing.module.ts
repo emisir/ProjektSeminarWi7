@@ -21,7 +21,7 @@ const routes: Routes = [
     component: DetailComponent,
   },
   {
-    path: 'overview/:id/summary',
+    path: 'summary/:id',
     component: portfolioSummaryComponent,
   },
   {

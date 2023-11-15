@@ -3,7 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
 import { PortfolioSummary } from 'src/app/shared/models/portfolioSummary';
-import { PortfolioSummaryService } from 'src/app/shared/services/http/portfolioSummary.service';
+import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -25,16 +26,22 @@ export class portfolioSummaryComponent implements OnInit, OnDestroy {
   public portfolioSummaryList: PortfolioSummary[] = [];
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private portfolioSummaryService: PortfolioSummaryService) { } // private productsHttpService: ProductHttpService
+  constructor(private portfolioService: PortfolioService,  private route: ActivatedRoute) { } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
-    this.portfolioSummaryService
-      .getTotalValuesList()
-      .subscribe((response: PortfolioSummary[]) => {
-        this.portfolioSummaryList = response;
-      });
+    this.route.params.subscribe(params => {
+      const id = +params['id']; // Convert to number
+      if (!isNaN(id)) {
+        this.portfolioService.getPortfolioSummary(id).subscribe(portfolioSummaryList => {
+          this.portfolioSummaryList = portfolioSummaryList;
+        });
+      } else {
+        console.error("Invalid ID:", id);
+      }
+    
+    });
   }
-
+  
   ngOnDestroy(): void {
     this.toDestroy$.next();
     this.toDestroy$.complete();

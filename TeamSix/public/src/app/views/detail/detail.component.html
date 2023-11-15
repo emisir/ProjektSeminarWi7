@@ -23,7 +23,9 @@
           <th>Gesamtpreis</th>
         </tr>
         <tr *ngFor="let purchase of portfolioDetail.purchases">
-          <td><a routerLink="summary">{{ purchase.wkn}}</a></td>
+          <td >
+            <a [routerLink]="['/summary', portfolioDetail.id]">{{ purchase.wkn }}</a>
+          </td>
           <td>{{ purchase.purchaseDate | date }}</td>
           <td>{{ purchase.quantity }}</td>
           <td>{{ purchase.purchasePrice | currency : '€ ' }}</td>
