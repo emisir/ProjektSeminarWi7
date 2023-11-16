@@ -14,9 +14,6 @@ import { PortfolioItemService } from 'src/app/shared/services/http/portfolioItem
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-
-
-
 export class DetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

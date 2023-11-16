@@ -8,7 +8,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PortfolioItemService {
   private apiUrl = 'http://localhost:8081/portfolioItem'
-  portfolioItemList: PortfolioItem[] = [];
 
   constructor(private http: HttpClient) { }
 
