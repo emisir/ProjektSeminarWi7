@@ -26,22 +26,23 @@ export class portfolioSummaryComponent implements OnInit, OnDestroy {
   public portfolioSummaryList: PortfolioSummary[] = [];
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private portfolioService: PortfolioService,  private route: ActivatedRoute) { } // private productsHttpService: ProductHttpService
+  constructor(private portfolioService: PortfolioService, private route: ActivatedRoute) { } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       const id = +params['id']; // Convert to number
-      if (!isNaN(id)) {
-        this.portfolioService.getPortfolioSummary(id).subscribe(portfolioSummaryList => {
-          this.portfolioSummaryList = portfolioSummaryList;
+      const wkn = params['wkn']; // Convert to number
+      if (!isNaN(id) && !isNaN(wkn)) {
+        this.portfolioService.getPortfolioSummary(id, wkn).subscribe(portfolioSummary => {
+          this.portfolioSummaryList = [portfolioSummary]
         });
       } else {
         console.error("Invalid ID:", id);
       }
-    
+
     });
   }
-  
+
   ngOnDestroy(): void {
     this.toDestroy$.next();
     this.toDestroy$.complete();

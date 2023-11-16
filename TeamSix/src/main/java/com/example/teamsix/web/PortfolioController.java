@@ -33,12 +33,12 @@ public class PortfolioController {
         portfolioService.addPortfolio(portfolio);
     }
 
-    @GetMapping("/{id}/summary")
-    public ResponseEntity<Collection<PortfolioSummary>> getPortfolioSummary(@PathVariable Long id) {
-        Collection<PortfolioSummary> portfolioSummaries = portfolioService.getPortfolioSummary(id);
+    @GetMapping("/{id}/summary/{wkn}")
+    public ResponseEntity<PortfolioSummary> getPortfolioSummary(@PathVariable("id") Long id, @PathVariable("wkn") String wkn) {
+        PortfolioSummary portfolioSummary = portfolioService.getPortfolioSummary(id, wkn);
 
-        if (portfolioSummaries != null) {
-            return ResponseEntity.ok(portfolioSummaries);
+        if (portfolioSummary != null) {
+            return ResponseEntity.ok(portfolioSummary);
         } else {
             return ResponseEntity.notFound().build();
         }

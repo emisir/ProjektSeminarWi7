@@ -28,9 +28,9 @@ export class PortfolioService {
     return this.http.get<PortfolioDetailDTO>(urlWithId);
   }
 
-  public getPortfolioSummary(id: number): Observable<PortfolioSummary[]> {
-    const urlWithId = `${this.apiUrl}/portfolio/${id}/summary`;
-    return this.http.get<PortfolioSummary[]>(urlWithId);
+  public getPortfolioSummary(id: number, wkn: string): Observable<PortfolioSummary> {
+    const urlWithId = `${this.apiUrl}/portfolio/${id}/summary/${wkn}`;
+    return this.http.get<PortfolioSummary>(urlWithId);
   }
 
   public getPortfolioItemList(): Observable<PortfolioItem[]> {

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 
@@ -51,10 +52,10 @@ public class PortfolioService {
 
     private static final Logger log = LoggerFactory.getLogger(PortfolioService.class);
 
-    public Collection<PortfolioSummary> getPortfolioSummary(Long portfolioId) {
+    public PortfolioSummary getPortfolioSummary(Long portfolioId, String wkn) {
         List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases();
 
-        return portfolioItems.stream()
+        Map<String, PortfolioSummary> collect = portfolioItems.stream()
                 .collect(Collectors.groupingBy(PortfolioItem::getWkn,
                         Collectors.collectingAndThen(
                                 Collectors.toList(),
@@ -77,7 +78,9 @@ public class PortfolioService {
                                     );
                                 }
                         )
-                )).values();
+                ));
+
+        return collect.get(wkn);
     }
 
 }
