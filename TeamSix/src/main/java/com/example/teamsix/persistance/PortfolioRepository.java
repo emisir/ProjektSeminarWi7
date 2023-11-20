@@ -1,10 +1,10 @@
 package com.example.teamsix.persistance;
 
 import com.example.teamsix.domain.Portfolio;
-import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
 
-
-public interface PortfolioRepository extends ListCrudRepository<Portfolio,Long>{
-
+public interface PortfolioRepository extends CrudRepository<Portfolio, Long> {
+    List<PortfolioInfoProjection> findAllBy();
 }
