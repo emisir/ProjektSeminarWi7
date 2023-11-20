@@ -2,7 +2,11 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { PortfolioDetailDTO } from 'src/app/shared/models/portfolioDetailDTO';
 import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
+import { Portfolio } from 'src/app/shared/models/portfolio';
+import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 import { PortfolioItemService } from 'src/app/shared/services/http/portfolioItem.service';
 
 
@@ -22,10 +26,14 @@ export class portfolioItemComponent implements OnInit, OnDestroy {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  public portfolioItemList: PortfolioItem[] = [];
-  private toDestroy$: Subject<void> = new Subject<void>();
+  public portfolioDetail: PortfolioDetailDTO | undefined;
 
-  constructor(private portfolioItemService: PortfolioItemService) { } // private productsHttpService: ProductHttpService
+  public portfolioItemList: PortfolioItem[] = [];
+  public portfolioList: Portfolio[] = [];
+  private toDestroy$: Subject<void> = new Subject<void>();
+  public portfolioDetailList: PortfolioDetailDTO[] = [];
+
+  constructor(private portfolioItemService: PortfolioItemService, public portfolioService: PortfolioService, private route: ActivatedRoute) { } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
     this.portfolioItemService
@@ -33,6 +41,16 @@ export class portfolioItemComponent implements OnInit, OnDestroy {
       .subscribe((response: PortfolioItem[]) => {
         this.portfolioItemList = response;
       });
+    this.route.params.subscribe(params => {
+      const id = +params['id']; // Convert to number
+      if (!isNaN(id)) {
+        this.portfolioService.getDetailPortfolioList(id).subscribe(detail => {
+          this.portfolioDetail = detail;
+        });
+      } else {
+        console.error("Invalid ID:", id);
+      }
+    });
   }
 
   ngOnDestroy(): void {

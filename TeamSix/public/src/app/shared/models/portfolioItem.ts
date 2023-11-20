@@ -1,13 +1,13 @@
 
 export interface PortfolioItem {
-    id: BigInteger;
+    id: number;
     wkn: string;
-    purchasePrice: Float32Array;
-    quantity: Int16Array;
+    purchasePrice: number;
+    quantity: number;
     purchaseDate: Date;
-    totalQuantity: Int16Array;
-    totalPrice: Float32Array;
-    averagePrice: Float32Array;
+    totalQuantity: number;
+    totalPrice: number;
+    averagePrice: number;
 }
 
 
