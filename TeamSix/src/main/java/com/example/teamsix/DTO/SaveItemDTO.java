@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
-public class PortfolioItemDTO {
+public class SaveItemDTO {
 
     @NotBlank(message = "WKN darf nicht leer sein")
     private String wkn;
@@ -24,10 +24,10 @@ public class PortfolioItemDTO {
     @NotNull(message = "Kaufdatum darf nicht null sein")
     private Date purchaseDate;
 
-    public PortfolioItemDTO() {
+    public SaveItemDTO() {
     }
 
-    public PortfolioItemDTO(String wkn, String name, String description, String category, Float purchasePrice, Long quantity, Date purchaseDate) {
+    public SaveItemDTO(String wkn, String name, String description, String category, Float purchasePrice, Long quantity, Date purchaseDate) {
         this.wkn = wkn;
         this.name = name;
         this.description = description;

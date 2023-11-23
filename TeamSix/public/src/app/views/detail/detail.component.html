@@ -5,11 +5,11 @@
 
 <div class="container">
   <div class="table-container">
-    <div *ngIf="portfolioItemList">
+    <div *ngIf="portfolioDetailItem">
 
-      <div *ngFor="let row of portfolioItemList">
-        <h2>{{row.name}}</h2>
-        <p>{{row.wkn }}</p>
+      <div>
+        <h2>{{portfolioDetailItem.name}}</h2>
+        <p>{{portfolioDetailItem.wkn }}</p>
 
 
       </div>
@@ -17,19 +17,21 @@
         <tr>
           <th>Wkn</th>
           <th>Name</th>
-          <th>Beschreibung</th>
           <th>Kategorie</th>
           <th>Gesamtanzahl</th>
           <th>Durchschnittspreis</th>
+          <th>Beschreibung</th>
+
 
         </tr>
-        <tr *ngFor="let row of portfolioItemList">
-          <td>{{ row.wkn }}</td>
-          <td>{{ row.name }}</td>
-          <td>{{ row.description }}</td>
-          <td>{{ row.category }}</td>
-          <td>{{ row.totalQuantity }}</td>
-          <td>{{ row.averagePrice | currency : '€ ' }}</td>
+        <tr>
+          <td>{{portfolioDetailItem.wkn}}</td>
+          <td>{{ portfolioDetailItem.name }}</td>
+          <td>{{ portfolioDetailItem.category }}</td>
+          <td>{{ portfolioDetailItem.totalQuantity }}</td>
+          <td>{{ portfolioDetailItem.averagePrice | currency : '€ ' }}</td>
+          <td>{{ portfolioDetailItem.description }}</td>
+
 
 
         </tr>
@@ -46,7 +48,7 @@
           <th>Kaufpreis</th>
           <th>Gesamtpreis</th>
         </tr>
-        <tr *ngFor="let row of portfolioItemList">
+        <tr *ngFor="let row of portfolioDetailItem.portfolioItems">
           <td>{{ row.purchaseDate | date }}</td>
           <td>{{ row.quantity }}</td>
           <td>{{ row.purchasePrice | currency : '€ ' }}</td>

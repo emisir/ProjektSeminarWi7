@@ -1,6 +1,6 @@
 package com.example.teamsix.web;
 import com.example.teamsix.DTO.PortfolioDetailDTO;
-import com.example.teamsix.DTO.PortfolioItemDTO;
+import com.example.teamsix.DTO.SaveItemDTO;
 import com.example.teamsix.DTO.PortfolioSummary;
 
 
@@ -40,16 +40,16 @@ public class PortfolioController {
 
 
     @GetMapping("/{id}/detail/{wkn}")
-    public ResponseEntity<List<PortfolioDetailDTO>> getPortfolioItem(@PathVariable("id")Long portfolioId, @PathVariable("wkn") String wkn){
-        List<PortfolioDetailDTO> portfolioItems = portfolioService.getPortfolioItemsByPortfolioId(portfolioId,wkn);
+    public ResponseEntity<PortfolioDetailDTO> getPortfolioItem(@PathVariable("id")Long portfolioId, @PathVariable("wkn") String wkn){
+        PortfolioDetailDTO portfolioItems = portfolioService.getPortfolioItemsByPortfolioId(portfolioId,wkn);
         return ResponseEntity.ok(portfolioItems);
     }
 
     @PostMapping("/{id}/add-item")
-    public ResponseEntity<String> addPortfolioItem(@PathVariable("id") Long id, @RequestBody PortfolioItemDTO portfolioItemDTO) {
+    public ResponseEntity<String> addPortfolioItem(@PathVariable("id") Long id, @RequestBody SaveItemDTO saveItemDTO) {
         try {
-            portfolioService.addPortfolioItem(id, portfolioItemDTO);
-            return ResponseEntity.ok("Portfolio-Item wurde erfolgreich hinzugefügt.");
+            portfolioService.addPortfolioItem(id, saveItemDTO);
+            return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
