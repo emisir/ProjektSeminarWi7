@@ -1,7 +1,8 @@
 package com.example.teamsix.service;
 
 import com.example.teamsix.DTO.PortfolioDetailDTO;
-import com.example.teamsix.DTO.PortfolioItemDTO;
+import com.example.teamsix.DTO.PortfolioDetailItemDTO;
+import com.example.teamsix.DTO.SaveItemDTO;
 import com.example.teamsix.domain.Portfolio;
 import com.example.teamsix.domain.PortfolioItem;
 import com.example.teamsix.persistance.PortfolioItemRepository;
@@ -77,53 +78,43 @@ public class PortfolioService {
     }
 
 
-    public List<PortfolioDetailDTO> getPortfolioItemsByPortfolioId(Long portfolioId, String wkn) {
-        List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases();
+    public PortfolioDetailDTO getPortfolioItemsByPortfolioId(Long portfolioId, String wkn) {
+        List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases().stream().filter(item -> item.getWkn().equals(wkn)).toList();
+        String name = portfolioItems.get(0).getName();
+        String description = portfolioItems.get(0).getDescription();
+        String category = portfolioItems.get(0).getCategory();
 
-        Map<String, PortfolioDetailDTO> collect = portfolioItems.stream()
-                .filter(item -> item.getWkn().equals(wkn))
-                .collect(Collectors.groupingBy(
-                        PortfolioItem::getWkn,
-                        Collectors.collectingAndThen(
-                                Collectors.toList(),
-                                portfolioItemList -> {
-                                    String name = portfolioItemList.get(0).getName();
-                                    String description = portfolioItemList.get(0).getDescription();
-                                    String category = portfolioItemList.get(0).getCategory();
-                                    Date purchaseDate = portfolioItemList.get(0).getPurchaseDate();
-                                    Long quantity = portfolioItemList.get(0).getQuantity();
-                                    Float purchasePrice = portfolioItemList.get(0).getPurchasePrice();
 
-                                    long totalQuantity = portfolioItemList.stream()
-                                            .mapToLong(PortfolioItem::getQuantity)
-                                            .sum();
-                                    float totalPrice = (float) portfolioItemList.stream()
-                                            .mapToDouble(portfolioItem -> portfolioItem.getQuantity() * portfolioItem.getPurchasePrice())
-                                            .sum();
-                                    float averagePrice = totalPrice / totalQuantity;
+        long totalQuantity = portfolioItems.stream()
+                .mapToLong(PortfolioItem::getQuantity)
+                .sum();
+        float totalPrice = (float) portfolioItems.stream()
+                .mapToDouble(portfolioItem -> portfolioItem.getQuantity() * portfolioItem.getPurchasePrice())
+                .sum();
+        float averagePrice = totalPrice / totalQuantity;
 
-                                    return new PortfolioDetailDTO(
-                                            portfolioItemList.get(0).getWkn(),
-                                            name,
-                                            description,
-                                            category,
-                                            purchaseDate,
-                                            quantity,
-                                            purchasePrice,
-                                            totalQuantity,
-                                            averagePrice,
-                                            totalPrice
-                                    );
-                                }
-                        )
-                ));
-        return new ArrayList<>(collect.values());
+        List<PortfolioDetailItemDTO> portfolioDetailItemDTO = portfolioItems.stream().map(portfolioItem -> new PortfolioDetailItemDTO(
+                portfolioItem.getPurchaseDate(),
+                portfolioItem.getQuantity(),
+                portfolioItem.getPurchasePrice(),
+                portfolioItem.getPurchasePrice() * portfolioItem.getQuantity()
+                )).toList();
+
+        return new PortfolioDetailDTO(
+                portfolioItems.get(0).getWkn(),
+                name,
+                description,
+                category,
+                totalQuantity,
+                averagePrice,
+                portfolioDetailItemDTO
+        );
     }
-    public void addPortfolioItem(Long portfolioId, PortfolioItemDTO portfolioItemDTO) {
+    public void addPortfolioItem(Long portfolioId, SaveItemDTO saveItemDTO) {
         Portfolio portfolio = getPortfolio(portfolioId);
 
         // Überprüfen, ob der WKN-Wert bereits in der Datenbank vorhanden ist
-        String wkn = portfolioItemDTO.getWkn();
+        String wkn = saveItemDTO.getWkn();
         if (isWknExistsInPortfolio(portfolioId, wkn)) {
             // Hier lösen wir eine Exception aus
             throw new IllegalArgumentException("WKN " + wkn + " bereits vorhanden.");
@@ -132,12 +123,12 @@ public class PortfolioService {
         // Wenn der WKN-Wert nicht vorhanden ist, fahren Sie fort mit der Hinzufügung
         PortfolioItem portfolioItem = new PortfolioItem();
         portfolioItem.setWkn(wkn);
-        portfolioItem.setName(portfolioItemDTO.getName());
-        portfolioItem.setDescription(portfolioItemDTO.getDescription());
-        portfolioItem.setCategory(portfolioItemDTO.getCategory());
-        portfolioItem.setQuantity(portfolioItemDTO.getQuantity());
-        portfolioItem.setPurchasePrice(portfolioItemDTO.getPurchasePrice());
-        portfolioItem.setPurchaseDate(portfolioItemDTO.getPurchaseDate());
+        portfolioItem.setName(saveItemDTO.getName());
+        portfolioItem.setDescription(saveItemDTO.getDescription());
+        portfolioItem.setCategory(saveItemDTO.getCategory());
+        portfolioItem.setQuantity(saveItemDTO.getQuantity());
+        portfolioItem.setPurchasePrice(saveItemDTO.getPurchasePrice());
+        portfolioItem.setPurchaseDate(saveItemDTO.getPurchaseDate());
         portfolioItem.setPortfolio(portfolio);
 
         portfolio.getPurchases().add(portfolioItem);

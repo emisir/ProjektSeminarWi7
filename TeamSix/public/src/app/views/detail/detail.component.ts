@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
+import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 
@@ -22,7 +23,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   isRateLimitReached = false;
 
 
-  public portfolioItemList: PortfolioItem[] = [];
+  public portfolioDetailItem: PortfolioDetail | undefined;
 
 
 
@@ -39,8 +40,8 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       let wkn = params['wkn'];
       this.portfolioService.getDetailPortfolioList(1, wkn)
-        .subscribe((response: PortfolioItem[]) => {
-          this.portfolioItemList = response;
+        .subscribe((response: PortfolioDetail) => {
+          this.portfolioDetailItem = response;
         });
     });
   }

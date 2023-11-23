@@ -1,5 +1,7 @@
-<form (ngSubmit)="onSubmit()" #portfolioItemForm="ngForm">
-    <div class="content">
+<div *ngIf="!addedSuccessfully">
+
+    <form (ngSubmit)="onSubmit()" #portfolioItemForm="ngForm" class="content">
+
         <div>
             <label for="name">Name:</label>
             <input type="text" name="name" required [(ngModel)]="formData.name">
@@ -26,5 +28,14 @@
         </div>
         <!-- Weitere Felder... -->
         <button type="submit" [disabled]="!portfolioItemForm.valid">Hinzufügen</button>
-    </div>
-</form>
+
+    </form>
+</div>
+
+
+<div *ngIf="addedSuccessfully" class="content">
+
+    <h3>Erfolgreich hinzugefügt!</h3>
+    <button (click)="clean()">Erneut Hinzufügen</button>
+    <button routerLink="/portfolio">Zurück zu Portfolio</button>
+</div>

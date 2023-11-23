@@ -3,6 +3,7 @@ import { Portfolio } from '../../models/portfolio';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { PortfolioItem } from '../../models/portfolioItem';
+import { PortfolioDetail } from '../../models/portfolioDetail';
 
 
 @Injectable({
@@ -21,9 +22,9 @@ export class PortfolioService {
   }
 
   // Die Methode getDetailPortfolioList erwartet jetzt eine ID als Parameter
-  public getDetailPortfolioList(id: number, wkn: string): Observable<PortfolioItem[]> {
+  public getDetailPortfolioList(id: number, wkn: string): Observable<PortfolioDetail> {
     const urlWithId = `${this.apiUrl}/portfolio/${id}/detail/${wkn}`;
-    return this.http.get<PortfolioItem[]>(urlWithId);
+    return this.http.get<PortfolioDetail>(urlWithId);
   }
 
 

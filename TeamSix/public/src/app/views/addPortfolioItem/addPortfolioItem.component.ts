@@ -36,14 +36,23 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
         console.log('Erfolgreich hinzugefügt', response);
         this.addedSuccessfully = true;
       },
-      error: (error) => {
-        // Fehlerbehandlung
-        console.error('Fehler beim Hinzufügen', error);
-        this.addedSuccessfully = false;
-      }
+
     });
   }
 
+  clean() {
+    this.formData = {
+      name: '',
+      wkn: '',
+      description: '',
+      purchaseDate: '2023-11-23',
+      category: '',
+      quantity: '',
+      purchasePrice: ''
+
+    }
+    this.addedSuccessfully = false;
+  }
 
 
   ngOnDestroy(): void {

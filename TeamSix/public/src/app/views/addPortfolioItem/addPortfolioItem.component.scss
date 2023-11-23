@@ -1,23 +1,13 @@
-/* Fügen Sie diese SCSS-Stile zu Ihrer CSS-Datei hinzu */
-
-form {
+.content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  /* Vollständige Bildschirmhöhe */
-  border: 1px solid #ccc;
+  height: 90vh;
   border-radius: 5px;
   background-color: #f9f9f9;
 }
 
-div {
-  margin-bottom: 10px;
-  width: 100%;
-  max-width: 300px;
-  /* Maximalbreite des Formulars */
-}
 
 label {
   display: block;
@@ -32,9 +22,8 @@ input[type="text"] {
   border-radius: 3px;
 }
 
-button[type="submit"] {
+button {
   display: block;
-  width: 106%;
   padding: 10px;
   color: #000000;
   border: none;
