@@ -34,8 +34,8 @@ public class PortfolioService {
         portfolioItemRepository.save(item);
     }
 
-    public boolean isWknExistsInPortfolio(String wkn, Long portfolioId) {
-        return portfolioItemRepository.existsByWknAndPortfolioId(wkn, portfolioId);
+    private boolean isWknExistsInPortfolio( Long portfolioId, String wkn) {
+        return portfolioItemRepository.existsByWknAndPortfolioId(wkn,portfolioId);
     }
 
     public void addPortfolio(Portfolio portfolio) {
@@ -119,13 +119,19 @@ public class PortfolioService {
                 ));
         return new ArrayList<>(collect.values());
     }
-
     public void addPortfolioItem(Long portfolioId, PortfolioItemDTO portfolioItemDTO) {
         Portfolio portfolio = getPortfolio(portfolioId);
 
+        // Überprüfen, ob der WKN-Wert bereits in der Datenbank vorhanden ist
+        String wkn = portfolioItemDTO.getWkn();
+        if (isWknExistsInPortfolio(portfolioId, wkn)) {
+            // Hier lösen wir eine Exception aus
+            throw new IllegalArgumentException("WKN " + wkn + " bereits vorhanden.");
+        }
 
+        // Wenn der WKN-Wert nicht vorhanden ist, fahren Sie fort mit der Hinzufügung
         PortfolioItem portfolioItem = new PortfolioItem();
-        portfolioItem.setWkn(portfolioItemDTO.getWkn());
+        portfolioItem.setWkn(wkn);
         portfolioItem.setName(portfolioItemDTO.getName());
         portfolioItem.setDescription(portfolioItemDTO.getDescription());
         portfolioItem.setCategory(portfolioItemDTO.getCategory());
@@ -147,6 +153,7 @@ public class PortfolioService {
     }
 
 
-
-
+    public List<PortfolioItem> getPortfolioItems() {
+        return portfolioItemRepository.findAll();
+    }
 }

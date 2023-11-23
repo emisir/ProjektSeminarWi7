@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 
 @Component({
@@ -13,33 +12,37 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
 
   constructor(private portfolioService: PortfolioService) { }
 
-  portfolioItem : PortfolioItem [] = [];
+  // Hier erstellen Sie ein separates Datenobjekt, um nur die benötigten Felder zu speichern
+  formData: any = {
+    name: '',
+    wkn: '',
+    description: '',
+    category: '',
+    quantity: '',
+    purchasePrice: ''
+    // Fügen Sie hier weitere Felder hinzu, die Sie benötigen
+  };
 
-  ngOnInit(): void {}
+  addedSuccessfully: boolean = false;
 
-  onSubmit(): void{
-    // // Beispiel für das Hinzufügen eines Portfolio-Elements
-    // let newPortfolioItem: PortfolioItem = {
-    //     id: 1,
-    //     wkn: "123456",
-    //     name: "Beispielaktie",
-    //     description: "Beschreibung der Aktie",
-    //     category:"asdasd",
-    //     purchasePrice: 100123,
-    //     quantity: 10,
-    //     purchaseDate: new Date(),
-    // };
+  ngOnInit(): void { }
 
-    // this.portfolioService.addPortfolioItems(1, newPortfolioItem)
-    //   .subscribe(
-    //     (response) => {
-    //       console.log('Portfolio Item hinzugefügt', response);
-    //     },
-    //     (error) => {
-    //       console.error('Fehler beim Hinzufügen des Portfolio-Items', error);
-    //     }
-    //   );
+  onSubmit(): void {
+    this.portfolioService.addPortfolioItems(1, this.formData).subscribe({
+      next: (response) => {
+        // Erfolgreiche Antwort vom Server
+        console.log('Erfolgreich hinzugefügt', response);
+        this.addedSuccessfully = true;
+      },
+      error: (error) => {
+        // Fehlerbehandlung
+        console.error('Fehler beim Hinzufügen', error);
+        this.addedSuccessfully = false;
+      }
+    });
   }
+
+
 
   ngOnDestroy(): void {
     this.toDestroy$.next();

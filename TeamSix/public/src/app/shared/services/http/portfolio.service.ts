@@ -28,9 +28,19 @@ export class PortfolioService {
 
 
 
-  public addPortfolioItems(id: number, portfolioItem: PortfolioItem): Observable<PortfolioItem[]> {
-    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/add-item`, portfolioItem)
+  public addPortfolioItems(id: number, formData: any): Observable<PortfolioItem[]> {
+    const requestData = {
+      name: formData.name,
+      wkn: formData.wkn,
+      description: formData.description,
+      category: formData.category,
+      quantity: formData.quantity,
+      purchasePrice: formData.purchasePrice
+    };
+
+    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/add-item`, requestData);
   }
+
 
 
 

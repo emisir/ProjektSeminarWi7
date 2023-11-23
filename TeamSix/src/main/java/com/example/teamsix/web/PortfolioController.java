@@ -4,6 +4,7 @@ import com.example.teamsix.DTO.PortfolioItemDTO;
 import com.example.teamsix.DTO.PortfolioSummary;
 
 
+import com.example.teamsix.domain.PortfolioItem;
 import com.example.teamsix.service.PortfolioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,11 @@ public class PortfolioController {
         this.portfolioService = portfolioService;
     }
 
+    @GetMapping()
+    public ResponseEntity<List<PortfolioItem>> getPortfolioItem(){
+        List<PortfolioItem> portfolioItems = portfolioService.getPortfolioItems();
+        return ResponseEntity.ok(portfolioItems);
+    }
     @GetMapping("/{id}/summary")
     public ResponseEntity<List<PortfolioSummary>> getPortfolioSummary(@PathVariable("id") Long id) {
         List<PortfolioSummary> portfolioSummary = portfolioService.getPortfolioSummary(id);
@@ -31,6 +37,7 @@ public class PortfolioController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @GetMapping("/{id}/detail/{wkn}")
     public ResponseEntity<List<PortfolioDetailDTO>> getPortfolioItem(@PathVariable("id")Long portfolioId, @PathVariable("wkn") String wkn){
