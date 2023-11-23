@@ -17,9 +17,11 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
     name: '',
     wkn: '',
     description: '',
+    purchaseDate: '2023-11-23',
     category: '',
     quantity: '',
     purchasePrice: ''
+
     // Fügen Sie hier weitere Felder hinzu, die Sie benötigen
   };
 

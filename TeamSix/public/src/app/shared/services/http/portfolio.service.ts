@@ -28,11 +28,12 @@ export class PortfolioService {
 
 
 
-  public addPortfolioItems(id: number, formData: any): Observable<PortfolioItem[]> {
+  public addPortfolioItems(id: number, formData: any): Observable<any> {
     const requestData = {
       name: formData.name,
       wkn: formData.wkn,
       description: formData.description,
+      purchaseDate: formData.purchaseDate,
       category: formData.category,
       quantity: formData.quantity,
       purchasePrice: formData.purchasePrice
