@@ -5,32 +5,52 @@
 
 <div class="container">
   <div class="table-container">
-    <div *ngIf="portfolioDetail">
+    <div *ngIf="portfolioItemList">
+
+      <div *ngFor="let row of portfolioItemList">
+        <h2>{{row.name}}</h2>
+        <p>{{row.wkn }}</p>
 
 
+      </div>
+      <table>
+        <tr>
+          <th>Wkn</th>
+          <th>Name</th>
+          <th>Beschreibung</th>
+          <th>Kategorie</th>
+          <th>Gesamtanzahl</th>
+          <th>Durchschnittspreis</th>
 
-      <h2>{{ portfolioDetail.name }}</h2>
-      <p>{{ portfolioDetail.description }}</p>
+        </tr>
+        <tr *ngFor="let row of portfolioItemList">
+          <td>{{ row.wkn }}</td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.description }}</td>
+          <td>{{ row.category }}</td>
+          <td>{{ row.totalQuantity }}</td>
+          <td>{{ row.averagePrice | currency : '€ ' }}</td>
+
+
+        </tr>
+
+      </table>
+
       <!-- Weitere Details hier anzeigen -->
 
       <h3>Käufe:</h3>
       <table>
         <tr>
-          <th>Wkn</th>
           <th>Kaufdatum</th>
           <th>Anzahl</th>
           <th>Kaufpreis</th>
           <th>Gesamtpreis</th>
         </tr>
-        <tr *ngFor="let purchase of portfolioDetail.purchases">
-          <td>
-            <a [routerLink]="['/summary', portfolioDetail.id, purchase.wkn]">{{ purchase.wkn }}</a>
-          </td>
-          <td>{{ purchase.purchaseDate | date }}</td>
-          <td>{{ purchase.quantity }}</td>
-          <td>{{ purchase.purchasePrice | currency : '€ ' }}</td>
-          <td>{{ purchase.purchasePrice * purchase.quantity | currency : '€ ' }}</td>
-
+        <tr *ngFor="let row of portfolioItemList">
+          <td>{{ row.purchaseDate | date }}</td>
+          <td>{{ row.quantity }}</td>
+          <td>{{ row.purchasePrice | currency : '€ ' }}</td>
+          <td>{{ row.totalPrice| currency : '€ ' }}</td>
         </tr>
       </table>
     </div>

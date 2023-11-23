@@ -30,21 +30,9 @@ td {
   border: 1px solid #ddd;
 }
 
-.mat-mdc-header-row , .mat-mdc-table .mat-mdc-header-cell{
+.table-header {
   background-color: #c4c4c4;
   font-weight: bold;
-}
-
-tr:hover a {
-  color: white;
-
-}
-
-
-.mat-mdc-row:hover  {
-  background-color: #673ab7;
-  color: white;
-
 }
 
 a {
@@ -52,9 +40,7 @@ a {
   color: black;
 }
 
-a:hover {
-  color: white;
-}
+
 
 
 

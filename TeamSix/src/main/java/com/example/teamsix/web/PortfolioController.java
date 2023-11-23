@@ -1,41 +1,29 @@
 package com.example.teamsix.web;
+import com.example.teamsix.DTO.PortfolioDetailDTO;
+import com.example.teamsix.DTO.PortfolioItemDTO;
 import com.example.teamsix.DTO.PortfolioSummary;
-import com.example.teamsix.domain.Portfolio;
-import com.example.teamsix.persistance.PortfolioInfoProjection;
+
+
 import com.example.teamsix.service.PortfolioService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/portfolio")
 public class PortfolioController {
 
-
     private final PortfolioService portfolioService;
-
 
     public PortfolioController(PortfolioService portfolioService) {
         this.portfolioService = portfolioService;
     }
 
-    @GetMapping()
-    public ResponseEntity<List<PortfolioInfoProjection>> getPortfolio() {
-        List<PortfolioInfoProjection> portfolio = portfolioService.getPortfolioInfo();
-        return new ResponseEntity<>(portfolio, HttpStatus.OK);
-    }
-
-    @PostMapping()
-    public void addPortfolio(@RequestBody Portfolio portfolio){
-        portfolioService.addPortfolio(portfolio);
-    }
-
-    @GetMapping("/{id}/summary/{wkn}")
-    public ResponseEntity<PortfolioSummary> getPortfolioSummary(@PathVariable("id") Long id, @PathVariable("wkn") String wkn) {
-        PortfolioSummary portfolioSummary = portfolioService.getPortfolioSummary(id, wkn);
+    @GetMapping("/{id}/summary")
+    public ResponseEntity<List<PortfolioSummary>> getPortfolioSummary(@PathVariable("id") Long id) {
+        List<PortfolioSummary> portfolioSummary = portfolioService.getPortfolioSummary(id);
 
         if (portfolioSummary != null) {
             return ResponseEntity.ok(portfolioSummary);
@@ -44,17 +32,24 @@ public class PortfolioController {
         }
     }
 
+    @GetMapping("/{id}/detail/{wkn}")
+    public ResponseEntity<List<PortfolioDetailDTO>> getPortfolioItem(@PathVariable("id")Long portfolioId, @PathVariable("wkn") String wkn){
+        List<PortfolioDetailDTO> portfolioItems = portfolioService.getPortfolioItemsByPortfolioId(portfolioId,wkn);
+        return ResponseEntity.ok(portfolioItems);
+    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Portfolio> getPortfolioId(@PathVariable Long id) {
-        Portfolio portfolio = portfolioService.getPortfolioById(id);
-
-        if (portfolio != null) {
-            return ResponseEntity.ok(portfolio);
-        } else {
-            return ResponseEntity.notFound().build();
+    @PostMapping("/{id}/add-item")
+    public ResponseEntity<String> addPortfolioItem(@PathVariable("id") Long id, @RequestBody PortfolioItemDTO portfolioItemDTO) {
+        try {
+            portfolioService.addPortfolioItem(id, portfolioItemDTO);
+            return ResponseEntity.ok("Portfolio-Item wurde erfolgreich hinzugefügt.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+
+
 }
 
 

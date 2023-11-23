@@ -12,17 +12,12 @@ export class AppComponent {
   public menuItems: MenuBarItem[] = [
     {
       name: 'Portfolio',
-      routePath: 'overview',
+      routePath: 'portfolio',
     },
     {
-      name: 'PortfolioItem',
-      routePath: 'portfolioItem'
+      name: 'Kaufen',
+      routePath: 'add-item'
     },
-    {
-      name: 'Summary',
-      routePath: 'summary/:id/:wkn'
-    },
-
     {
       name: 'Impressum',
       routePath: 'impressum',
