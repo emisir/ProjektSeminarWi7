@@ -3,6 +3,7 @@ package com.example.teamsix.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @Table(name = "portfolio")
@@ -13,66 +14,23 @@ public class Portfolio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    @Column(length = 255)
-    private String description;
-
-    private String category;
-
     @OneToMany(mappedBy = "portfolio",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<PortfolioItem> purchases;
 
-    public Portfolio(Long id,  String name, String description, String category) {
+    public Portfolio(Long id) {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.category = category;
-
     }
 
     public Portfolio() {
-
     }
-
-    public Portfolio(Long id ){
-        this.id = id;
-    }
-
 
     public Long getId() {
         return id;
     }
 
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public List<PortfolioItem> getPurchases() {
@@ -82,6 +40,7 @@ public class Portfolio {
     public void setPurchases(List<PortfolioItem> purchases) {
         this.purchases = purchases;
     }
+
 
 
 }

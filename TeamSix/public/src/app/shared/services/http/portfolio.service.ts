@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Portfolio } from '../../models/portfolio';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { PortfolioDetailDTO } from '../../models/portfolioDetailDTO';
-import { PortfolioSummary } from '../../models/portfolioSummary';
 import { PortfolioItem } from '../../models/portfolioItem';
 
 
@@ -14,28 +12,37 @@ export class PortfolioService {
   private apiUrl = 'http://localhost:8081';
 
   portfolioList: Portfolio[] = [];
-  public portfolioDetail: PortfolioDetailDTO[] = [];
 
   constructor(private http: HttpClient) { }
 
-  public getPortfolioList(): Observable<Portfolio[]> {
-    return this.http.get<Portfolio[]>(`${this.apiUrl}/portfolio`);
+  public getPortfolioSummary(id: number): Observable<PortfolioItem[]> {
+    const urlWithId = `${this.apiUrl}/portfolio/${id}/summary`;
+    return this.http.get<PortfolioItem[]>(urlWithId);
   }
 
   // Die Methode getDetailPortfolioList erwartet jetzt eine ID als Parameter
-  public getDetailPortfolioList(id: number): Observable<PortfolioDetailDTO> {
-    const urlWithId = `${this.apiUrl}/portfolio/${id}`;
-    return this.http.get<PortfolioDetailDTO>(urlWithId);
+  public getDetailPortfolioList(id: number, wkn: string): Observable<PortfolioItem[]> {
+    const urlWithId = `${this.apiUrl}/portfolio/${id}/detail/${wkn}`;
+    return this.http.get<PortfolioItem[]>(urlWithId);
   }
 
-  public getPortfolioSummary(id: number, wkn: string): Observable<PortfolioSummary> {
-    const urlWithId = `${this.apiUrl}/portfolio/${id}/summary/${wkn}`;
-    return this.http.get<PortfolioSummary>(urlWithId);
+
+
+  public addPortfolioItems(id: number, formData: any): Observable<any> {
+    const requestData = {
+      name: formData.name,
+      wkn: formData.wkn,
+      description: formData.description,
+      purchaseDate: formData.purchaseDate,
+      category: formData.category,
+      quantity: formData.quantity,
+      purchasePrice: formData.purchasePrice
+    };
+
+    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/add-item`, requestData);
   }
 
-  public getPortfolioItemList(): Observable<PortfolioItem[]> {
-    return this.http.get<PortfolioItem[]>(`${this.apiUrl}/portfolioItem`);
-  }
+
 
 
 }

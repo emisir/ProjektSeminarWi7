@@ -3,26 +3,22 @@ import { RouterModule, Routes } from '@angular/router';
 import { DetailComponent } from './views/detail/detail.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
-import { portfolioItemComponent } from './views/portfolioItem/portfolioItem.component';
-import { portfolioSummaryComponent } from './views/portfolioSummary/portfolioSummary.component';
+import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
 
 const routes: Routes = [
   {
-    path: 'overview',
+    path: 'portfolio',
     component: OverviewComponent,
   },
 
   {
-    path: 'portfolioItem',
-    component: portfolioItemComponent,
-  },
-  {
-    path: 'detail/:id',
+    path: 'portfolio/:id/detail/:wkn',
     component: DetailComponent,
   },
+  
   {
-    path: 'summary/:id/:wkn',
-    component: portfolioSummaryComponent,
+    path: 'add-item',
+    component: AddPortfolioItemComponent,
   },
   {
     path: 'impressum',
@@ -38,7 +34,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'overview',
+    redirectTo: 'portfolio',
   },
   {
     path: '**',

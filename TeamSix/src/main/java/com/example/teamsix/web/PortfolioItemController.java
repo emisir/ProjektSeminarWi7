@@ -24,26 +24,4 @@ public class PortfolioItemController {
         portfolioItemService.addValues(portfolioItem);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<PortfolioItem>> getWkn(){
-        List<PortfolioItem> portfolioItem = portfolioItemService.getWknTable();
-
-        return new ResponseEntity<>(portfolioItem, HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<PortfolioItem> getWknById(@PathVariable Long id){
-        PortfolioItem portfolioItem = portfolioItemService.getWknById(id);
-
-        if(portfolioItem != null){
-            return ResponseEntity.ok(portfolioItem);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/aggregation")
-    public Map<String, List<PortfolioItem>> getAggregatedWkn() {
-        return portfolioItemService.aggregateWkn();
-    }
 }

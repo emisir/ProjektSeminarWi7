@@ -2,8 +2,10 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
-import { Portfolio } from 'src/app/shared/models/portfolio';
+import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-overview',
@@ -14,23 +16,25 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['name', 'description', 'category'];
+  displayedColumns: string[] = ['wkn', 'name', 'totalQuantity', 'averagePrice', 'totalPrice'];
 
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  public portfolioList: Portfolio[] = [];
+  public portfolioItemList: PortfolioItem[] = [];
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private portfolioService: PortfolioService) { } // private productsHttpService: ProductHttpService
+  constructor(private portfolioService: PortfolioService, private router:Router) { } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
-    this.portfolioService
-      .getPortfolioList()
-      .subscribe((response: Portfolio[]) => {
-        this.portfolioList = response;
-      });
+    this.portfolioService.getPortfolioSummary(1).subscribe((response: PortfolioItem[]) => {
+      this.portfolioItemList = response;
+      console.log('Daten empfangen:', this.portfolioItemList);
+    });
+  }
+  onWknClick(wkn: string): void {
+    this.router.navigate(['portfolio/1/detail', wkn]); // Ersetzen Sie den Pfad entsprechend Ihrer Routing-Konfiguration
   }
 
   ngOnDestroy(): void {

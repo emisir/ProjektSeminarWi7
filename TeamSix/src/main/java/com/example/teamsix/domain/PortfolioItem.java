@@ -19,6 +19,12 @@ public class PortfolioItem {
     private Long quantity;
     private Date purchaseDate;
 
+    private String name;
+    @Column(length = 255)
+    private String description;
+
+    private String category;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "portfolio_id")
     @JsonBackReference
@@ -31,12 +37,16 @@ public class PortfolioItem {
         this.id = id;
     }
 
-    public PortfolioItem(Long id, String wkn, Float purchasePrice, Long quantity, Date purchaseDate) {
+    public PortfolioItem(Long id, String wkn, Float purchasePrice, Long quantity, Date purchaseDate, String name, String description, String category, Portfolio portfolio) {
         this.id = id;
         this.wkn = wkn;
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
         this.purchaseDate = purchaseDate;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.portfolio = portfolio;
     }
 
     public Long getId() {
@@ -86,9 +96,30 @@ public class PortfolioItem {
         this.portfolio = portfolio;
     }
 
-    @JsonIgnore
-    public Float getTotalPrice() {
-        return quantity * purchasePrice;
+    public String getName() {
+        return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+
 
 }
