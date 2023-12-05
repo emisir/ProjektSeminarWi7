@@ -83,7 +83,7 @@ public class PortfolioService {
         String name = portfolioItems.get(0).getName();
         String description = portfolioItems.get(0).getDescription();
         String category = portfolioItems.get(0).getCategory();
-
+        /*String plusButton = portfolioItems.get(0).getPlusButton();*/
 
         long totalQuantity = portfolioItems.stream()
                 .mapToLong(PortfolioItem::getQuantity)
@@ -107,6 +107,7 @@ public class PortfolioService {
                 category,
                 totalQuantity,
                 averagePrice,
+                /*plusButton,*/
                 portfolioDetailItemDTO
         );
     }
