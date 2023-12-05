@@ -12,6 +12,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
+import { BuyItemComponent } from './views/buyItem/buyItem.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolio
     DetailComponent,
     ImpressumComponent,
     AddPortfolioItemComponent,
+    BuyItemComponent,
   ],
   imports: [
     BrowserAnimationsModule,
