@@ -14,6 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/portfolio")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+
 public class PortfolioController {
 
     private final PortfolioService portfolioService;

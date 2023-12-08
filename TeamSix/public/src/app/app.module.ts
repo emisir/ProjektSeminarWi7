@@ -6,12 +6,21 @@ import { MenuBarComponent } from './shared/components/menu-bar/menu-bar.componen
 import { OverviewComponent } from './views/overview/overview.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { DetailComponent } from './views/detail/detail.component';
+import { HomeComponent } from './views/home/home.component';
+import { LoginComponent } from './views/login/login.component';
+import { LogoutComponent } from './views/logout/logout.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
+import { AuthInterceptorService } from './shared/auth-core/auth-interceptor..service';
+
 
 @NgModule({
   declarations: [
@@ -20,6 +29,9 @@ import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolio
     DetailComponent,
     ImpressumComponent,
     AddPortfolioItemComponent,
+    HomeComponent,
+    LoginComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -29,9 +41,20 @@ import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolio
     MenuBarComponent,
     MatToolbarModule,
     MatPaginatorModule,
+    MatIconModule,
     MatTableModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    RouterModule,
+
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

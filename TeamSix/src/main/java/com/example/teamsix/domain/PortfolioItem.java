@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "wkntable")
+@Table(name = "portfolioitemtable")
 public class PortfolioItem {
 
     @Id
