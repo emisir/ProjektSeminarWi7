@@ -5,8 +5,11 @@ import com.example.teamsix.DTO.PortfolioDetailItemDTO;
 import com.example.teamsix.DTO.SaveItemDTO;
 import com.example.teamsix.domain.Portfolio;
 import com.example.teamsix.domain.PortfolioItem;
+import com.example.teamsix.domain.UserEntity;
 import com.example.teamsix.persistance.PortfolioItemRepository;
 import com.example.teamsix.persistance.PortfolioRepository;
+import com.example.teamsix.persistance.UserRepository;
+
 import com.example.teamsix.DTO.PortfolioSummary;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +27,13 @@ public class PortfolioService {
 
     private final PortfolioItemRepository portfolioItemRepository;
 
+    private final UserRepository userRepository;
 
-    public PortfolioService(PortfolioRepository portfolioRepository, PortfolioItemRepository portfolioItemRepository) {
+
+    public PortfolioService(PortfolioRepository portfolioRepository, PortfolioItemRepository portfolioItemRepository, UserRepository userRepository) {
         this.portfolioRepository = portfolioRepository;
         this.portfolioItemRepository = portfolioItemRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -146,5 +152,9 @@ public class PortfolioService {
 
     public List<PortfolioItem> getPortfolioItems() {
         return portfolioItemRepository.findAll();
+    }
+
+    public List<UserEntity> getUserEntities() {
+        return userRepository.findAll();
     }
 }

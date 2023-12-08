@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthCoreService,
     private router: Router,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({

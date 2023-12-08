@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 
-const LOGIN_URL = 'http://localhost:8081';
+const LOGIN_URL = 'http://localhost:8081/portfolio';
 const AUTH_TOKEN_NAME = 'authToken';
 
 @Injectable({

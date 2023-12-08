@@ -5,8 +5,10 @@ import com.example.teamsix.DTO.PortfolioSummary;
 
 
 import com.example.teamsix.domain.PortfolioItem;
+import com.example.teamsix.domain.UserEntity;
 import com.example.teamsix.service.PortfolioService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -28,6 +30,12 @@ public class PortfolioController {
     public ResponseEntity<List<PortfolioItem>> getPortfolioItem(){
         List<PortfolioItem> portfolioItems = portfolioService.getPortfolioItems();
         return ResponseEntity.ok(portfolioItems);
+    }
+
+    @GetMapping("/userTable")
+    public ResponseEntity<List<UserEntity>> getUserEntity(){
+        List<UserEntity> userEntities = portfolioService.getUserEntities();
+        return ResponseEntity.ok(userEntities);
     }
     @GetMapping("/{id}/summary")
     public ResponseEntity<List<PortfolioSummary>> getPortfolioSummary(@PathVariable("id") Long id) {

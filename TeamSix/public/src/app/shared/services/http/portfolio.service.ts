@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { PortfolioItem } from '../../models/portfolioItem';
 import { PortfolioDetail } from '../../models/portfolioDetail';
+import { UserEntity } from '../../models/userEntity';
+import { tap } from 'rxjs/operators';
+
 
 
 @Injectable({
@@ -26,6 +29,14 @@ export class PortfolioService {
     const urlWithId = `${this.apiUrl}/portfolio/${id}/detail/${wkn}`;
     return this.http.get<PortfolioDetail>(urlWithId);
   }
+
+  public getUserEntity(name: string): Observable<UserEntity> {
+    const url = `${this.apiUrl}/portfolio/userTable/${name}`;
+    return this.http.get<UserEntity>(url).pipe(
+      tap((data: UserEntity) => console.log('Empfangene Daten:', data))
+    );
+  }
+
 
 
 
