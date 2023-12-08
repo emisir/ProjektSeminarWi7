@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
 import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserEntity } from 'src/app/shared/models/userEntity';
 
 
@@ -24,10 +24,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
   isRateLimitReached = false;
 
   public portfolioItemList: PortfolioItem[] = [];
-  public userEntityList: UserEntity | undefined;
+  public userEntityList: UserEntity[] = [];
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private portfolioService: PortfolioService, private router: Router, private route: ActivatedRoute) { } // private productsHttpService: ProductHttpService
+  constructor(private portfolioService: PortfolioService, private router: Router) { } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
     this.portfolioService.getPortfolioSummary(1).subscribe((response: PortfolioItem[]) => {
@@ -35,14 +35,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
       console.log('Daten empfangen:', this.portfolioItemList);
     });
 
-    this.route.params.subscribe(params => {
-      let name = params['name']
-      this.portfolioService.getUserEntity()
-        .subscribe((response: UserEntity) => {
-          this.userEntityList = response;
-          console.log('Name: ', this.userEntityList.name)
-        });
-    });
+    this.portfolioService.getUserEntity().subscribe(
+      (data: UserEntity) => {
+        console.log('Empfangene Daten:', data);
+      },
+      (error) => {
+        // Hier können Sie Fehlerbehandlung hinzufügen
+        console.error('Fehler beim Empfangen der Daten:', error);
+      }
+    );
 
   }
   onWknClick(wkn: string): void {

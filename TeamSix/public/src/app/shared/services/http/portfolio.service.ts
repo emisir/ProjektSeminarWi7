@@ -30,8 +30,8 @@ export class PortfolioService {
     return this.http.get<PortfolioDetail>(urlWithId);
   }
 
-  public getUserEntity(name: string): Observable<UserEntity> {
-    const url = `${this.apiUrl}/portfolio/userTable/${name}`;
+  public getUserEntity(): Observable<UserEntity> {
+    const url = `${this.apiUrl}/portfolio/userTable`;
     return this.http.get<UserEntity>(url).pipe(
       tap((data: UserEntity) => console.log('Empfangene Daten:', data))
     );
