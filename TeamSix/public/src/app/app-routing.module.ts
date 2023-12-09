@@ -8,6 +8,7 @@ import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
 import { LogoutComponent } from './views/logout/logout.component';
 import { AuthGuardService } from './shared/auth-core/auth-guard.service';
+import { UserTableComponent } from './views/userTable/userTable.component';
 
 const routes: Routes = [
 
@@ -33,6 +34,11 @@ const routes: Routes = [
     path: 'portfolio/:id/detail/:wkn',
     component: DetailComponent,
   },
+  {
+    path: 'userTable',
+    component: UserTableComponent,
+  },
+
 
   {
     path: 'add-item',

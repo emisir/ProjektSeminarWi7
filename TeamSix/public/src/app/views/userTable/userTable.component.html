@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+  <span class="header-title">Benutzer</span>
+  <span class="spacer"></span>
+</mat-toolbar>
+
+<div class="table-container">
+  <table class="portfolio-table">
+    <thead>
+      <tr class="table-header">
+        <th>Name</th>
+        <th>Benutzername</th>
+        <th>Passwort</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of userEntityList">
+        <td>{{ row.name }}</td>
+        <td>{{ row.username }}</td>
+        <td>{{ maskPassword(row.password) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="paginator-container">
+  <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of products"></mat-paginator>
+</div>

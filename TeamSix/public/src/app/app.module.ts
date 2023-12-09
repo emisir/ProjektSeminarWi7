@@ -7,6 +7,8 @@ import { OverviewComponent } from './views/overview/overview.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { DetailComponent } from './views/detail/detail.component';
 import { HomeComponent } from './views/home/home.component';
+import { UserTableComponent } from './views/userTable/userTable.component';
+
 import { LoginComponent } from './views/login/login.component';
 import { LogoutComponent } from './views/logout/logout.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
@@ -22,6 +24,8 @@ import { RouterModule } from '@angular/router';
 import { AuthInterceptorService } from './shared/auth-core/auth-interceptor..service';
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +35,8 @@ import { AuthInterceptorService } from './shared/auth-core/auth-interceptor..ser
     AddPortfolioItemComponent,
     HomeComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    UserTableComponent,
   ],
   imports: [
     BrowserAnimationsModule,

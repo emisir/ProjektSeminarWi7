@@ -4,6 +4,7 @@ import { AuthCoreService } from './shared/auth-core/auth-core.service';
 import { MenuBarItem } from './shared/components/menu-bar/menu-bar.interfaces';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,12 +14,34 @@ export class AppComponent {
   title = 'My Portfolio';
 
   public menuItems: MenuBarItem[] = [
+
+
+    {
+      name: 'Portfolio',
+      routePath: 'portfolio',
+      visible: this.auth.isAuthenticated$()
+
+    },
+
+    {
+      name: 'Kaufen',
+      routePath: 'add-item',
+      visible: this.auth.isAuthenticated$()
+
+    },
+
+    {
+      name: 'Benutzer',
+      routePath: 'userTable',
+      visible: this.auth.isAuthenticated$()
+
+    },
+
     {
       name: 'Impressum',
       routePath: 'impressum',
-      visible: of(true),
+      visible: of(true)
     },
-
     {
       name: 'Login',
       routePath: 'login',
@@ -26,28 +49,23 @@ export class AppComponent {
         .isAuthenticated$()
         .pipe(map((isAuthenticated: boolean) => !isAuthenticated)),
       highlighted: true,
-      icon: 'login',
+      icon: 'login'
     },
 
-    {
-      name: 'Portfolio',
-      routePath: 'portfolio',
-      visible: this.auth.isAuthenticated$(),
 
-    },
-    {
-      name: 'Kaufen',
-      routePath: 'add-item',
-      visible: this.auth.isAuthenticated$(),
-
-    },
     {
       name: 'Logout',
       routePath: 'logout',
       visible: this.auth.isAuthenticated$(),
       highlighted: true,
-      icon: 'logout',
-    }
+      icon: 'logout'
+
+
+    },
+
+
+
+
 
 
   ];
