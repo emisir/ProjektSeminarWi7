@@ -8,9 +8,7 @@ export class UserEntity {
         name: string,
         username: string,
         password: string,
-        role: string)
-        
-        {
+        role: string) {
         this.name = name;
         this.username = username;
         this.password = password;

@@ -4,7 +4,6 @@ import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
-import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 
 @Component({

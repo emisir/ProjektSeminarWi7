@@ -29,13 +29,6 @@ export class PortfolioService {
     return this.http.get<PortfolioDetail>(urlWithId);
   }
 
-  public getUserEntity(): Observable<UserEntity[]> {
-    const url = `${this.apiUrl}/portfolio/userTable`;
-    return this.http.get<UserEntity[]>(url)
-  }
-
-
-
 
   public addPortfolioItems(id: number, formData: any): Observable<any> {
     const requestData = {
@@ -51,7 +44,35 @@ export class PortfolioService {
     return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/add-item`, requestData);
   }
 
+  public getUserEntity(): Observable<UserEntity[]> {
+    const url = `${this.apiUrl}/portfolio/userTable`;
+    return this.http.get<UserEntity[]>(url)
+  }
 
+  public addNewUserEntity(formData: any): Observable<any> {
+    const requestData = {
+      name: formData.name,
+      username: formData.username,
+      password: formData.password,
+      role: formData.role,
+    }
+    return this.http.post<UserEntity>(`${this.apiUrl}/portfolio/add-user`, requestData);
+  }
+
+  public deleteUserEntity(username: string): Observable<any> {
+    const urlWithUsername = `${this.apiUrl}/portfolio/delete-user/${username}`;
+    return this.http.delete<any>(urlWithUsername);
+  }
+
+
+  public updateUserEntity(username: string, formData: any): Observable<any> {
+    const requestData = {
+      name: formData.name,
+      password: formData.password,
+      role: formData.role,
+    };
+    return this.http.put<UserEntity>(`${this.apiUrl}/portfolio/update-user/${username}`, requestData);
+  }
 
 
 }

@@ -116,17 +116,23 @@ public class PortfolioService {
                 portfolioDetailItemDTO
         );
     }
+
+
+    public List<PortfolioItem> getPortfolioItems() {
+        return portfolioItemRepository.findAll();
+    }
+
+    public List<UserEntity> getUserEntities() {
+        return userRepository.findAll();
+    }
     public void addPortfolioItem(Long portfolioId, SaveItemDTO saveItemDTO) {
         Portfolio portfolio = getPortfolio(portfolioId);
 
-        // Überprüfen, ob der WKN-Wert bereits in der Datenbank vorhanden ist
         String wkn = saveItemDTO.getWkn();
         if (isWknExistsInPortfolio(portfolioId, wkn)) {
-            // Hier lösen wir eine Exception aus
             throw new IllegalArgumentException("WKN " + wkn + " bereits vorhanden.");
         }
 
-        // Wenn der WKN-Wert nicht vorhanden ist, fahren Sie fort mit der Hinzufügung
         PortfolioItem portfolioItem = new PortfolioItem();
         portfolioItem.setWkn(wkn);
         portfolioItem.setName(saveItemDTO.getName());
@@ -143,6 +149,41 @@ public class PortfolioService {
     }
 
 
+
+    public void addUserEntity(UserEntity userEntity) {
+
+        userEntity.setName(userEntity.getName());
+        userEntity.setUsername(userEntity.getUsername());
+        userEntity.setPassword(userEntity.getPassword());
+        userEntity.setRole(userEntity.getRole());
+
+        userRepository.save(userEntity);
+    }
+
+    public boolean deleteUser(String username){
+        if (userRepository.existsById(username)) {
+            userRepository.deleteById(username);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void updateUserEntity(String username, UserEntity userEntityDetails) {
+        UserEntity userEntity = userRepository.findByUsername(username);
+
+        userEntity.setName(userEntityDetails.getName());
+        userEntity.setPassword(userEntityDetails.getPassword());
+        userEntity.setRole(userEntityDetails.getRole());
+
+        userRepository.save(userEntity);
+    }
+
+
+
+
+
+
     private Portfolio getPortfolio(Long portfolioId) {
         return portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new NoSuchElementException("Portfolio not found"));
@@ -150,11 +191,4 @@ public class PortfolioService {
     }
 
 
-    public List<PortfolioItem> getPortfolioItems() {
-        return portfolioItemRepository.findAll();
-    }
-
-    public List<UserEntity> getUserEntities() {
-        return userRepository.findAll();
-    }
 }

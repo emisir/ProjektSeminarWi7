@@ -33,10 +33,10 @@ public class BasicAuthenticationConfiguration {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults())
                 .csrf(httpSecurityCsrfConfigurer ->
-                        httpSecurityCsrfConfigurer.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
+                        httpSecurityCsrfConfigurer.ignoringRequestMatchers(new AntPathRequestMatcher("/**"))
                 )
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
                         .anyRequest().hasAnyRole("USER", "ADMIN")
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

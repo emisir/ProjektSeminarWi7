@@ -7,6 +7,7 @@ import com.example.teamsix.DTO.PortfolioSummary;
 import com.example.teamsix.domain.PortfolioItem;
 import com.example.teamsix.domain.UserEntity;
 import com.example.teamsix.service.PortfolioService;
+import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +62,36 @@ public class PortfolioController {
             portfolioService.addPortfolioItem(id, saveItemDTO);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/add-user")
+    public ResponseEntity<String> addUserEntity(@RequestBody UserEntity userEntity){
+        try {
+            portfolioService.addUserEntity(userEntity);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete-user/{username}")
+    public ResponseEntity<String> deleteUserEntity(@PathVariable String username){
+        boolean isRemoved = portfolioService.deleteUser(username);
+
+        if (!isRemoved){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update-user/{username}")
+    public ResponseEntity<String> updateUserEntity(@RequestBody UserEntity userEntity, @PathVariable String username){
+        try{
+            portfolioService.updateUserEntity(username, userEntity);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
