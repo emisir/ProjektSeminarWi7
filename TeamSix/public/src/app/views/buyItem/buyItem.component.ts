@@ -18,6 +18,8 @@ import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 
   currentPortfolioItem: PortfolioDetail = JSON.parse(localStorage.getItem('portfolioDetailItem') || '{}');
 
+  
+
   formData: any = {
     name: this.currentPortfolioItem.name ,
     wkn: this.currentPortfolioItem.wkn,
@@ -25,7 +27,7 @@ import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
     category: this.currentPortfolioItem.category,
     quantity: '',
     purchasePrice: '',
-    purchaseDate: '2023-12-09'
+    purchaseDate: this.portfolioService.getCurrentDate(),
 
     // Fügen Sie hier weitere Felder hinzu, die Sie benötigen
   };
@@ -33,7 +35,7 @@ import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
   addedSuccessfully: boolean = false;
 
 
-  constructor(private portfolioService: PortfolioService, private _snackBar: MatSnackBar) {
+  constructor(private portfolioService: PortfolioService, private _snackBar: MatSnackBar,) {
     afterRender(() => {
       let inputName = document.getElementById('name') as HTMLInputElement | null;
       inputName?.setAttribute('value', this.currentPortfolioItem.name);
@@ -80,7 +82,7 @@ import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
   let inputPurchasePrice = document.getElementById('purchasePrice') as HTMLInputElement | null;
   inputPurchasePrice?.setAttribute('value', '');
 
-    this.addedSuccessfully = false;
+  this.addedSuccessfully = false;
   }
 
 
