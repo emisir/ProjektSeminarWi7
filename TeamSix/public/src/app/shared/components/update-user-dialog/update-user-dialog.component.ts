@@ -10,6 +10,8 @@ import { UserEntity } from 'src/app/shared/models/userEntity';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+
 
 
 
@@ -31,6 +33,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     MatButtonModule,
     MatInputModule,
     MatDialogModule,
+    MatSelectModule
 
 
   ],

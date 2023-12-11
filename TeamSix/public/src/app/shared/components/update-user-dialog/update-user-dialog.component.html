@@ -14,7 +14,11 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput formControlName="role" placeholder="Rolle" required [(ngModel)]="formData.role" />
+      <mat-label>Rolle</mat-label>
+      <mat-select formControlName="role" required [(ngModel)]="formData.role">
+        <mat-option value="ROLE_USER">Benutzer</mat-option>
+        <mat-option value="ROLE_ADMIN">Administrator</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <button type="submit" mat-raised-button color="primary">Submit</button>

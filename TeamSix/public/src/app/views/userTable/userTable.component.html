@@ -1,36 +1,31 @@
 <mat-toolbar color="primary">
   <span class="header-title">Benutzer</span>
-  <span class="spacer"></span>
+    <button class="add-user-button" (click)="openAddDialog()">Hinzufügen</button>
 </mat-toolbar>
 
-<button (click)="openAddDialog()">Benutzer hinzufügen</button>
-
-
 <div class="table-container">
-  <table class="portfolio-table">
+  <table class="user-table">
     <thead>
       <tr class="table-header">
         <th>Name</th>
         <th>Benutzername</th>
         <th>Passwort</th>
+        <th>Aktionen</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let row of userEntityList">
         <td>{{ row.name }}</td>
-
         <td>{{ row.username }}</td>
         <td>{{ maskPassword(row.password) }}</td>
-        <button (click)="openUpdateDialog(row)"> Bearbeiten</button>
-        <button (click)="deleteUser(row.username)"> Löschen</button>
-
-
+        <td>
+          <button class="edit-button" (click)="openUpdateDialog(row)">Bearbeiten</button>
+          <button class="delete-button" (click)="deleteUser(row.username)">Löschen</button>
+        </td>
       </tr>
     </tbody>
   </table>
 </div>
-
-
 
 <div class="paginator-container">
   <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of products"></mat-paginator>

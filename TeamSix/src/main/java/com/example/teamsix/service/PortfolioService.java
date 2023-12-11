@@ -191,4 +191,8 @@ public class PortfolioService {
     }
 
 
+    public UserEntity getCurrentUser(String username) {
+        userRepository.findByUsername(username);
+        return userRepository.findByUsername(username);
+    }
 }

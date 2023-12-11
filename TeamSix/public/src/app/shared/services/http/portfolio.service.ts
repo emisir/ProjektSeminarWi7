@@ -73,6 +73,12 @@ export class PortfolioService {
     };
     return this.http.put<UserEntity>(`${this.apiUrl}/portfolio/update-user/${username}`, requestData);
   }
+  
+  public getCurrentUser(): Observable<string> {
+    const urlWithCurrentUser = `${this.apiUrl}/login`;
+    return this.http.get<string>(urlWithCurrentUser);
+  }
+
 
 
 }

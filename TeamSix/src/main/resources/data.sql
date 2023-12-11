@@ -4,8 +4,6 @@ VALUES
     (1);
 
 -- Einfügen von Usern
-
-INSERT INTO USERTABLE (portfolio_id, username, password, role, name) SELECT id, 'user', 'password', 'ROLE_USER','Example User' FROM PORTFOLIO WHERE id = 1;
 INSERT INTO USERTABLE (portfolio_id, username, password, role, name) SELECT id, 'john.doe', 'mypassword', 'ROLE_ADMIN','John Doe', FROM PORTFOLIO WHERE id = 1;
 
 -- Einfügen von Daten in die PORTFOLIOITEMTABLE-Tabelle

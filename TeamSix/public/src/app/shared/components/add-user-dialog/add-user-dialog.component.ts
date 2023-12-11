@@ -9,15 +9,9 @@ import { PortfolioService } from 'src/app/shared/services/http/portfolio.service
 import { UserEntity } from 'src/app/shared/models/userEntity';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 
-
-
-
-
-// This component is used to add a new item to the list.
-// It is used in the overview.component.html.
-// It is a standalone component.
 
 @Component({
   selector: 'app-add-item-dialog',
@@ -29,16 +23,15 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatButtonModule,
     MatInputModule,
     MatDialogModule,
-
+    MatSelectModule
 
   ],
+
   templateUrl: './add-user-dialog.component.html',
   styleUrl: './add-user-dialog.component.scss',
 })
 export class AddUserDialogComponent {
   public myForm: FormGroup;
-
-
 
   formData: any = {
     name: '',
@@ -47,10 +40,8 @@ export class AddUserDialogComponent {
     role: ''
   };
 
-
   addedSuccessfully: boolean = false;
   public userEntityList: UserEntity[] = [];
-
 
   constructor(private portfolioService: PortfolioService, private fb: FormBuilder, private _snackBar: MatSnackBar) {
     this.myForm = this.fb.group({
@@ -60,6 +51,7 @@ export class AddUserDialogComponent {
       role: ['', [Validators.required]]
     });
   }
+
   clean() {
     this.formData = {
       name: '',
@@ -70,8 +62,6 @@ export class AddUserDialogComponent {
     }
     this.addedSuccessfully = false;
   }
-
-  
 
   onSubmit(): void {
     this.portfolioService.addNewUserEntity(this.formData).subscribe({
