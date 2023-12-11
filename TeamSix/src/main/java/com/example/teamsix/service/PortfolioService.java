@@ -35,7 +35,7 @@ public class PortfolioService {
         portfolioItemRepository.save(item);
     }
 
-    private boolean isWknExistsInPortfolio( Long portfolioId, String wkn) {
+    private boolean isWknExistsInPortfolio(Long portfolioId, String wkn) {
         return portfolioItemRepository.existsByWknAndPortfolioId(wkn,portfolioId);
     }
 
@@ -83,7 +83,7 @@ public class PortfolioService {
         String name = portfolioItems.get(0).getName();
         String description = portfolioItems.get(0).getDescription();
         String category = portfolioItems.get(0).getCategory();
-        /*String plusButton = portfolioItems.get(0).getPlusButton();*/
+        String plusButton = portfolioItems.get(0).getPlusButton();
 
         long totalQuantity = portfolioItems.stream()
                 .mapToLong(PortfolioItem::getQuantity)
@@ -107,7 +107,7 @@ public class PortfolioService {
                 category,
                 totalQuantity,
                 averagePrice,
-                /*plusButton,*/
+                plusButton,
                 portfolioDetailItemDTO
         );
     }
@@ -120,6 +120,28 @@ public class PortfolioService {
             // Hier lösen wir eine Exception aus
             throw new IllegalArgumentException("WKN " + wkn + " bereits vorhanden.");
         }
+
+        // Wenn der WKN-Wert nicht vorhanden ist, fahren Sie fort mit der Hinzufügung
+        PortfolioItem portfolioItem = new PortfolioItem();
+        portfolioItem.setWkn(wkn);
+        portfolioItem.setName(saveItemDTO.getName());
+        portfolioItem.setDescription(saveItemDTO.getDescription());
+        portfolioItem.setCategory(saveItemDTO.getCategory());
+        portfolioItem.setQuantity(saveItemDTO.getQuantity());
+        portfolioItem.setPurchasePrice(saveItemDTO.getPurchasePrice());
+        portfolioItem.setPurchaseDate(saveItemDTO.getPurchaseDate());
+        portfolioItem.setPortfolio(portfolio);
+
+        portfolio.getPurchases().add(portfolioItem);
+
+        portfolioRepository.save(portfolio);
+    }
+
+    public void buyItem(Long portfolioId, SaveItemDTO saveItemDTO) {
+        Portfolio portfolio = getPortfolio(portfolioId);
+
+        // Überprüfen, ob der WKN-Wert bereits in der Datenbank vorhanden ist
+        String wkn = saveItemDTO.getWkn();
 
         // Wenn der WKN-Wert nicht vorhanden ist, fahren Sie fort mit der Hinzufügung
         PortfolioItem portfolioItem = new PortfolioItem();

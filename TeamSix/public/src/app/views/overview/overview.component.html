@@ -22,7 +22,7 @@
         <td>{{ row.totalQuantity }}</td>
         <td>{{ row.averagePrice | currency : '€ '}}</td>
         <td>{{ row.totalPrice | currency : '€ ' }}</td>
-        <td><a href="http://localhost:4200/buy-item"> <button class="button">+</button> </a></td>
+        <td> <button class="button" (click)="sendCurrentItem(row.wkn)">+</button></td>
       </tr>
     </tbody>
   </table>

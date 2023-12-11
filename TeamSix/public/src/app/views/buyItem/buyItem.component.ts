@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterRenderPhase, Component, OnDestroy, OnInit, afterRender } from '@angular/core';
 import { Subject } from 'rxjs';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Action } from 'rxjs/internal/scheduler/Action';
-
+import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 
 @Component({
     selector: 'app-buyItem',
@@ -12,30 +11,51 @@ import { Action } from 'rxjs/internal/scheduler/Action';
   })
 
   export class BuyItemComponent implements OnInit, OnDestroy {
+    
     private toDestroy$: Subject<void> = new Subject<void>();
   
-    constructor(private portfolioService: PortfolioService, private _snackBar: MatSnackBar) { }
    // Hier erstellen Sie ein separates Datenobjekt, um nur die benötigten Felder zu speichern
+
+  currentPortfolioItem: PortfolioDetail = JSON.parse(localStorage.getItem('portfolioDetailItem') || '{}');
+
   formData: any = {
-    name:'',
-    wkn: '',
-    description: '',
-    category: '',
+    name: this.currentPortfolioItem.name ,
+    wkn: this.currentPortfolioItem.wkn,
+    description: this.currentPortfolioItem.description,
+    category: this.currentPortfolioItem.category,
     quantity: '',
-    purchasePrice: ''
+    purchasePrice: '',
+    purchaseDate: '2023-12-09'
 
     // Fügen Sie hier weitere Felder hinzu, die Sie benötigen
   };
 
   addedSuccessfully: boolean = false;
 
+
+  constructor(private portfolioService: PortfolioService, private _snackBar: MatSnackBar) {
+    afterRender(() => {
+      let inputName = document.getElementById('name') as HTMLInputElement | null;
+      inputName?.setAttribute('value', this.currentPortfolioItem.name);
+
+      let inputWkn = document.getElementById('wkn') as HTMLInputElement | null;
+      inputWkn?.setAttribute('value', this.currentPortfolioItem.wkn);
+
+      let inputDescription = document.getElementById('description') as HTMLInputElement | null;
+      inputDescription?.setAttribute('value', this.currentPortfolioItem.description);
+
+      let inputCategory = document.getElementById('category') as HTMLInputElement | null;
+      inputCategory?.setAttribute('value', this.currentPortfolioItem.category);
+
+    })
+  }
+
   ngOnInit(): void {
-    
-   }
+  }
 
 
   onSubmit(): void {
-    this.portfolioService.addPortfolioItems(1, this.formData).subscribe({
+    this.portfolioService.buyItem(1, this.formData).subscribe({
       next: (response) => {
         // Erfolgreiche Antwort vom Server
         console.log('Erfolgreich hinzugefügt', response);
@@ -48,16 +68,18 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 
   }
 
-  clean() {
-    this.formData = {
-      name: '',
-      wkn: '',
-      description: '',
-      category: '',
-      quantity: '',
-      purchasePrice: ''
 
-    }
+  clean() {
+
+    this.formData.quantity = '';
+    this.formData.purchasePrice = '';
+
+  let inputQuantity = document.getElementById('quantity') as HTMLInputElement | null;
+  inputQuantity?.setAttribute('value', '');
+
+  let inputPurchasePrice = document.getElementById('purchasePrice') as HTMLInputElement | null;
+  inputPurchasePrice?.setAttribute('value', '');
+
     this.addedSuccessfully = false;
   }
 

@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 import { Router } from '@angular/router';
+import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   isRateLimitReached = false;
 
   public portfolioItemList: PortfolioItem[] = [];
+  public portfolioDetailItem: PortfolioDetail | undefined;
   private toDestroy$: Subject<void> = new Subject<void>();
 
   constructor(private portfolioService: PortfolioService, private router:Router) { } // private productsHttpService: ProductHttpService
@@ -36,6 +38,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
   onWknClick(wkn: string): void {
     this.router.navigate(['portfolio/1/detail', wkn]); // Ersetzen Sie den Pfad entsprechend Ihrer Routing-Konfiguration
   }
+
+  async sendCurrentItem(wkn: string): Promise<void> {
+    localStorage.clear()
+    this.portfolioDetailItem  = await firstValueFrom(this.portfolioService.getDetailPortfolioList(1, wkn));
+    localStorage.setItem('portfolioDetailItem', JSON.stringify(this.portfolioDetailItem));
+    this.router.navigate(['buy-item']); 
+
+  }
+
 
   ngOnDestroy(): void {
     this.toDestroy$.next();

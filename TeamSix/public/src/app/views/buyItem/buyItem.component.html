@@ -4,27 +4,27 @@
 
         <div>
             <label for="name">Name:</label>
-            <input type="text" id="name" value="Name" disabled>
+            <input type="text" id="name" [(ngModel)]="formData.name" disabled>
         </div>
         <div>
             <label for="wkn">Wkn:</label>
-            <input type="text" id="wkn" value="Inhalt des Feldes" disabled>
+            <input type="text" id="wkn" [(ngModel)]="formData.wkn" disabled>
         </div>
         <div>
             <label for="description">Beschreibung:</label>
-            <input type="text" id="meinFeld" value="Inhalt des Feldes" disabled>
+            <input type="text" id="description" [(ngModel)]="formData.description" disabled>
         </div>
         <div>
             <label for="category">Kategorie:</label>
-             <input type="text" id="meinFeld" value="Inhalt des Feldes" disabled>
+             <input type="text" id="category" [(ngModel)]="formData.category" disabled>
         </div>
         <div>
             <label for="quantity">Anzahl:</label>
-            <input type="text" name="quantity" required [(ngModel)]="formData.quantity">
+            <input type="text" id="quantity" name="quantity" required [(ngModel)]="formData.quantity">
         </div>
         <div>
             <label for="purchasePrice">Kaufpreis:</label>
-            <input type="text" name="purchasePrice" required [(ngModel)]="formData.purchasePrice">
+            <input type="text" id="purchasePrice" name="purchasePrice" required [(ngModel)]="formData.purchasePrice">
         </div>
         <!-- Weitere Felder... -->
         <button type="submit" [disabled]="!portfolioItemForm.valid">Hinzufügen</button>

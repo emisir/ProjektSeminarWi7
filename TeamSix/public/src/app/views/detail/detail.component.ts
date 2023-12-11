@@ -25,9 +25,6 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   public portfolioDetailItem: PortfolioDetail | undefined;
 
-
-
-
   private toDestroy$: Subject<void> = new Subject<void>();
 
   constructor(public portfolioService: PortfolioService, private route: ActivatedRoute) {

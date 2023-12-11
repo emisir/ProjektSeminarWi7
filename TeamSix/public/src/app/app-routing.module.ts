@@ -16,12 +16,12 @@ const routes: Routes = [
     path: 'portfolio/:id/detail/:wkn',
     component: DetailComponent,
   },
-  
+
   {
     path: 'add-item',
     component: AddPortfolioItemComponent,
   },
-    
+
   {
     path: 'buy-item',
     component: BuyItemComponent,

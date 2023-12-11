@@ -55,6 +55,15 @@ public class PortfolioController {
         }
     }
 
+    @PostMapping("/{id}/buy-item")
+    public ResponseEntity<String> buyItem(@PathVariable("id") Long id, @RequestBody SaveItemDTO saveItemDTO) {
+        try {
+            portfolioService.buyItem(id, saveItemDTO);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 
 }
