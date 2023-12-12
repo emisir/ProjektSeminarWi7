@@ -3,12 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { DetailComponent } from './views/detail/detail.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
+import { BuyItemComponent } from './views/buyItem/buyItem.component'; 
 import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
 import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
 import { LogoutComponent } from './views/logout/logout.component';
 import { AuthGuardService } from './shared/auth-core/auth-guard.service';
 import { UserTableComponent } from './views/userTable/userTable.component';
+
 
 const routes: Routes = [
 
@@ -39,11 +41,16 @@ const routes: Routes = [
     component: UserTableComponent,
   },
 
-
   {
     path: 'add-item',
     component: AddPortfolioItemComponent,
   },
+
+  {
+    path: 'buy-item',
+    component: BuyItemComponent,
+  },
+
   {
     path: 'impressum',
     component: ImpressumComponent,

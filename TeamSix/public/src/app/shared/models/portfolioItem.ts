@@ -11,6 +11,7 @@ export class PortfolioItem {
     totalQuantity: number;
     totalPrice: number;
     averagePrice: number;
+    plusButton: string;
 
     constructor(
         id: number,
@@ -24,6 +25,7 @@ export class PortfolioItem {
         totalQuantity: number,
         totalPrice: number,
         averagePrice: number,
+        plusButton: string,
 
 
     ) {
@@ -38,6 +40,7 @@ export class PortfolioItem {
         this.purchasePrice = purchasePrice;
         this.totalPrice = totalPrice;
         this.averagePrice = averagePrice;
+        this.plusButton= plusButton;
     }
 
 }

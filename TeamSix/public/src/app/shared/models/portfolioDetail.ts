@@ -5,6 +5,7 @@ export interface PortfolioDetail {
     category: string
     totalQuantity: number
     averagePrice: number
+    plusButton: string
     portfolioItems: PortfolioDetailItem[]
 }
 
@@ -13,4 +14,5 @@ export interface PortfolioDetailItem {
     quantity: number
     purchasePrice: number
     totalPrice: number
+    
 }

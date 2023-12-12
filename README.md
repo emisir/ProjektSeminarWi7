@@ -1,3 +1,2 @@
 # ProjektSeminarWi7
 
-# asdjasdjas

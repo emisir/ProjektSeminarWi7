@@ -28,14 +28,20 @@ export class PortfolioService {
     const urlWithId = `${this.apiUrl}/portfolio/${id}/detail/${wkn}`;
     return this.http.get<PortfolioDetail>(urlWithId);
   }
-
+ public getCurrentDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   public addPortfolioItems(id: number, formData: any): Observable<any> {
     const requestData = {
       name: formData.name,
       wkn: formData.wkn,
       description: formData.description,
-      purchaseDate: formData.purchaseDate,
+      purchaseDate: this.getCurrentDate(),
       category: formData.category,
       quantity: formData.quantity,
       purchasePrice: formData.purchasePrice
@@ -78,6 +84,22 @@ export class PortfolioService {
     const urlWithCurrentUser = `${this.apiUrl}/login`;
     return this.http.get<string>(urlWithCurrentUser);
   }
+  public buyItem(id: number, formData: any): Observable<any> {
+    const requestData = {
+      name: formData.name,
+      wkn: formData.wkn,
+      description: formData.description,
+      purchaseDate: this.getCurrentDate(),
+      category: formData.category,
+      quantity: formData.quantity,
+      purchasePrice: formData.purchasePrice
+    };
+
+    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/buy-item`, requestData);
+  }
+
+  
+
 
 
 
