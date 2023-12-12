@@ -16,7 +16,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'wkn', 'name', 'description', 'category', 'totalQuantity', 'averagePrice', 'purchaseDate', 'quantity', 'purchasePrice', 'totalPrice'];
+  displayedColumns: string[] = ['id', 'wkn', 'name', 'description', 'category', 'totalQuantity', 'averagePrice', 'purchaseDate', 'quantity', 'purchasePrice', 'totalPrice', 'plusButton'];
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -24,9 +24,6 @@ export class DetailComponent implements OnInit, OnDestroy {
 
 
   public portfolioDetailItem: PortfolioDetail | undefined;
-
-
-
 
   private toDestroy$: Subject<void> = new Subject<void>();
 

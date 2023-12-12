@@ -21,7 +21,7 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
     name: '',
     wkn: '',
     description: '',
-    purchaseDate: '2023-11-23',
+    purchaseDate: this.portfolioService.getCurrentDate(),
     category: '',
     quantity: '',
     purchasePrice: ''
@@ -52,8 +52,7 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
       name: '',
       wkn: '',
       description: '',
-      purchaseDate: '2023-11-23',
-      category: '',
+      purchaseDate: this.portfolioService.getCurrentDate(),
       quantity: '',
       purchasePrice: ''
 
@@ -66,4 +65,5 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
     this.toDestroy$.next();
     this.toDestroy$.complete();
   }
+
 }

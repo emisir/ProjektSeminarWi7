@@ -25,6 +25,8 @@ public class PortfolioItem {
 
     private String category;
 
+    private String plusButton;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "portfolio_id")
     @JsonBackReference
@@ -37,7 +39,8 @@ public class PortfolioItem {
         this.id = id;
     }
 
-    public PortfolioItem(Long id, String wkn, Float purchasePrice, Long quantity, Date purchaseDate, String name, String description, String category, Portfolio portfolio) {
+    public PortfolioItem(Long id, String wkn, Float purchasePrice, Long quantity, Date purchaseDate,
+                         String name, String description, String category, String plusButton, Portfolio portfolio) {
         this.id = id;
         this.wkn = wkn;
         this.purchasePrice = purchasePrice;
@@ -46,6 +49,7 @@ public class PortfolioItem {
         this.name = name;
         this.description = description;
         this.category = category;
+        this.plusButton= plusButton;
         this.portfolio = portfolio;
     }
 
@@ -121,5 +125,11 @@ public class PortfolioItem {
     }
 
 
+    public String getPlusButton() {
+        return plusButton;
+    }
 
+    public void setPlusButton(String plusButton) {
+        this.plusButton = plusButton;
+    }
 }
