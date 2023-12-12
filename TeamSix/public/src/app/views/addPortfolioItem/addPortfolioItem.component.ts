@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Action } from 'rxjs/internal/scheduler/Action';
 
 
 @Component({
@@ -16,7 +15,6 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
 
   constructor(private portfolioService: PortfolioService, private _snackBar: MatSnackBar) { }
 
-  // Hier erstellen Sie ein separates Datenobjekt, um nur die benötigten Felder zu speichern
   formData: any = {
     name: '',
     wkn: '',
@@ -26,7 +24,6 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
     quantity: '',
     purchasePrice: ''
 
-    // Fügen Sie hier weitere Felder hinzu, die Sie benötigen
   };
 
   addedSuccessfully: boolean = false;

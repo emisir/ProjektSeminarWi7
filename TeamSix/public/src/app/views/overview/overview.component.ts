@@ -5,6 +5,7 @@ import { Subject, firstValueFrom } from 'rxjs';
 import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 import { Router } from '@angular/router';
+import { UserEntity } from 'src/app/shared/models/userEntity';
 import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 
 
@@ -24,10 +25,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
   isRateLimitReached = false;
 
   public portfolioItemList: PortfolioItem[] = [];
+  public userEntityList: UserEntity[] = [];
   public portfolioDetailItem: PortfolioDetail | undefined;
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private portfolioService: PortfolioService, private router:Router) { } // private productsHttpService: ProductHttpService
+  constructor(private portfolioService: PortfolioService, private router: Router) { } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
     this.portfolioService.getPortfolioSummary(1).subscribe((response: PortfolioItem[]) => {

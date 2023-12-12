@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Bearbeiten</h2>
+<mat-dialog-content>
+  <form (ngSubmit)="onSubmit()" class="content" [formGroup]="myForm">
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="Name" required [(ngModel)]="formData.name" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="username" placeholder="Benutzername" readonly />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput formControlName="password" placeholder="Passwort" required [(ngModel)]="formData.password" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Rolle</mat-label>
+      <mat-select formControlName="role" required [(ngModel)]="formData.role">
+        <mat-option value="ROLE_USER">Benutzer</mat-option>
+        <mat-option value="ROLE_ADMIN">Administrator</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button type="submit" mat-raised-button color="primary">Submit</button>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="'close'">Close</button>
+</mat-dialog-actions>

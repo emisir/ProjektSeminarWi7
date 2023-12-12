@@ -3,10 +3,30 @@ import { RouterModule, Routes } from '@angular/router';
 import { DetailComponent } from './views/detail/detail.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
-import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
 import { BuyItemComponent } from './views/buyItem/buyItem.component'; 
+import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
+import { HomeComponent } from './views/home/home.component';
+import { LoginComponent } from './views/login/login.component';
+import { LogoutComponent } from './views/logout/logout.component';
+import { AuthGuardService } from './shared/auth-core/auth-guard.service';
+import { UserTableComponent } from './views/userTable/userTable.component';
+
 
 const routes: Routes = [
+
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent,
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuardService],
+  },
   {
     path: 'portfolio',
     component: OverviewComponent,
@@ -15,6 +35,10 @@ const routes: Routes = [
   {
     path: 'portfolio/:id/detail/:wkn',
     component: DetailComponent,
+  },
+  {
+    path: 'userTable',
+    component: UserTableComponent,
   },
 
   {
@@ -41,7 +65,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'portfolio',
+    redirectTo: 'login',
   },
   {
     path: '**',

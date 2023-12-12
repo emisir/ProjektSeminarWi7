@@ -11,6 +11,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/portfolioItem")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+
 public class PortfolioItemController {
 
     private final PortfolioItemService portfolioItemService;

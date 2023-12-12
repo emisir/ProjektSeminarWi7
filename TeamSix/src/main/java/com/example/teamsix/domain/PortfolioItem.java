@@ -1,13 +1,12 @@
 package com.example.teamsix.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "wkntable")
+@Table(name = "portfolioitemtable")
 public class PortfolioItem {
 
     @Id
