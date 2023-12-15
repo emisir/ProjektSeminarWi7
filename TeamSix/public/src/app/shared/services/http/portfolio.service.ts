@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { PortfolioItem } from '../../models/portfolioItem';
 import { PortfolioDetail } from '../../models/portfolioDetail';
 import { UserEntity } from '../../models/userEntity';
+import { AuthCoreService } from '../../auth-core/auth-core.service';
 
 
 
@@ -16,7 +17,8 @@ export class PortfolioService {
 
   portfolioList: Portfolio[] = [];
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient, private authService: AuthCoreService) { }
 
   public getPortfolioSummary(id: number): Observable<PortfolioItem[]> {
     const urlWithId = `${this.apiUrl}/portfolio/${id}/summary`;
@@ -28,7 +30,7 @@ export class PortfolioService {
     const urlWithId = `${this.apiUrl}/portfolio/${id}/detail/${wkn}`;
     return this.http.get<PortfolioDetail>(urlWithId);
   }
- public getCurrentDate(): string {
+  public getCurrentDate(): string {
     const today = new Date();
     const year = today.getFullYear();
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
@@ -47,7 +49,7 @@ export class PortfolioService {
       purchasePrice: formData.purchasePrice
     };
 
-    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/add-item`, requestData);
+    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/add-item`, requestData, { headers: this.getAuthHeaders() });
   }
 
   public getUserEntity(): Observable<UserEntity[]> {
@@ -62,7 +64,7 @@ export class PortfolioService {
       password: formData.password,
       role: formData.role,
     }
-    return this.http.post<UserEntity>(`${this.apiUrl}/portfolio/add-user`, requestData);
+    return this.http.post<UserEntity>(`${this.apiUrl}/portfolio/add-user`, requestData, { headers: this.getAuthHeaders() });
   }
 
   public deleteUserEntity(username: string): Observable<any> {
@@ -77,13 +79,14 @@ export class PortfolioService {
       password: formData.password,
       role: formData.role,
     };
-    return this.http.put<UserEntity>(`${this.apiUrl}/portfolio/update-user/${username}`, requestData);
+    return this.http.put<UserEntity>(`${this.apiUrl}/portfolio/update-user/${username}`, requestData, { headers: this.getAuthHeaders() });
   }
-  
+
   public getCurrentUser(): Observable<string> {
     const urlWithCurrentUser = `${this.apiUrl}/login`;
     return this.http.get<string>(urlWithCurrentUser);
   }
+
   public buyItem(id: number, formData: any): Observable<any> {
     const requestData = {
       name: formData.name,
@@ -95,10 +98,17 @@ export class PortfolioService {
       purchasePrice: formData.purchasePrice
     };
 
-    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/buy-item`, requestData);
+    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/buy-item`, requestData, { headers: this.getAuthHeaders() });
   }
 
-  
+
+  private getAuthHeaders(): any {
+    return {
+      "Authorization": "Basic " + this.authService.getToken()
+    }
+  }
+
+
 
 
 

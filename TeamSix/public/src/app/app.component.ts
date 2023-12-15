@@ -22,14 +22,6 @@ export class AppComponent {
       visible: this.auth.isAuthenticated$()
 
     },
-
-    {
-      name: 'Kaufen',
-      routePath: 'add-item',
-      visible: this.auth.isAuthenticated$()
-
-    },
-
     {
       name: 'Benutzer',
       routePath: 'userTable',

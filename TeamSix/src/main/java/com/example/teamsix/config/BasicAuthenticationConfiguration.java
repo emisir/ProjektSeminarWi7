@@ -30,14 +30,14 @@ public class BasicAuthenticationConfiguration {
 
 
     @Bean
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults())
                 .csrf(httpSecurityCsrfConfigurer ->
                         httpSecurityCsrfConfigurer.ignoringRequestMatchers(new AntPathRequestMatcher("/**"))
                 )
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-                        .anyRequest().hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .httpBasic(Customizer.withDefaults());
