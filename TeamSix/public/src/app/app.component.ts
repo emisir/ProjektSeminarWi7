@@ -52,7 +52,6 @@ export class AppComponent {
       highlighted: true,
       icon: 'logout'
 
-
     },
 
 

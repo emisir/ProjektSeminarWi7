@@ -1,8 +1,7 @@
 package com.example.teamsix.service;
 
-import com.example.teamsix.DTO.PortfolioDetailDTO;
-import com.example.teamsix.DTO.PortfolioDetailItemDTO;
-import com.example.teamsix.DTO.SaveItemDTO;
+import com.example.teamsix.DTO.*;
+import com.example.teamsix.client.StockItemClient;
 import com.example.teamsix.domain.Portfolio;
 import com.example.teamsix.domain.PortfolioItem;
 import com.example.teamsix.domain.UserEntity;
@@ -10,7 +9,6 @@ import com.example.teamsix.persistance.PortfolioItemRepository;
 import com.example.teamsix.persistance.PortfolioRepository;
 import com.example.teamsix.persistance.UserRepository;
 
-import com.example.teamsix.DTO.PortfolioSummary;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,11 +27,16 @@ public class PortfolioService {
 
     private final UserRepository userRepository;
 
+    private final StockItemClient stockItemClient;
 
-    public PortfolioService(PortfolioRepository portfolioRepository, PortfolioItemRepository portfolioItemRepository, UserRepository userRepository) {
+    private final String apiKey = "Team#6-ApiKey-o9HsZzVXSA";
+
+
+    public PortfolioService(PortfolioRepository portfolioRepository, PortfolioItemRepository portfolioItemRepository, UserRepository userRepository, StockItemClient stockItemClient) {
         this.portfolioRepository = portfolioRepository;
         this.portfolioItemRepository = portfolioItemRepository;
         this.userRepository = userRepository;
+        this.stockItemClient = stockItemClient;
     }
 
 
@@ -202,7 +205,14 @@ public class PortfolioService {
         userRepository.save(userEntity);
     }
 
+    public UserEntity getCurrentUser(String username) {
+        userRepository.findByUsername(username);
+        return userRepository.findByUsername(username);
+    }
 
+    public StockItemDTO getStockItem(String isin){
+        return stockItemClient.getStockItem(apiKey,isin);
+    }
 
 
 
@@ -214,8 +224,5 @@ public class PortfolioService {
     }
 
 
-    public UserEntity getCurrentUser(String username) {
-        userRepository.findByUsername(username);
-        return userRepository.findByUsername(username);
-    }
+
 }

@@ -66,11 +66,9 @@ export class UserTableComponent implements OnInit, OnDestroy {
     this.portfolioService.getUserEntity().subscribe({
       next: (users) => {
         this.userEntityList = users;
-        console.log("erfolgreich geladen", users)
         this.addedSuccessfully = true;
       },
       error: (error) => {
-        console.error('Fehler beim Laden der Benutzerliste', error);
         this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen");
       }
     });
@@ -98,12 +96,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         console.log("Du kannst nicht dich selber Bearbeiten");
         this._snackBar.open("Du kannst nicht dich selber Bearbeiten", "Close");
         return;
-      } else {
-        this._snackBar.open("Erfolgreich bearbeitet", "Close");
-
       }
-
-      // Continue with the update dialog if it's not the logged-in user.
       const dialogRef = this.dialog.open(UpdateUserDialogComponent, {
         data: user
       });
@@ -117,16 +110,42 @@ export class UserTableComponent implements OnInit, OnDestroy {
   }
 
 
-
   deleteUser(username: string): void {
-    this.portfolioService.deleteUserEntity(username).subscribe({
-      next: (response) => {
-        console.log('User wurde gelöscht', response);
-        this.loadUserList(); // Aktualisieren der Benutzerliste
+    // Fetch the logged-in user
+    this.portfolioService.getCurrentUser().subscribe(
+      (loggedInUser: any) => {
+        console.log("Logged-in user:", loggedInUser);
+
+        if (loggedInUser && loggedInUser.username) {
+          if (loggedInUser.username === username) {
+            this._snackBar.open("Du kannst nicht dich selber Löschen", "Close");
+            return;
+          } else {
+            // Attempt to delete the user
+            this.portfolioService.deleteUserEntity(username).subscribe({
+              next: (response) => {
+                console.log('User wurde gelöscht', response);
+                this.loadUserList();
+              },
+              error: (error) => {
+                console.error('Fehler beim Löschen', error);
+                this._snackBar.open("Fehler beim Löschen des Benutzers", "Close");
+              }
+            });
+          }
+        } else {
+          console.error('Fehler beim Abrufen des eingeloggten Benutzers');
+          this._snackBar.open("Fehler beim Abrufen des eingeloggten Benutzers", "Close");
+        }
       },
-      error: (error) => {
-        console.error('Fehler beim Löschen', error)
+      (error) => {
+        console.error('Fehler beim Abrufen des eingeloggten Benutzers', error);
+        this._snackBar.open("Fehler beim Abrufen des eingeloggten Benutzers", "Close");
       }
-    });
+    );
   }
+
+
 }
+
+

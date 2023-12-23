@@ -4,12 +4,11 @@ import com.example.teamsix.DTO.SaveItemDTO;
 import com.example.teamsix.DTO.PortfolioSummary;
 
 
+import com.example.teamsix.DTO.StockItemDTO;
 import com.example.teamsix.domain.PortfolioItem;
 import com.example.teamsix.domain.UserEntity;
 import com.example.teamsix.service.PortfolioService;
-import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -49,11 +48,16 @@ public class PortfolioController {
         }
     }
 
-
     @GetMapping("/{id}/detail/{wkn}")
     public ResponseEntity<PortfolioDetailDTO> getPortfolioItem(@PathVariable("id")Long portfolioId, @PathVariable("wkn") String wkn){
         PortfolioDetailDTO portfolioItems = portfolioService.getPortfolioItemsByPortfolioId(portfolioId,wkn);
         return ResponseEntity.ok(portfolioItems);
+    }
+
+    @GetMapping("/v1/stocks/{isin}")
+    public ResponseEntity<StockItemDTO> getStockItems(@PathVariable("isin") String isin){
+        StockItemDTO stockItems = portfolioService.getStockItem(isin);
+        return ResponseEntity.ok(stockItems);
     }
 
     @PostMapping("/{id}/add-item")
