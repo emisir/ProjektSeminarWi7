@@ -4,31 +4,29 @@
 
         <div>
             <label for="name">Name:</label>
-            <input type="text" id="name" [(ngModel)]="formData.name" disabled>
+            <input type="text" id="name" name="name" [(ngModel)]="formData.name" disabled>
         </div>
         <div>
-            <label for="wkn">Wkn:</label>
-            <input type="text" id="wkn" [(ngModel)]="formData.wkn" disabled>
+
+            <label for="isin">ISIN:</label>
+            <input type="text" id="isin" name="isin" [(ngModel)]="formData.isin" disabled>
+
         </div>
         <div>
             <label for="description">Beschreibung:</label>
-            <input type="text" id="description" [(ngModel)]="formData.description" disabled>
+            <input type="text" id="description" name="description" [(ngModel)]="formData.description" disabled>
         </div>
         <div>
-            <label for="category">Kategorie:</label>
-             <input type="text" id="category" [(ngModel)]="formData.category" disabled>
+            <label for="type">Typ</label>
+            <input type="text" id="type" name="type" [(ngModel)]="formData.type" disabled>
         </div>
         <div>
             <label for="quantity">Anzahl:</label>
             <input type="text" id="quantity" name="quantity" required [(ngModel)]="formData.quantity">
         </div>
-        <div>
-            <label for="purchasePrice">Kaufpreis:</label>
-            <input type="text" id="purchasePrice" name="purchasePrice" required [(ngModel)]="formData.purchasePrice">
-        </div>
-        <!-- Weitere Felder... -->
+
         <button type="submit" [disabled]="!portfolioItemForm.valid">Hinzufügen</button>
-       
+
     </form>
 </div>
 
@@ -39,4 +37,3 @@
     <button (click)="clean()">Erneut Hinzufügen</button>
     <button routerLink="/portfolio">Zurück zu Portfolio</button>
 </div>
-

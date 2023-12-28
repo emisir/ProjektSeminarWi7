@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 
+
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -15,7 +16,8 @@ export class DetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'wkn', 'name', 'description', 'category', 'totalQuantity', 'averagePrice', 'purchaseDate', 'quantity', 'purchasePrice', 'totalPrice', 'plusButton'];
+  displayedColumns: string[] = ['id', 'isin', 'name', 'description', 'type', 'totalQuantity', 'averagePrice', 'purchaseDate', 'quantity',
+    'purchasePrice', 'totalPrice', 'plusButton', 'currentPrice', 'isin', 'type', 'profitLossPerStock', 'profitLossSum'];
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -34,12 +36,13 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      let wkn = params['wkn'];
-      this.portfolioService.getDetailPortfolioList(1, wkn)
+      let isin = params['isin'];
+      this.portfolioService.getDetailPortfolioList(1, isin)
         .subscribe((response: PortfolioDetail) => {
           this.portfolioDetailItem = response;
         });
     });
+
   }
 
   ngOnDestroy(): void {

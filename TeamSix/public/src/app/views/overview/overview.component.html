@@ -12,21 +12,23 @@
   <table class="portfolio-table">
     <thead>
       <tr class="table-header">
-        <th>WKN</th>
+        <th>ISIN</th>
         <th>Name</th>
-        <th>Total Quantity</th>
-        <th>Average Price</th>
-        <th>Total Price</th>
+        <th>Anzahl</th>
+        <th>Gewinn/Verlust</th>
+        <th>Aktueller Gesamtpreis</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let row of portfolioItemList">
-        <td><a (click)="onWknClick(row.wkn)">{{ row.wkn }}</a></td>
+        <td><a (click)="onWknClick(row.isin)">{{ row.isin}}</a></td>
         <td>{{ row.name }}</td>
         <td>{{ row.totalQuantity }}</td>
-        <td>{{ row.averagePrice | currency : '€ '}}</td>
-        <td>{{ row.totalPrice | currency : '€ ' }}</td>
-        <td> <button class="btn" (click)="sendCurrentItem(row.wkn)">+</button></td>
+        <td [ngClass]="{'profit': row.profitLossSum > 0, 'loss': row.profitLossSum < 0}">
+          {{ row.profitLossSum | currency : ' ' }} €</td>
+
+        <td>{{ row.totalPrice | currency : ' ' }} €</td>
+        <td> <button class="btn" (click)="sendCurrentItem(row.isin)">+</button></td>
       </tr>
     </tbody>
   </table>

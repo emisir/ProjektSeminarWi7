@@ -29,6 +29,7 @@ public class PortfolioService {
 
     private final StockItemClient stockItemClient;
 
+
     private final String apiKey = "Team#6-ApiKey-o9HsZzVXSA";
 
 
@@ -44,8 +45,8 @@ public class PortfolioService {
         portfolioItemRepository.save(item);
     }
 
-    private boolean isWknExistsInPortfolio(Long portfolioId, String wkn) {
-        return portfolioItemRepository.existsByWknAndPortfolioId(wkn,portfolioId);
+    private boolean isIsinExistsInPortfolio(Long portfolioId, String isin) {
+        return portfolioItemRepository.existsByIsinAndPortfolioId(isin,portfolioId);
     }
 
     public void addPortfolio(Portfolio portfolio) {
@@ -57,12 +58,13 @@ public class PortfolioService {
     public List<PortfolioSummary> getPortfolioSummary(Long portfolioId) {
         List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases();
 
+
         Map<String, PortfolioSummary> collect = portfolioItems.stream()
-                .collect(Collectors.groupingBy(PortfolioItem::getWkn,
+                .collect(Collectors.groupingBy(PortfolioItem::getIsin,
                         Collectors.collectingAndThen(
                                 Collectors.toList(),
                                 portfolioItemList -> {
-
+                                    String isin = portfolioItemList.get(0).getIsin();
                                     String name = portfolioItemList.get(0).getName();
                                     long totalQuantity = portfolioItemList.stream()
                                             .mapToLong(PortfolioItem::getQuantity)
@@ -71,13 +73,15 @@ public class PortfolioService {
                                             .mapToDouble(portfolioItem -> portfolioItem.getPurchasePrice() * portfolioItem.getQuantity())
                                             .sum();
                                     float averagePrice = totalPrice / totalQuantity;
+                                    float profitLossSum =    (totalQuantity * stockItemClient.getStockItem(apiKey,isin).price())- totalPrice;
 
                                     return new PortfolioSummary(
-                                            portfolioItemList.get(0).getWkn(),
+                                            portfolioItemList.get(0).getIsin(),
                                             name,
                                             totalQuantity,
                                             averagePrice,
-                                            totalPrice
+                                            totalPrice,
+                                            profitLossSum
                                     );
                                 }
                         )
@@ -87,11 +91,12 @@ public class PortfolioService {
     }
 
 
-    public PortfolioDetailDTO getPortfolioItemsByPortfolioId(Long portfolioId, String wkn) {
-        List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases().stream().filter(item -> item.getWkn().equals(wkn)).toList();
+    public PortfolioDetailDTO getPortfolioItemsByPortfolioId(Long portfolioId, String isin) {
+        List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases().stream().filter(item -> item.getIsin().equals(isin)).toList();
         String name = portfolioItems.get(0).getName();
         String description = portfolioItems.get(0).getDescription();
-        String category = portfolioItems.get(0).getCategory();
+        String type = portfolioItems.get(0).getType();
+        Float currentPrice = stockItemClient.getStockItem(apiKey,isin).price();
         String plusButton = portfolioItems.get(0).getPlusButton();
 
         long totalQuantity = portfolioItems.stream()
@@ -101,6 +106,9 @@ public class PortfolioService {
                 .mapToDouble(portfolioItem -> portfolioItem.getQuantity() * portfolioItem.getPurchasePrice())
                 .sum();
         float averagePrice = totalPrice / totalQuantity;
+        float profitLossPerStock =  currentPrice - averagePrice;
+        float profitLossSum =    (totalQuantity * currentPrice)- totalPrice;
+
 
         List<PortfolioDetailItemDTO> portfolioDetailItemDTO = portfolioItems.stream().map(portfolioItem -> new PortfolioDetailItemDTO(
                 portfolioItem.getPurchaseDate(),
@@ -110,17 +118,28 @@ public class PortfolioService {
                 )).toList();
 
         return new PortfolioDetailDTO(
-                portfolioItems.get(0).getWkn(),
+                isin,
                 name,
                 description,
-                category,
+                type,
                 totalQuantity,
                 averagePrice,
                 plusButton,
+                profitLossPerStock,
+                profitLossSum,
+                currentPrice,
                 portfolioDetailItemDTO
         );
     }
 
+    public UserEntity getCurrentUser(String username) {
+        userRepository.findByUsername(username);
+        return userRepository.findByUsername(username);
+    }
+
+    public StockItemDTO getStockItem(String isin){
+        return stockItemClient.getStockItem(apiKey,isin);
+    }
 
     public List<PortfolioItem> getPortfolioItems() {
         return portfolioItemRepository.findAll();
@@ -129,43 +148,32 @@ public class PortfolioService {
     public List<UserEntity> getUserEntities() {
         return userRepository.findAll();
     }
+
+
     public void addPortfolioItem(Long portfolioId, SaveItemDTO saveItemDTO) {
         Portfolio portfolio = getPortfolio(portfolioId);
 
-        String wkn = saveItemDTO.getWkn();
-        if (isWknExistsInPortfolio(portfolioId, wkn)) {
-            throw new IllegalArgumentException("WKN " + wkn + " bereits vorhanden.");
+        String isin = saveItemDTO.getIsin();
+        if (isIsinExistsInPortfolio(portfolioId, isin)) {
+            throw new IllegalArgumentException("ISIN " + isin + " bereits vorhanden.");
         }
 
-        PortfolioItem portfolioItem = new PortfolioItem();
-        portfolioItem.setWkn(wkn);
-        portfolioItem.setName(saveItemDTO.getName());
-        portfolioItem.setDescription(saveItemDTO.getDescription());
-        portfolioItem.setCategory(saveItemDTO.getCategory());
-        portfolioItem.setQuantity(saveItemDTO.getQuantity());
-        portfolioItem.setPurchasePrice(saveItemDTO.getPurchasePrice());
-        portfolioItem.setPurchaseDate(saveItemDTO.getPurchaseDate());
-        portfolioItem.setPortfolio(portfolio);
-
+        StockItemDTO stockItem = stockItemClient.getStockItem(apiKey, isin);
+        PortfolioItem portfolioItem = getPortfolioItem(saveItemDTO, stockItem, portfolio);
         portfolio.getPurchases().add(portfolioItem);
-
         portfolioRepository.save(portfolio);
     }
+
+
 
     public void buyItem(Long portfolioId, SaveItemDTO saveItemDTO) {
         Portfolio portfolio = getPortfolio(portfolioId);
 
-        // Überprüfen, ob der WKN-Wert bereits in der Datenbank vorhanden ist
-        String wkn = saveItemDTO.getWkn();
+        String isin = saveItemDTO.getIsin();
 
-        // Wenn der WKN-Wert nicht vorhanden ist, fahren Sie fort mit der Hinzufügung
-        PortfolioItem portfolioItem = new PortfolioItem();
-        portfolioItem.setWkn(wkn);
-        portfolioItem.setName(saveItemDTO.getName());
-        portfolioItem.setDescription(saveItemDTO.getDescription());
-        portfolioItem.setCategory(saveItemDTO.getCategory());
+        StockItemDTO stockItem = stockItemClient.getStockItem(apiKey, isin);
+        PortfolioItem portfolioItem = getPortfolioItem(saveItemDTO, stockItem, portfolio);
         portfolioItem.setQuantity(saveItemDTO.getQuantity());
-        portfolioItem.setPurchasePrice(saveItemDTO.getPurchasePrice());
         portfolioItem.setPurchaseDate(saveItemDTO.getPurchaseDate());
         portfolioItem.setPortfolio(portfolio);
 
@@ -205,16 +213,6 @@ public class PortfolioService {
         userRepository.save(userEntity);
     }
 
-    public UserEntity getCurrentUser(String username) {
-        userRepository.findByUsername(username);
-        return userRepository.findByUsername(username);
-    }
-
-    public StockItemDTO getStockItem(String isin){
-        return stockItemClient.getStockItem(apiKey,isin);
-    }
-
-
 
 
     private Portfolio getPortfolio(Long portfolioId) {
@@ -223,6 +221,19 @@ public class PortfolioService {
 
     }
 
+    private static PortfolioItem getPortfolioItem(SaveItemDTO saveItemDTO, StockItemDTO stockItem, Portfolio portfolio) {
+        PortfolioItem portfolioItem = new PortfolioItem();
+        portfolioItem.setIsin(stockItem.isin());
+        portfolioItem.setQuantity(saveItemDTO.getQuantity());
+        portfolioItem.setPurchaseDate(saveItemDTO.getPurchaseDate());
+        portfolioItem.setPortfolio(portfolio);
+        portfolioItem.setDescription(stockItem.description());
+        portfolioItem.setPurchasePrice(stockItem.price());
+        portfolioItem.setType(stockItem.type());
+        portfolioItem.setCurrentPrice(stockItem.price());
+        portfolioItem.setName(stockItem.name());
+        return portfolioItem;
+    }
 
 
 }

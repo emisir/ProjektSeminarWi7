@@ -39,7 +39,6 @@ import { BuyItemComponent } from './views/buyItem/buyItem.component';
     LoginComponent,
     LogoutComponent,
     UserTableComponent,
-    
     BuyItemComponent,
   ],
   imports: [

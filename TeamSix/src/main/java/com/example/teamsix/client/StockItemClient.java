@@ -17,4 +17,6 @@ public interface StockItemClient {
     StockItemDTO getStockItem(@RequestHeader("Api-Key") String apiKey, @PathVariable("isin") String isin);
 
 
+
+
 }

@@ -8,7 +8,9 @@ import com.example.teamsix.DTO.StockItemDTO;
 import com.example.teamsix.domain.PortfolioItem;
 import com.example.teamsix.domain.UserEntity;
 import com.example.teamsix.service.PortfolioService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -48,20 +50,21 @@ public class PortfolioController {
         }
     }
 
-    @GetMapping("/{id}/detail/{wkn}")
-    public ResponseEntity<PortfolioDetailDTO> getPortfolioItem(@PathVariable("id")Long portfolioId, @PathVariable("wkn") String wkn){
-        PortfolioDetailDTO portfolioItems = portfolioService.getPortfolioItemsByPortfolioId(portfolioId,wkn);
+    @GetMapping("/{id}/detail/{isin}")
+    public ResponseEntity<PortfolioDetailDTO> getPortfolioItem(@PathVariable("id")Long portfolioId, @PathVariable("isin") String isin){
+        PortfolioDetailDTO portfolioItems = portfolioService.getPortfolioItemsByPortfolioId(portfolioId,isin);
         return ResponseEntity.ok(portfolioItems);
     }
 
-    @GetMapping("/v1/stocks/{isin}")
+
+    @GetMapping("/{isin}")
     public ResponseEntity<StockItemDTO> getStockItems(@PathVariable("isin") String isin){
         StockItemDTO stockItems = portfolioService.getStockItem(isin);
         return ResponseEntity.ok(stockItems);
     }
 
     @PostMapping("/{id}/add-item")
-    public ResponseEntity<String> addPortfolioItem(@PathVariable("id") Long id, @RequestBody SaveItemDTO saveItemDTO) {
+    public ResponseEntity<String> addPortfolioItem(@PathVariable("id") Long id, @RequestBody @Valid SaveItemDTO saveItemDTO) {
         try {
             portfolioService.addPortfolioItem(id, saveItemDTO);
             return ResponseEntity.ok().build();
@@ -69,6 +72,17 @@ public class PortfolioController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/{id}/buy-item")
+    public ResponseEntity<String> buyItem(@PathVariable("id") Long id,@Valid @RequestBody SaveItemDTO saveItemDTO) {
+        try {
+            portfolioService.buyItem(id, saveItemDTO);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     @PostMapping("/add-user")
     public ResponseEntity<String> addUserEntity(@RequestBody UserEntity userEntity){
@@ -100,15 +114,6 @@ public class PortfolioController {
         }
     }
 
-    @PostMapping("/{id}/buy-item")
-    public ResponseEntity<String> buyItem(@PathVariable("id") Long id, @RequestBody SaveItemDTO saveItemDTO) {
-        try {
-            portfolioService.buyItem(id, saveItemDTO);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 
 
 }

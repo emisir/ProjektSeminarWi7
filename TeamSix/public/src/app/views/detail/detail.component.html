@@ -1,5 +1,4 @@
 <mat-toolbar color="primary">
-  <span class="header-title" [routerLink]="'/overview'">Portfolio</span>
   <span class="spacer"></span>
 </mat-toolbar>
 
@@ -9,36 +8,56 @@
 
       <div>
         <h2>{{portfolioDetailItem.name}}</h2>
-        <p>{{portfolioDetailItem.wkn }}</p>
+        <p>{{portfolioDetailItem.isin }}</p>
 
 
       </div>
       <table>
         <tr>
-          <th>Wkn</th>
+          <th>ISIN</th>
           <th>Name</th>
-          <th>Kategorie</th>
+          <th>Beschreibung</th>
+          <th>Typ</th>
           <th>Gesamtanzahl</th>
           <th>Durchschnittspreis</th>
-          <th>Beschreibung</th>
-
-
         </tr>
         <tr>
-          <td>{{portfolioDetailItem.wkn}}</td>
+          <td>{{portfolioDetailItem.isin}}</td>
           <td>{{ portfolioDetailItem.name }}</td>
-          <td>{{ portfolioDetailItem.category }}</td>
-          <td>{{ portfolioDetailItem.totalQuantity }}</td>
-          <td>{{ portfolioDetailItem.averagePrice | currency : '€ ' }}</td>
           <td>{{ portfolioDetailItem.description }}</td>
-
-
-
+          <td>{{ portfolioDetailItem.type }}</td>
+          <td>{{ portfolioDetailItem.totalQuantity }}</td>
+          <td>{{ portfolioDetailItem.averagePrice | currency : ' ' }} €</td>
         </tr>
-
       </table>
+    </div>
+  </div>
 
-      <!-- Weitere Details hier anzeigen -->
+</div>
+
+<div class="container">
+  <div class="table-container">
+    <div *ngIf="portfolioDetailItem">
+      <h3>Billanz:</h3>
+      <table>
+        <tr>
+          <th>Kurs (aktuell)</th>
+          <th *ngIf="portfolioDetailItem.profitLossPerStock > 0">Gewinn Pro Aktie</th>
+          <th *ngIf="portfolioDetailItem.profitLossPerStock < 0">Verlust Pro Aktie</th>
+          <th *ngIf="portfolioDetailItem.profitLossSum > 0">Gewinn Gesamt</th>
+          <th *ngIf="portfolioDetailItem.profitLossSum < 0">Verlust Gesamt</th>
+        </tr>
+        <tr>
+          <td>
+            {{ portfolioDetailItem.currentPrice | currency : ' ' }} €</td>
+          <td
+            [ngClass]="{'profit': portfolioDetailItem.profitLossPerStock > 0, 'loss': portfolioDetailItem.profitLossPerStock < 0}">
+            {{ portfolioDetailItem.profitLossPerStock | currency : ' ' }} €</td>
+          <td
+            [ngClass]="{'profit': portfolioDetailItem.profitLossSum > 0, 'loss': portfolioDetailItem.profitLossSum < 0}">
+            {{ portfolioDetailItem.profitLossSum | currency : ' ' }} €</td>
+        </tr>
+      </table>
 
       <h3>Käufe:</h3>
       <table>

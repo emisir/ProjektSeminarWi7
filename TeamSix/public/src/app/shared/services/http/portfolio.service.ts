@@ -3,6 +3,9 @@ import { Portfolio } from '../../models/portfolio';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { PortfolioItem } from '../../models/portfolioItem';
+import { StockItem } from '../../models/stockItem';
+
+
 import { PortfolioDetail } from '../../models/portfolioDetail';
 import { UserEntity } from '../../models/userEntity';
 import { AuthCoreService } from '../../auth-core/auth-core.service';
@@ -25,11 +28,11 @@ export class PortfolioService {
     return this.http.get<PortfolioItem[]>(urlWithId);
   }
 
-  // Die Methode getDetailPortfolioList erwartet jetzt eine ID als Parameter
-  public getDetailPortfolioList(id: number, wkn: string): Observable<PortfolioDetail> {
-    const urlWithId = `${this.apiUrl}/portfolio/${id}/detail/${wkn}`;
+  public getDetailPortfolioList(id: number, isin: string): Observable<PortfolioDetail> {
+    const urlWithId = `${this.apiUrl}/portfolio/${id}/detail/${isin}`;
     return this.http.get<PortfolioDetail>(urlWithId);
   }
+
   public getCurrentDate(): string {
     const today = new Date();
     const year = today.getFullYear();
@@ -38,24 +41,41 @@ export class PortfolioService {
     return `${year}-${month}-${day}`;
   }
 
-  public addPortfolioItems(id: number, formData: any): Observable<any> {
-    const requestData = {
-      name: formData.name,
-      wkn: formData.wkn,
-      description: formData.description,
-      purchaseDate: this.getCurrentDate(),
-      category: formData.category,
-      quantity: formData.quantity,
-      purchasePrice: formData.purchasePrice
-    };
-
-    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/add-item`, requestData, { headers: this.getAuthHeaders() });
+  public getCurrentUser(): Observable<string> {
+    const urlWithCurrentUser = `${this.apiUrl}/login`;
+    return this.http.get<string>(urlWithCurrentUser);
   }
 
   public getUserEntity(): Observable<UserEntity[]> {
     const url = `${this.apiUrl}/portfolio/userTable`;
     return this.http.get<UserEntity[]>(url)
   }
+
+  public getStockItemInfo(isin: string): Observable<StockItem[]> {
+    const url = `${this.apiUrl}/portfolio/v1/stocks/${isin}`;
+    return this.http.get<StockItem[]>(url);
+  }
+
+  public addPortfolioItems(id: number, formData: any): Observable<any> {
+    const requestData = {
+      isin: formData.isin,
+      quantity: formData.quantity,
+      purchaseDate: this.getCurrentDate()
+    };
+
+    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/add-item`, requestData, { headers: this.getAuthHeaders() });
+  }
+
+  public buyItem(id: number, formData: any): Observable<any> {
+    const requestData = {
+      isin: formData.isin,
+      quantity: formData.quantity,
+      purchaseDate: this.getCurrentDate(),
+    };
+
+    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/buy-item`, requestData, { headers: this.getAuthHeaders() });
+  }
+
 
   public addNewUserEntity(formData: any): Observable<any> {
     const requestData = {
@@ -72,7 +92,6 @@ export class PortfolioService {
     return this.http.delete<any>(urlWithUsername);
   }
 
-
   public updateUserEntity(username: string, formData: any): Observable<any> {
     const requestData = {
       name: formData.name,
@@ -82,24 +101,6 @@ export class PortfolioService {
     return this.http.put<UserEntity>(`${this.apiUrl}/portfolio/update-user/${username}`, requestData, { headers: this.getAuthHeaders() });
   }
 
-  public getCurrentUser(): Observable<string> {
-    const urlWithCurrentUser = `${this.apiUrl}/login`;
-    return this.http.get<string>(urlWithCurrentUser);
-  }
-
-  public buyItem(id: number, formData: any): Observable<any> {
-    const requestData = {
-      name: formData.name,
-      wkn: formData.wkn,
-      description: formData.description,
-      purchaseDate: this.getCurrentDate(),
-      category: formData.category,
-      quantity: formData.quantity,
-      purchasePrice: formData.purchasePrice
-    };
-
-    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/buy-item`, requestData, { headers: this.getAuthHeaders() });
-  }
 
 
   private getAuthHeaders(): any {
@@ -107,8 +108,6 @@ export class PortfolioService {
       "Authorization": "Basic " + this.authService.getToken()
     }
   }
-
-
 
 
 

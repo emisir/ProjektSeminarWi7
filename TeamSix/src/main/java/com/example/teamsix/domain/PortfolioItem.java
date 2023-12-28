@@ -12,19 +12,25 @@ public class PortfolioItem {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
-    private String wkn;
 
     private Float purchasePrice;
+
     private Long quantity;
+
     private Date purchaseDate;
 
     private String name;
+
     @Column(length = 255)
     private String description;
 
-    private String category;
-
     private String plusButton;
+
+    private String type;
+    private String isin;
+    private Float currentPrice;
+
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "portfolio_id")
@@ -38,17 +44,18 @@ public class PortfolioItem {
         this.id = id;
     }
 
-    public PortfolioItem(Long id, String wkn, Float purchasePrice, Long quantity, Date purchaseDate,
-                         String name, String description, String category, String plusButton, Portfolio portfolio) {
+    public PortfolioItem(Long id, Float purchasePrice, Long quantity, Date purchaseDate, String name, String description,
+                         String plusButton, String type, String isin, Float currentPrice, Portfolio portfolio) {
         this.id = id;
-        this.wkn = wkn;
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
         this.purchaseDate = purchaseDate;
         this.name = name;
         this.description = description;
-        this.category = category;
-        this.plusButton= plusButton;
+        this.plusButton = plusButton;
+        this.type = type;
+        this.isin = isin;
+        this.currentPrice = currentPrice;
         this.portfolio = portfolio;
     }
 
@@ -60,13 +67,6 @@ public class PortfolioItem {
         this.id = id;
     }
 
-    public String getWkn() {
-        return wkn;
-    }
-
-    public void setWkn(String wkn) {
-        this.wkn = wkn;
-    }
     public Float getPurchasePrice() {
         return purchasePrice;
     }
@@ -115,13 +115,6 @@ public class PortfolioItem {
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
 
     public String getPlusButton() {
@@ -130,5 +123,29 @@ public class PortfolioItem {
 
     public void setPlusButton(String plusButton) {
         this.plusButton = plusButton;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getIsin() {
+        return isin;
+    }
+
+    public void setIsin(String isin) {
+        this.isin = isin;
+    }
+
+    public Float getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(Float currentPrice) {
+        this.currentPrice = currentPrice;
     }
 }

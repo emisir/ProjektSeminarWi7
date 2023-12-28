@@ -16,14 +16,9 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
   constructor(private portfolioService: PortfolioService, private _snackBar: MatSnackBar) { }
 
   formData: any = {
-    name: '',
-    wkn: '',
-    description: '',
-    purchaseDate: this.portfolioService.getCurrentDate(),
-    category: '',
+    isin: '',
     quantity: '',
-    purchasePrice: ''
-
+    purchaseDate: this.portfolioService.getCurrentDate()
   };
 
   addedSuccessfully: boolean = false;
@@ -33,12 +28,11 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     this.portfolioService.addPortfolioItems(1, this.formData).subscribe({
       next: (response) => {
-        // Erfolgreiche Antwort vom Server
         console.log('Erfolgreich hinzugefügt', response);
         this.addedSuccessfully = true;
       },
       error: (error) => {
-        this._snackBar.open("Es gab ein Fehler bei der Eingabe","Schließen")
+        this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen")
       }
     });
 
@@ -46,12 +40,9 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
 
   clean() {
     this.formData = {
-      name: '',
-      wkn: '',
-      description: '',
+      isin: '',
       purchaseDate: this.portfolioService.getCurrentDate(),
       quantity: '',
-      purchasePrice: ''
 
     }
     this.addedSuccessfully = false;

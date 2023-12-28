@@ -1,11 +1,14 @@
 export interface PortfolioDetail {
-    wkn: string
-    name: string
-    description: string
-    category: string
-    totalQuantity: number
-    averagePrice: number
-    plusButton: string
+    isin: string;
+    name: string;
+    description: string;
+    type: string;
+    currentPrice: number;
+    totalQuantity: number;
+    averagePrice: number;
+    plusButton: string;
+    profitLossPerStock: number;
+    profitLossSum: number;
     portfolioItems: PortfolioDetailItem[]
 }
 
@@ -14,5 +17,5 @@ export interface PortfolioDetailItem {
     quantity: number
     purchasePrice: number
     totalPrice: number
-    
+
 }

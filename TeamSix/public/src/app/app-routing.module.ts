@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DetailComponent } from './views/detail/detail.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
-import { BuyItemComponent } from './views/buyItem/buyItem.component'; 
+import { BuyItemComponent } from './views/buyItem/buyItem.component';
 import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
 import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
@@ -33,7 +33,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'portfolio/:id/detail/:wkn',
+    path: 'portfolio/:id/detail/:isin',
     component: DetailComponent,
   },
   {

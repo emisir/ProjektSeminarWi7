@@ -5,31 +5,29 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 
 @Component({
-    selector: 'app-buyItem',
-    templateUrl: './buyItem.component.html',
-    styleUrls: ['./buyItem.component.scss']
-  })
+  selector: 'app-buyItem',
+  templateUrl: './buyItem.component.html',
+  styleUrls: ['./buyItem.component.scss']
+})
 
-  export class BuyItemComponent implements OnInit, OnDestroy {
-    
-    private toDestroy$: Subject<void> = new Subject<void>();
-  
-   // Hier erstellen Sie ein separates Datenobjekt, um nur die benötigten Felder zu speichern
+export class BuyItemComponent implements OnInit, OnDestroy {
+
+  private toDestroy$: Subject<void> = new Subject<void>();
+
+  // Hier erstellen Sie ein separates Datenobjekt, um nur die benötigten Felder zu speichern
 
   currentPortfolioItem: PortfolioDetail = JSON.parse(localStorage.getItem('portfolioDetailItem') || '{}');
 
-  
+
 
   formData: any = {
-    name: this.currentPortfolioItem.name ,
-    wkn: this.currentPortfolioItem.wkn,
+    name: this.currentPortfolioItem.name,
+    isin: this.currentPortfolioItem.isin,
     description: this.currentPortfolioItem.description,
-    category: this.currentPortfolioItem.category,
+    type: this.currentPortfolioItem.type,
     quantity: '',
-    purchasePrice: '',
     purchaseDate: this.portfolioService.getCurrentDate(),
 
-    // Fügen Sie hier weitere Felder hinzu, die Sie benötigen
   };
 
   addedSuccessfully: boolean = false;
@@ -40,15 +38,14 @@ import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
       let inputName = document.getElementById('name') as HTMLInputElement | null;
       inputName?.setAttribute('value', this.currentPortfolioItem.name);
 
-      let inputWkn = document.getElementById('wkn') as HTMLInputElement | null;
-      inputWkn?.setAttribute('value', this.currentPortfolioItem.wkn);
+      let inputisin = document.getElementById('isin') as HTMLInputElement | null;
+      inputisin?.setAttribute('value', this.currentPortfolioItem.isin);
 
       let inputDescription = document.getElementById('description') as HTMLInputElement | null;
       inputDescription?.setAttribute('value', this.currentPortfolioItem.description);
 
-      let inputCategory = document.getElementById('category') as HTMLInputElement | null;
-      inputCategory?.setAttribute('value', this.currentPortfolioItem.category);
-
+      let inputType = document.getElementById('type') as HTMLInputElement | null;
+      inputType?.setAttribute('value', this.currentPortfolioItem.type);
     })
   }
 
@@ -64,7 +61,7 @@ import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
         this.addedSuccessfully = true;
       },
       error: (error) => {
-        this._snackBar.open("Es gab ein Fehler bei der Eingabe","Schließen")
+        this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen")
       }
     });
 
@@ -76,13 +73,13 @@ import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
     this.formData.quantity = '';
     this.formData.purchasePrice = '';
 
-  let inputQuantity = document.getElementById('quantity') as HTMLInputElement | null;
-  inputQuantity?.setAttribute('value', '');
+    let inputQuantity = document.getElementById('quantity') as HTMLInputElement | null;
+    inputQuantity?.setAttribute('value', '');
 
-  let inputPurchasePrice = document.getElementById('purchasePrice') as HTMLInputElement | null;
-  inputPurchasePrice?.setAttribute('value', '');
+    let inputPurchasePrice = document.getElementById('purchasePrice') as HTMLInputElement | null;
+    inputPurchasePrice?.setAttribute('value', '');
 
-  this.addedSuccessfully = false;
+    this.addedSuccessfully = false;
   }
 
 
