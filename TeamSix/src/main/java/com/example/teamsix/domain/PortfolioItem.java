@@ -15,6 +15,19 @@ public class PortfolioItem {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "portfolio_id")
+    @JsonBackReference
+    private Portfolio portfolio;
+
+    @ManyToMany(mappedBy = "favoritedItems")
+    private List<UserEntity> favoritedByUsers;
+
+    @ManyToOne
+    @JoinColumn(name = "username")
+    @JsonIgnore
+    private UserEntity user;
+
     private Float purchasePrice;
 
     private Long quantity;
@@ -34,18 +47,7 @@ public class PortfolioItem {
 
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "portfolio_id")
-    @JsonBackReference
-    private Portfolio portfolio;
 
-    @ManyToMany(mappedBy = "favoritedItems")
-    private List<UserEntity> favoritedByUsers;
-
-    @ManyToOne
-    @JoinColumn(name = "username")
-    @JsonIgnore
-    private UserEntity user;
 
     public PortfolioItem() {
     }

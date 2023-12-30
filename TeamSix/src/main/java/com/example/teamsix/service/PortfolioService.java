@@ -62,8 +62,6 @@ public class PortfolioService {
 
     public List<PortfolioSummary> getPortfolioSummary(Long portfolioId) {
         List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases();
-
-
         return getPortfolioSummaries(portfolioItems);
     }
 
@@ -73,9 +71,6 @@ public class PortfolioService {
         return getPortfolioSummaries(favoritedItems);
 
     }
-
-
-
 
 
     public PortfolioDetailDTO getPortfolioItemsByPortfolioId(Long portfolioId, String isin) {
@@ -213,7 +208,7 @@ public class PortfolioService {
         }
 
 
-
+//private Methods
 
         private Portfolio getPortfolio(Long portfolioId) {
         return portfolioRepository.findById(portfolioId)
@@ -234,9 +229,6 @@ public class PortfolioService {
         portfolioItem.setName(stockItem.name());
         return portfolioItem;
     }
-
-
-
 
 
     private ArrayList<PortfolioSummary> getPortfolioSummaries(List<PortfolioItem> portfolioItems) {

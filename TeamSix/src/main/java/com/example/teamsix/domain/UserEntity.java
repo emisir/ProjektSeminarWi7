@@ -20,10 +20,6 @@ public class UserEntity  {
     @JoinColumn(name = "portfolio_id")
     @JsonBackReference
     private Portfolio portfolio;
-    private String name;
-    private String password;
-
-    private String role;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -33,6 +29,13 @@ public class UserEntity  {
     )
     @JsonIgnore
     private List<PortfolioItem> favoritedItems;
+
+    private String name;
+    private String password;
+
+    private String role;
+
+
 
     public UserEntity() {
     }

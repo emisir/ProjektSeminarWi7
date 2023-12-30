@@ -10,7 +10,6 @@ import com.example.teamsix.domain.UserEntity;
 import com.example.teamsix.service.PortfolioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
