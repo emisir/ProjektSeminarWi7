@@ -21,7 +21,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of portfolioItemList">
-        <td><a (click)="onWknClick(row.isin)">{{ row.isin }}</a></td>
+        <td><a (click)="onWknClick(row.isin)">{{ row.isin}}</a></td>
         <td>{{ row.name }}</td>
         <td>{{ row.totalQuantity }}</td>
         <td [ngClass]="{'profit': row.profitLossSum > 0, 'loss': row.profitLossSum < 0}">
@@ -29,12 +29,6 @@
 
         <td>{{ row.totalPrice | currency : ' ' }} €</td>
         <td> <button class="btn" (click)="sendCurrentItem(row.isin)">+</button></td>
-        <td>
-          <mat-icon (click)="toggleFavorite(row.id)"
-            [ngClass]="{'favorite': row.isFavorite, 'not-favorite': !row.isFavorite}">
-            favorite
-          </mat-icon>
-        </td>
       </tr>
     </tbody>
   </table>

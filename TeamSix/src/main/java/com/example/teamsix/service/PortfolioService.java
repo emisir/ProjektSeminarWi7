@@ -40,6 +40,11 @@ public class PortfolioService {
         this.stockItemClient = stockItemClient;
     }
 
+    public PortfolioItem getPortfolioItemById(Long itemId) {
+        return portfolioItemRepository.findById(itemId)
+                .orElseThrow(() -> new NoSuchElementException("Portfolio Item not found with ID: " + itemId));
+    }
+
 
     public void addPortfolioItem(PortfolioItem item) {
         portfolioItemRepository.save(item);
@@ -59,36 +64,18 @@ public class PortfolioService {
         List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases();
 
 
-        Map<String, PortfolioSummary> collect = portfolioItems.stream()
-                .collect(Collectors.groupingBy(PortfolioItem::getIsin,
-                        Collectors.collectingAndThen(
-                                Collectors.toList(),
-                                portfolioItemList -> {
-                                    String isin = portfolioItemList.get(0).getIsin();
-                                    String name = portfolioItemList.get(0).getName();
-                                    long totalQuantity = portfolioItemList.stream()
-                                            .mapToLong(PortfolioItem::getQuantity)
-                                            .sum();
-                                    float totalPrice = (float) portfolioItemList.stream()
-                                            .mapToDouble(portfolioItem -> portfolioItem.getPurchasePrice() * portfolioItem.getQuantity())
-                                            .sum();
-                                    float averagePrice = totalPrice / totalQuantity;
-                                    float profitLossSum =    (totalQuantity * stockItemClient.getStockItem(apiKey,isin).price())- totalPrice;
-
-                                    return new PortfolioSummary(
-                                            portfolioItemList.get(0).getIsin(),
-                                            name,
-                                            totalQuantity,
-                                            averagePrice,
-                                            totalPrice,
-                                            profitLossSum
-                                    );
-                                }
-                        )
-                ));
-
-        return new ArrayList<>(collect.values());
+        return getPortfolioSummaries(portfolioItems);
     }
+
+    public List<PortfolioSummary> getFavPortfolioItemsByUser(String username) {
+        UserEntity user = userRepository.findByUsername(username);
+        List<PortfolioItem> favoritedItems = portfolioItemRepository.findByFavoritedByUsersContains(user);
+        return getPortfolioSummaries(favoritedItems);
+
+    }
+
+
+
 
 
     public PortfolioDetailDTO getPortfolioItemsByPortfolioId(Long portfolioId, String isin) {
@@ -144,6 +131,10 @@ public class PortfolioService {
     public List<PortfolioItem> getPortfolioItems() {
         return portfolioItemRepository.findAll();
     }
+
+
+
+
 
     public List<UserEntity> getUserEntities() {
         return userRepository.findAll();
@@ -213,9 +204,18 @@ public class PortfolioService {
         userRepository.save(userEntity);
     }
 
+        public void updateFavoriteStatus(String username, PortfolioItem item) {
+            UserEntity user = userRepository.findById(username).orElseThrow();
+            List<PortfolioItem> favorites = user.getFavoritedItems();
+            favorites.add(item);
+            user.setFavoritedItems(favorites);
+            userRepository.save(user);
+        }
 
 
-    private Portfolio getPortfolio(Long portfolioId) {
+
+
+        private Portfolio getPortfolio(Long portfolioId) {
         return portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new NoSuchElementException("Portfolio not found"));
 
@@ -236,4 +236,39 @@ public class PortfolioService {
     }
 
 
+
+
+
+    private ArrayList<PortfolioSummary> getPortfolioSummaries(List<PortfolioItem> portfolioItems) {
+        Map<String, PortfolioSummary> collect = portfolioItems.stream()
+                .collect(Collectors.groupingBy(PortfolioItem::getIsin,
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                portfolioItemList -> {
+                                    String isin = portfolioItemList.get(0).getIsin();
+                                    String name = portfolioItemList.get(0).getName();
+                                    long totalQuantity = portfolioItemList.stream()
+                                            .mapToLong(PortfolioItem::getQuantity)
+                                            .sum();
+                                    float totalPrice = (float) portfolioItemList.stream()
+                                            .mapToDouble(portfolioItem -> portfolioItem.getPurchasePrice() * portfolioItem.getQuantity())
+                                            .sum();
+                                    float averagePrice = totalPrice / totalQuantity;
+                                    float profitLossSum =    (totalQuantity * stockItemClient.getStockItem(apiKey,isin).price())- totalPrice;
+
+                                    return new PortfolioSummary(
+                                            portfolioItemList.get(0).getId(),
+                                            portfolioItemList.get(0).getIsin(),
+                                            name,
+                                            totalQuantity,
+                                            averagePrice,
+                                            totalPrice,
+                                            profitLossSum
+                                    );
+                                }
+                        )
+                ));
+
+        return new ArrayList<>(collect.values());
+    }
 }

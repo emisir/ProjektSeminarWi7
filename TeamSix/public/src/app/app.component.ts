@@ -23,6 +23,12 @@ export class AppComponent {
 
     },
     {
+      name: 'Favoriten',
+      routePath: 'favorite',
+      visible: this.auth.isAuthenticated$()
+
+    },
+    {
       name: 'Benutzer',
       routePath: 'userTable',
       visible: this.auth.isAuthenticated$()

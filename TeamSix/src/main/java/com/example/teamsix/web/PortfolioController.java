@@ -34,6 +34,11 @@ public class PortfolioController {
         return ResponseEntity.ok(portfolioItems);
     }
 
+    @GetMapping("/favorite/{username}")
+    public ResponseEntity<List<PortfolioSummary>> getFavoritePortfolioItems(@PathVariable String username) {
+        List<PortfolioSummary> favoriteItems = portfolioService.getFavPortfolioItemsByUser(username);
+        return ResponseEntity.ok(favoriteItems);
+    }
     @GetMapping("/userTable")
     public ResponseEntity<List<UserEntity>> getUserEntity(){
         List<UserEntity> userEntities = portfolioService.getUserEntities();
@@ -94,6 +99,13 @@ public class PortfolioController {
         }
     }
 
+    @PutMapping("/favorite/{username}")
+    public ResponseEntity<?> favoritePortfolioItem(@PathVariable String username, @RequestBody Long itemId) {
+        PortfolioItem item = portfolioService.getPortfolioItemById(itemId);
+        portfolioService.updateFavoriteStatus(username, item);
+        return ResponseEntity.ok().body("Item favorited successfully");
+    }
+
     @DeleteMapping("/delete-user/{username}")
     public ResponseEntity<String> deleteUserEntity(@PathVariable String username){
         boolean isRemoved = portfolioService.deleteUser(username);
@@ -113,6 +125,8 @@ public class PortfolioController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+
 
 
 

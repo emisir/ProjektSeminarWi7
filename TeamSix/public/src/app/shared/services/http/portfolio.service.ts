@@ -20,7 +20,6 @@ export class PortfolioService {
 
   portfolioList: Portfolio[] = [];
 
-
   constructor(private http: HttpClient, private authService: AuthCoreService) { }
 
   public getPortfolioSummary(id: number): Observable<PortfolioItem[]> {
@@ -32,7 +31,6 @@ export class PortfolioService {
     const urlWithId = `${this.apiUrl}/portfolio/${id}/detail/${isin}`;
     return this.http.get<PortfolioDetail>(urlWithId);
   }
-
   public getCurrentDate(): string {
     const today = new Date();
     const year = today.getFullYear();
@@ -41,7 +39,7 @@ export class PortfolioService {
     return `${year}-${month}-${day}`;
   }
 
-  public getCurrentUser(): Observable<string> {
+  public getCurrentUser(): Observable<any> {
     const urlWithCurrentUser = `${this.apiUrl}/login`;
     return this.http.get<string>(urlWithCurrentUser);
   }
@@ -54,6 +52,11 @@ export class PortfolioService {
   public getStockItemInfo(isin: string): Observable<StockItem[]> {
     const url = `${this.apiUrl}/portfolio/v1/stocks/${isin}`;
     return this.http.get<StockItem[]>(url);
+  }
+
+  public getFavoritePortfolioItems(username: string): Observable<PortfolioItem[]> {
+    const url = `${this.apiUrl}/portfolio/favorite/${username}`;
+    return this.http.get<PortfolioItem[]>(url);
   }
 
   public addPortfolioItems(id: number, formData: any): Observable<any> {
@@ -74,6 +77,10 @@ export class PortfolioService {
     };
 
     return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/buy-item`, requestData, { headers: this.getAuthHeaders() });
+  }
+
+  public favoritePortfolioItem(username: string, itemId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/portfolio/favorite/${username}`, itemId);
   }
 
 
@@ -98,9 +105,8 @@ export class PortfolioService {
       password: formData.password,
       role: formData.role,
     };
-    return this.http.put<UserEntity>(`${this.apiUrl}/portfolio/update-user/${username}`, requestData, { headers: this.getAuthHeaders() });
+    return this.http.put<UserEntity>(`${this.apiUrl}/portfolio/update-user/${username}`, requestData);
   }
-
 
 
   private getAuthHeaders(): any {

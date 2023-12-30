@@ -1,9 +1,11 @@
 package com.example.teamsix.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "portfolioitemtable")
@@ -37,15 +39,20 @@ public class PortfolioItem {
     @JsonBackReference
     private Portfolio portfolio;
 
+    @ManyToMany(mappedBy = "favoritedItems")
+    private List<UserEntity> favoritedByUsers;
+
+    @ManyToOne
+    @JoinColumn(name = "username")
+    @JsonIgnore
+    private UserEntity user;
+
     public PortfolioItem() {
     }
 
-    public PortfolioItem(Long id) {
-        this.id = id;
-    }
-
-    public PortfolioItem(Long id, Float purchasePrice, Long quantity, Date purchaseDate, String name, String description,
-                         String plusButton, String type, String isin, Float currentPrice, Portfolio portfolio) {
+    public PortfolioItem(Long id, Float purchasePrice, Long quantity, Date purchaseDate, String name, String description, String plusButton,
+                         String type, String isin, Float currentPrice,
+                         Portfolio portfolio, List<UserEntity> favoritedByUsers) {
         this.id = id;
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
@@ -57,7 +64,13 @@ public class PortfolioItem {
         this.isin = isin;
         this.currentPrice = currentPrice;
         this.portfolio = portfolio;
+        this.favoritedByUsers = favoritedByUsers;
     }
+
+    public PortfolioItem(Long id) {
+        this.id = id;
+    }
+
 
     public Long getId() {
         return id;
@@ -115,8 +128,6 @@ public class PortfolioItem {
         this.description = description;
     }
 
-
-
     public String getPlusButton() {
         return plusButton;
     }
@@ -148,4 +159,14 @@ public class PortfolioItem {
     public void setCurrentPrice(Float currentPrice) {
         this.currentPrice = currentPrice;
     }
+
+    public List<UserEntity> getFavoritedByUsers() {
+        return favoritedByUsers;
+    }
+
+    public void setFavoritedByUsers(List<UserEntity> favoritedByUsers) {
+        this.favoritedByUsers = favoritedByUsers;
+    }
+
+
 }
