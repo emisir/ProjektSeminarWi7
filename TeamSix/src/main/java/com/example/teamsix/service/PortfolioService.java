@@ -46,19 +46,10 @@ public class PortfolioService {
     }
 
 
-    public void addPortfolioItem(PortfolioItem item) {
-        portfolioItemRepository.save(item);
-    }
 
     private boolean isIsinExistsInPortfolio(Long portfolioId, String isin) {
         return portfolioItemRepository.existsByIsinAndPortfolioId(isin,portfolioId);
     }
-
-    public void addPortfolio(Portfolio portfolio) {
-        portfolioRepository.save(portfolio);
-
-    }
-
 
     public List<PortfolioSummary> getPortfolioSummary(Long portfolioId) {
         List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases();
@@ -79,7 +70,6 @@ public class PortfolioService {
         String description = portfolioItems.get(0).getDescription();
         String type = portfolioItems.get(0).getType();
         Float currentPrice = stockItemClient.getStockItem(apiKey,isin).price();
-        String plusButton = portfolioItems.get(0).getPlusButton();
 
         long totalQuantity = portfolioItems.stream()
                 .mapToLong(PortfolioItem::getQuantity)
@@ -106,7 +96,6 @@ public class PortfolioService {
                 type,
                 totalQuantity,
                 averagePrice,
-                plusButton,
                 profitLossPerStock,
                 profitLossSum,
                 currentPrice,
@@ -119,16 +108,10 @@ public class PortfolioService {
         return userRepository.findByUsername(username);
     }
 
-    public StockItemDTO getStockItem(String isin){
-        return stockItemClient.getStockItem(apiKey,isin);
-    }
 
     public List<PortfolioItem> getPortfolioItems() {
         return portfolioItemRepository.findAll();
     }
-
-
-
 
 
     public List<UserEntity> getUserEntities() {
@@ -156,6 +139,9 @@ public class PortfolioService {
         Portfolio portfolio = getPortfolio(portfolioId);
 
         String isin = saveItemDTO.getIsin();
+        if (isIsinExistsInPortfolio(portfolioId, isin)) {
+            throw new IllegalArgumentException("ISIN " + isin + " bereits vorhanden.");
+        }
 
         StockItemDTO stockItem = stockItemClient.getStockItem(apiKey, isin);
         PortfolioItem portfolioItem = getPortfolioItem(saveItemDTO, stockItem, portfolio);

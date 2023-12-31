@@ -38,14 +38,6 @@ public class Portfolio {
         this.id = id;
     }
 
-    public List<UserEntity> getUserEntities() {
-        return userEntities;
-    }
-
-    public void setUserEntities(List<UserEntity> userEntities) {
-        this.userEntities = userEntities;
-    }
-
     public List<PortfolioItem> getPurchases() {
         return purchases;
     }

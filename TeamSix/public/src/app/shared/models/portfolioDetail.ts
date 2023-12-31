@@ -6,7 +6,6 @@ export interface PortfolioDetail {
     currentPrice: number;
     totalQuantity: number;
     averagePrice: number;
-    plusButton: string;
     profitLossPerStock: number;
     profitLossSum: number;
     portfolioItems: PortfolioDetailItem[]

@@ -61,12 +61,6 @@ public class PortfolioController {
     }
 
 
-    @GetMapping("/{isin}")
-    public ResponseEntity<StockItemDTO> getStockItems(@PathVariable("isin") String isin){
-        StockItemDTO stockItems = portfolioService.getStockItem(isin);
-        return ResponseEntity.ok(stockItems);
-    }
-
     @PostMapping("/{id}/add-item")
     public ResponseEntity<String> addPortfolioItem(@PathVariable("id") Long id, @RequestBody @Valid SaveItemDTO saveItemDTO) {
         try {
@@ -78,7 +72,7 @@ public class PortfolioController {
     }
 
     @PostMapping("/{id}/buy-item")
-    public ResponseEntity<String> buyItem(@PathVariable("id") Long id,@Valid @RequestBody SaveItemDTO saveItemDTO) {
+    public ResponseEntity<String> buyItem(@PathVariable("id") Long id, @Valid @RequestBody SaveItemDTO saveItemDTO) {
         try {
             portfolioService.buyItem(id, saveItemDTO);
             return ResponseEntity.ok().build();

@@ -14,11 +14,7 @@ export class BuyItemComponent implements OnInit, OnDestroy {
 
   private toDestroy$: Subject<void> = new Subject<void>();
 
-  // Hier erstellen Sie ein separates Datenobjekt, um nur die benötigten Felder zu speichern
-
   currentPortfolioItem: PortfolioDetail = JSON.parse(localStorage.getItem('portfolioDetailItem') || '{}');
-
-
 
   formData: any = {
     name: this.currentPortfolioItem.name,

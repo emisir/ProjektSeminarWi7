@@ -1,5 +1,6 @@
 package com.example.teamsix.domain;
 
+import com.example.teamsix.DTO.StockItemDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -39,20 +40,15 @@ public class PortfolioItem {
     @Column(length = 255)
     private String description;
 
-    private String plusButton;
-
     private String type;
     private String isin;
     private Float currentPrice;
 
 
-
-
-
     public PortfolioItem() {
     }
 
-    public PortfolioItem(Long id, Float purchasePrice, Long quantity, Date purchaseDate, String name, String description, String plusButton,
+    public PortfolioItem(Long id, Float purchasePrice, Long quantity, Date purchaseDate, String name, String description,
                          String type, String isin, Float currentPrice,
                          Portfolio portfolio, List<UserEntity> favoritedByUsers) {
         this.id = id;
@@ -61,7 +57,6 @@ public class PortfolioItem {
         this.purchaseDate = purchaseDate;
         this.name = name;
         this.description = description;
-        this.plusButton = plusButton;
         this.type = type;
         this.isin = isin;
         this.currentPrice = currentPrice;
@@ -130,13 +125,6 @@ public class PortfolioItem {
         this.description = description;
     }
 
-    public String getPlusButton() {
-        return plusButton;
-    }
-
-    public void setPlusButton(String plusButton) {
-        this.plusButton = plusButton;
-    }
 
     public String getType() {
         return type;
