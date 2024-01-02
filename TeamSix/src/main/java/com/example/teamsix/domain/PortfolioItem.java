@@ -1,11 +1,9 @@
 package com.example.teamsix.domain;
 
-import com.example.teamsix.DTO.StockItemDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,11 +27,8 @@ public class PortfolioItem {
     @JsonIgnore
     private UserEntity user;
 
-    private Float purchasePrice;
-
-    private Long quantity;
-
-    private Date purchaseDate;
+    @OneToMany(mappedBy = "portfolioItem", cascade = CascadeType.ALL)
+    private List<StockOrder> stockOrder;
 
     private String name;
 
@@ -48,20 +43,19 @@ public class PortfolioItem {
     public PortfolioItem() {
     }
 
-    public PortfolioItem(Long id, Float purchasePrice, Long quantity, Date purchaseDate, String name, String description,
-                         String type, String isin, Float currentPrice,
-                         Portfolio portfolio, List<UserEntity> favoritedByUsers) {
+    public PortfolioItem(Long id, Portfolio portfolio, List<UserEntity> favoritedByUsers,
+                         UserEntity user, List<StockOrder> stockOrder, String name, String description,
+                         String type, String isin, Float currentPrice) {
         this.id = id;
-        this.purchasePrice = purchasePrice;
-        this.quantity = quantity;
-        this.purchaseDate = purchaseDate;
+        this.portfolio = portfolio;
+        this.favoritedByUsers = favoritedByUsers;
+        this.user = user;
+        this.stockOrder = stockOrder;
         this.name = name;
         this.description = description;
         this.type = type;
         this.isin = isin;
         this.currentPrice = currentPrice;
-        this.portfolio = portfolio;
-        this.favoritedByUsers = favoritedByUsers;
     }
 
     public PortfolioItem(Long id) {
@@ -75,30 +69,6 @@ public class PortfolioItem {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Float getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(Float purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
-
-    public Date getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(Date purchaseDate) {
-        this.purchaseDate = purchaseDate;
     }
 
     public Portfolio getPortfolio() {
@@ -124,7 +94,6 @@ public class PortfolioItem {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public String getType() {
         return type;
@@ -158,5 +127,19 @@ public class PortfolioItem {
         this.favoritedByUsers = favoritedByUsers;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
 
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public List<StockOrder> getStockOrder() {
+        return stockOrder;
+    }
+
+    public void setStockOrder(List<StockOrder> stockOrder) {
+        this.stockOrder = stockOrder;
+    }
 }

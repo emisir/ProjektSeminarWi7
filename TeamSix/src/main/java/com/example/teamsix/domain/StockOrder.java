@@ -1,10 +1,13 @@
 package com.example.teamsix.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
+@Table(name = "stock_order")
 public class StockOrder {
 
     @Id
@@ -19,25 +22,22 @@ public class StockOrder {
 
     @ManyToOne
     @JoinColumn(name = "portfolio_item_id")
+    @JsonIgnore
     private PortfolioItem portfolioItem;
 
 
     public StockOrder() {
     }
 
-    public StockOrder(Long id, Long quantity, Date purchaseDate, Float purchasePrice) {
-        this.id = id;
+    public StockOrder(Long quantity, Date purchaseDate, Float purchasePrice, PortfolioItem portfolioItem) {
         this.quantity = quantity;
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
+        this.portfolioItem = portfolioItem;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getQuantity() {
@@ -62,5 +62,13 @@ public class StockOrder {
 
     public void setPurchasePrice(Float purchasePrice) {
         this.purchasePrice = purchasePrice;
+    }
+
+    public PortfolioItem getPortfolioItem() {
+        return portfolioItem;
+    }
+
+    public void setPortfolioItem(PortfolioItem portfolioItem) {
+        this.portfolioItem = portfolioItem;
     }
 }

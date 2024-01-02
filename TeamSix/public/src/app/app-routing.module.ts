@@ -53,7 +53,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'buy-item',
+    path: 'portfolio/:id/buy-item/:isin',
     component: BuyItemComponent,
   },
 

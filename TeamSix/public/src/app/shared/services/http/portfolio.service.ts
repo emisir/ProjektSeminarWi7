@@ -69,14 +69,14 @@ export class PortfolioService {
     return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/add-item`, requestData, { headers: this.getAuthHeaders() });
   }
 
-  public buyItem(id: number, formData: any): Observable<any> {
+  public buyItem(id: number, isin: string, formData: any): Observable<any> {
     const requestData = {
       isin: formData.isin,
       quantity: formData.quantity,
       purchaseDate: this.getCurrentDate(),
     };
 
-    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/buy-item`, requestData, { headers: this.getAuthHeaders() });
+    return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/buy-item/${isin}`, requestData, { headers: this.getAuthHeaders() });
   }
 
   public favoritePortfolioItem(username: string, itemId: number): Observable<any> {

@@ -75,12 +75,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.router.navigate(['portfolio/1/detail', isin]); // Ersetzen Sie den Pfad entsprechend Ihrer Routing-Konfiguration
   }
 
-  async sendCurrentItem(isin: string): Promise<void> {
-    localStorage.clear()
-    this.portfolioDetailItem = await firstValueFrom(this.portfolioService.getDetailPortfolioList(1, isin));
-    localStorage.setItem('portfolioDetailItem', JSON.stringify(this.portfolioDetailItem));
-    this.router.navigate(['buy-item']);
-
+  buyItem(id: number, isin: string): void {
+    this.router.navigate(['/portfolio/1/buy-item', isin]);
   }
 
 

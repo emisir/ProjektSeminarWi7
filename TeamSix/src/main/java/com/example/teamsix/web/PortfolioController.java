@@ -1,10 +1,7 @@
 package com.example.teamsix.web;
-import com.example.teamsix.DTO.PortfolioDetailDTO;
-import com.example.teamsix.DTO.SaveItemDTO;
-import com.example.teamsix.DTO.PortfolioSummary;
+import com.example.teamsix.DTO.*;
 
 
-import com.example.teamsix.DTO.StockItemDTO;
 import com.example.teamsix.domain.PortfolioItem;
 import com.example.teamsix.domain.UserEntity;
 import com.example.teamsix.service.PortfolioService;
@@ -25,12 +22,6 @@ public class PortfolioController {
 
     public PortfolioController(PortfolioService portfolioService) {
         this.portfolioService = portfolioService;
-    }
-
-    @GetMapping()
-    public ResponseEntity<List<PortfolioItem>> getPortfolioItem(){
-        List<PortfolioItem> portfolioItems = portfolioService.getPortfolioItems();
-        return ResponseEntity.ok(portfolioItems);
     }
 
     @GetMapping("/favorite/{username}")
@@ -71,10 +62,10 @@ public class PortfolioController {
         }
     }
 
-    @PostMapping("/{id}/buy-item")
-    public ResponseEntity<String> buyItem(@PathVariable("id") Long id, @Valid @RequestBody SaveItemDTO saveItemDTO) {
+    @PostMapping("/{id}/buy-item/{isin}")
+    public ResponseEntity<String> buyItem(@PathVariable("id") Long id, @PathVariable("isin") String isin, @Valid @RequestBody SaveItemDTO saveItemDTO) {
         try {
-            portfolioService.buyItem(id, saveItemDTO);
+            portfolioService.buyItem(id,isin, saveItemDTO);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

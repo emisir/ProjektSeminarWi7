@@ -28,7 +28,7 @@
           {{ row.profitLossSum | currency : ' ' }} €</td>
 
         <td>{{ row.totalPrice | currency : ' ' }} €</td>
-        <td> <button class="btn" (click)="sendCurrentItem(row.isin)">+</button></td>
+        <td> <button class="btn" (click)="buyItem(row.id, row.isin)">+</button></td>
         <td>
           <mat-icon (click)="toggleFavorite(row.id)"
             [ngClass]="{'favorite': row.isFavorite, 'not-favorite': !row.isFavorite}">
