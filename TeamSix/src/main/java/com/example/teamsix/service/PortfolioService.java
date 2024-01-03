@@ -42,6 +42,9 @@ public class PortfolioService {
         return portfolioItemRepository.findById(itemId).orElseThrow(() -> new NoSuchElementException("Portfolio Item not found with ID: " + itemId));
     }
 
+    public List<PortfolioItem> getPortfolioItems() {
+        return portfolioItemRepository.findAll();
+    }
 
     private boolean isIsinExistsInPortfolio(Long portfolioId, String isin) {
         return portfolioItemRepository.existsByIsinAndPortfolioId(isin, portfolioId);

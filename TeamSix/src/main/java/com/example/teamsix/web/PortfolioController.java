@@ -24,6 +24,12 @@ public class PortfolioController {
         this.portfolioService = portfolioService;
     }
 
+    @GetMapping()
+    public ResponseEntity<List<PortfolioItem>> getPortfolioItem(){
+        List<PortfolioItem> portfolioItems = portfolioService.getPortfolioItems();
+        return ResponseEntity.ok(portfolioItems);
+    }
+
     @GetMapping("/favorite/{username}")
     public ResponseEntity<List<PortfolioSummary>> getFavoritePortfolioItems(@PathVariable String username) {
         List<PortfolioSummary> favoriteItems = portfolioService.getFavPortfolioItemsByUser(username);
