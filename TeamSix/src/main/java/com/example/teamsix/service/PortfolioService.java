@@ -186,16 +186,27 @@ public class PortfolioService {
     public void updateFavoriteStatus(String username, PortfolioItem item) {
         UserEntity user = userRepository.findById(username).orElseThrow();
         List<PortfolioItem> favorites = user.getFavoritedItems();
-        item.setFavorite(true);
-        if (!favorites.contains(item)) {
-            favorites.add(item);
-            user.setFavoritedItems(favorites);
-            userRepository.save(user);
+
+        if (item.isFavorite()) {
+            if (favorites.contains(item)) {
+                favorites.remove(item);
+                item.setFavorite(false);
+                user.setFavoritedItems(favorites);
+                userRepository.save(user);
+            } else {
+                throw new IllegalArgumentException("Item ist nicht in der Favoritenliste.");
+            }
         } else {
-            throw new IllegalArgumentException("Item is already in the favorites list.");
+            item.setFavorite(true);
+            if (!favorites.contains(item)) {
+                favorites.add(item);
+                user.setFavoritedItems(favorites);
+                userRepository.save(user);
+            } else {
+                throw new IllegalArgumentException("Item ist bereits in der Favoritenliste.");
+            }
         }
     }
-
 
 
 //private Methods

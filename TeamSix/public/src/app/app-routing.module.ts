@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { DetailComponent } from './views/detail/detail.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
-import { BuyItemComponent } from './views/buyItem/buyItem.component';
-import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
 import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
 import { LogoutComponent } from './views/logout/logout.component';
@@ -34,29 +32,18 @@ const routes: Routes = [
     component: OverviewComponent,
   },
   {
+    path: 'portfolio/:id/detail/:isin',
+    component: DetailComponent,
+  },
+  {
     path: 'favorite',
     component: FavoriteComponent,
   },
 
   {
-    path: 'portfolio/:id/detail/:isin',
-    component: DetailComponent,
-  },
-  {
     path: 'userTable',
     component: UserTableComponent,
   },
-
-  {
-    path: 'add-item',
-    component: AddPortfolioItemComponent,
-  },
-
-  {
-    path: 'portfolio/:id/buy-item/:isin',
-    component: BuyItemComponent,
-  },
-
   {
     path: 'impressum',
     component: ImpressumComponent,

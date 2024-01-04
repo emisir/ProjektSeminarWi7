@@ -43,24 +43,15 @@ export class UserTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadUserList();
-
     this.portfolioService.getUserEntity().subscribe((response: UserEntity[]) => {
       this.userEntityList = response;
       console.log('Daten empfangen:', this.userEntityList);
     });
-
-
   }
-  ngOnDestroy(): void {
-    this.toDestroy$.next();
-    this.toDestroy$.complete();
-  }
-
 
   maskPassword(password: string): string {
     return '●●●●●●●●';
   }
-
 
   loadUserList(): void {
     this.portfolioService.getUserEntity().subscribe({
@@ -145,6 +136,10 @@ export class UserTableComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngOnDestroy(): void {
+    this.toDestroy$.next();
+    this.toDestroy$.complete();
+  }
 
 }
 

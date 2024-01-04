@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { UserEntity } from 'src/app/shared/models/userEntity';
 import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { AddItemDialogComponent } from 'src/app/shared/components/add-item-dialog/add-item-dialog.component';
+import { BuyStockItemDialogComponent } from 'src/app/shared/components/buy-stock-item-dialog/buy-stock-item-dialog.component';
 
 
 @Component({
@@ -31,9 +34,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
   private toDestroy$: Subject<void> = new Subject<void>();
   private currentUsername!: string;
   public currentUser: string = "";
+  isLoadingDelete = false;
+  isLoadingAdd = false;
 
 
-  constructor(private portfolioService: PortfolioService, private router: Router, private _snackBar: MatSnackBar) {
+  constructor(private portfolioService: PortfolioService, private router: Router, private _snackBar: MatSnackBar, public dialog: MatDialog) {
 
   } // private productsHttpService: ProductHttpService
 
@@ -46,18 +51,17 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.portfolioService.getCurrentUser().subscribe((user: any) => {
       this.currentUsername = user.username;
     }, error => {
-      console.error('Error fetching current user:', error);
+      console.error('Fehler:', error);
     });
 
     this.portfolioService.getCurrentUser().subscribe((user: any) => {
       this.currentUser = user.name;
     }, error => {
-      console.error('Error fetching current user:', error);
+      console.error('Fehler:', error);
     });
+
+    this.loadPortfolioList();
   }
-
-
-
 
   toggleFavorite(itemId: number): void {
     const item = this.portfolioItemList.find(item => item.id === itemId);
@@ -73,17 +77,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
         );
       }
     } else {
-      this._snackBar.open("Item not found in the portfolioItemList", "Schließen")
+      this._snackBar.open("Item nicht gefunden in portfolioItemList", "Schließen")
     }
   }
 
-
-
-  onWknClick(isin: string): void {
-    this.router.navigate(['portfolio/1/detail', isin]); // Ersetzen Sie den Pfad entsprechend Ihrer Routing-Konfiguration
+  onIsinClick(isin: string): void {
+    this.router.navigate(['portfolio/1/detail', isin]);
   }
 
   deletePortfolioItem(id: number): void {
+    this.isLoadingDelete = true; // Start loading
     this.portfolioService.deletePortfolioItem(id).subscribe({
       next: (response) => {
         console.log('Portfolio item mit der id ' + id + ' wurde gelöscht', response);
@@ -92,24 +95,54 @@ export class OverviewComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error('Fehler beim Löschen', error);
         this._snackBar.open("Fehler beim Löschen des Portfolioitems", "Close");
+      },
+      complete: () => {
+        this.isLoadingDelete = false; // Stop loading
       }
     });
   }
 
   loadPortfolioList(): void {
+    this.isLoadingResults = true; // Start loading
     this.portfolioService.getPortfolioSummary(1).subscribe({
       next: (items) => {
         this.portfolioItemList = items;
-        console.log("laden", items)
+        console.log("laden", items);
+        this.isLoadingResults = false; // Stop loading
       },
       error: (error) => {
+        console.error('Fehler beim Laden der Liste', error);
         this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen");
+        this.isLoadingResults = false; // Stop loading even on error
       }
     });
   }
 
-  buyItem(id: number, isin: string): void {
-    this.router.navigate(['/portfolio/1/buy-item', isin]);
+  openAddDialog(): void {
+    this.isLoadingAdd = true; // Start loading
+    const dialogRef = this.dialog.open(AddItemDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.isLoadingAdd = false; // Stop loading
+      if (result === 'added') {
+        this.loadPortfolioList();
+      }
+    });
+  }
+
+  openBuyStockItemDialog(isin: string): void {
+    this.isLoadingAdd = true; // Start loading
+
+    const dialogRef = this.dialog.open(BuyStockItemDialogComponent, {
+      data: { isin: isin }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.isLoadingAdd = false; // Stop loading
+      if (result === 'added') {
+        this.loadPortfolioList();
+      }
+    });
   }
 
 
@@ -117,4 +150,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.toDestroy$.next();
     this.toDestroy$.complete();
   }
+
+
 }

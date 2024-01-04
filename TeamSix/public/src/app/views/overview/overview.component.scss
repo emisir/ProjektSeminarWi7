@@ -11,6 +11,24 @@
   color: white;
 }
 
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 1000;
+}
+
+.mat-spinner {
+  margin: 20px auto;
+  display: block;
+}
+
 /* Container */
 .container {
   position: relative;
@@ -44,19 +62,29 @@ td {
   font-weight: bold;
 }
 
-/* Buy Container */
+
+.btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #1976d2;
+  color: #ffffff;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+}
+
 .buy-container {
   text-align: end;
   margin: 2vh 5vh;
 }
 
-.buy-container p {
-  font-size: 20px;
-  color: #333;
+.buy-p {
+  font-size: 18px;
+  color: #333333;
 }
 
 /* Button Styles */
-.add-button,
 .buy-button,
 .delete-button,
 .favorite-button {
@@ -99,14 +127,10 @@ td {
   color: red;
 }
 
-/* Favorites */
-.favorite {
-  color: red;
-}
-
-.not-favorite {
+.favorite-button {
   color: black;
 }
+
 
 /* Paginator */
 .paginator-container {

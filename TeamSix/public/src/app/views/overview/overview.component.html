@@ -1,51 +1,54 @@
-<mat-toolbar color="primary">
-  <span class="header-title" [routerLink]="'/portfolio'">Dein Portfolio - {{currentUser}}</span>
-  <span class="spacer"></span>
-</mat-toolbar>
-<section class="buy-container">
-  <p>Kaufen
-    <a href="http://localhost:4200/add-item"><mat-icon class="add-button">add_circle</mat-icon></a>
-  </p>
-</section>
-
-<div class="table-container">
-  <table class="portfolio-table">
-    <thead>
-      <tr class="table-header">
-        <th>ISIN</th>
-        <th>Name</th>
-        <th>Anzahl</th>
-        <th>Gewinn/Verlust</th>
-        <th>Aktueller Gesamtpreis</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of portfolioItemList">
-        <td><a (click)="onWknClick(row.isin)">{{ row.isin }}</a></td>
-        <td>{{ row.name }}</td>
-        <td>{{ row.totalQuantity }}</td>
-        <td [ngClass]="{'profit': row.profitLossSum > 0, 'loss': row.profitLossSum < 0}">
-          {{ row.profitLossSum | currency : ' ' }} €</td>
-        <td>{{ row.totalPrice | currency : ' ' }} €</td>
-        <td class="action-buttons">
-          <button class="buy-button" (click)="buyItem(row.id, row.isin)"><mat-icon>add_circle</mat-icon>
-          </button>
-          <button class="delete-button" (click)="deletePortfolioItem(row.id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button class="favorite-button">
-            <mat-icon (click)="toggleFavorite(row.id)"
-              [ngClass]="{'favorite': row.isFavorite, 'not-favorite': !row.isFavorite}"
-              matTooltip="Favorisieren">favorite</mat-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div *ngIf="isLoadingResults" class="spinner-container">
+  <mat-spinner diameter="50"></mat-spinner>
 </div>
 
+<div *ngIf="!isLoadingResults">
+  <mat-toolbar color="primary">
+    <span class="header-title" [routerLink]="'/portfolio'">Dein Portfolio - {{currentUser}}</span>
+    <span class="spacer"></span>
+  </mat-toolbar>
 
-<div class="paginator-container">
-  <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of products"></mat-paginator>
-</div>
+  <div class="buy-container">
+    <p class="buy-p">kaufen <button class="btn" (click)="openAddDialog()">+</button></p>
+  </div>
+
+  <div class="table-container">
+    <table class="portfolio-table">
+      <thead>
+        <tr class="table-header">
+          <th>ISIN</th>
+          <th>Name</th>
+          <th>Anzahl</th>
+          <th>Gewinn/Verlust</th>
+          <th>Aktueller Gesamtpreis</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of portfolioItemList">
+          <td><a (click)="onIsinClick(row.isin)">{{ row.isin }}</a></td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.totalQuantity }}</td>
+          <td [ngClass]="{'profit': row.profitLossSum > 0, 'loss': row.profitLossSum < 0}">
+            {{ row.profitLossSum | currency : ' ' }} €</td>
+          <td>{{ row.totalPrice | currency : ' ' }} €</td>
+          <td class="action-buttons">
+            <button class="buy-button" (click)="openBuyStockItemDialog(row.isin)"><mat-icon>add_circle</mat-icon>
+            </button>
+            <button class="delete-button" (click)="deletePortfolioItem(row.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button class="favorite-button">
+              <mat-icon (click)="toggleFavorite(row.id)" matTooltip="Favorisieren">favorite</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+
+  <div class="paginator-container">
+    <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of products"></mat-paginator>
+  </div>
