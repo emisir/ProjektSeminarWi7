@@ -33,7 +33,7 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.log(this.formData)
-        this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen")
+        this._snackBar.open("Dieses Portfolioitem mit der Isin " + this.formData.isin + " gibt es schon", "Schließen")
       }
     });
 

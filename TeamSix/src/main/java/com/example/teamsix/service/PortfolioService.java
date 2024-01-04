@@ -11,6 +11,7 @@ import com.example.teamsix.persistance.PortfolioItemRepository;
 import com.example.teamsix.persistance.PortfolioRepository;
 import com.example.teamsix.persistance.UserRepository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -151,6 +152,27 @@ public class PortfolioService {
         }
     }
 
+    public boolean deletePortfolioItem(Long portfolioItemId) {
+        // Find the PortfolioItem by ID
+        Optional<PortfolioItem> portfolioItemOptional = portfolioItemRepository.findById(portfolioItemId);
+
+        if (portfolioItemOptional.isPresent()) {
+            PortfolioItem portfolioItem = portfolioItemOptional.get();
+            Portfolio portfolio = portfolioItem.getPortfolio();
+
+            // Remove the PortfolioItem from the Portfolio's purchases list
+            portfolio.getPurchases().remove(portfolioItem);
+
+            // Save the updated Portfolio
+            portfolioRepository.save(portfolio);
+
+            // Delete the PortfolioItem
+            portfolioItemRepository.delete(portfolioItem);
+            return true;
+        } else {
+            return false;
+        }
+    }
     public void updateUserEntity(String username, UserEntity userEntityDetails) {
         UserEntity userEntity = userRepository.findByUsername(username);
 
@@ -164,10 +186,16 @@ public class PortfolioService {
     public void updateFavoriteStatus(String username, PortfolioItem item) {
         UserEntity user = userRepository.findById(username).orElseThrow();
         List<PortfolioItem> favorites = user.getFavoritedItems();
-        favorites.add(item);
-        user.setFavoritedItems(favorites);
-        userRepository.save(user);
+        item.setFavorite(true);
+        if (!favorites.contains(item)) {
+            favorites.add(item);
+            user.setFavoritedItems(favorites);
+            userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("Item is already in the favorites list.");
+        }
     }
+
 
 
 //private Methods

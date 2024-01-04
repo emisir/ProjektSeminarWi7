@@ -19,15 +19,17 @@ public class PortfolioItem {
     @JsonBackReference
     private Portfolio portfolio;
 
-    @ManyToMany(mappedBy = "favoritedItems")
+    @ManyToMany(mappedBy = "favoritedItems", cascade = CascadeType.ALL)
     private List<UserEntity> favoritedByUsers;
+
+    private boolean isFavorite;
 
     @ManyToOne
     @JoinColumn(name = "username")
     @JsonIgnore
     private UserEntity user;
 
-    @OneToMany(mappedBy = "portfolioItem", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "portfolioItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StockOrder> stockOrder;
 
     private String name;
@@ -43,12 +45,13 @@ public class PortfolioItem {
     public PortfolioItem() {
     }
 
-    public PortfolioItem(Long id, Portfolio portfolio, List<UserEntity> favoritedByUsers,
+    public PortfolioItem(Long id, Portfolio portfolio, List<UserEntity> favoritedByUsers, boolean isFavorite,
                          UserEntity user, List<StockOrder> stockOrder, String name, String description,
                          String type, String isin, Float currentPrice) {
         this.id = id;
         this.portfolio = portfolio;
         this.favoritedByUsers = favoritedByUsers;
+        this.isFavorite = isFavorite;
         this.user = user;
         this.stockOrder = stockOrder;
         this.name = name;
@@ -125,6 +128,14 @@ public class PortfolioItem {
 
     public void setFavoritedByUsers(List<UserEntity> favoritedByUsers) {
         this.favoritedByUsers = favoritedByUsers;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public UserEntity getUser() {

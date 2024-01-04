@@ -96,6 +96,16 @@ public class PortfolioController {
         return ResponseEntity.ok().body("Item favorited successfully");
     }
 
+    @DeleteMapping("/delete-portfolioItem/{id}")
+    public ResponseEntity<String> deletePortfolioItem(@PathVariable Long id){
+        boolean isRemoved = portfolioService.deletePortfolioItem(id);
+        if (!isRemoved){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
     @DeleteMapping("/delete-user/{username}")
     public ResponseEntity<String> deleteUserEntity(@PathVariable String username){
         boolean isRemoved = portfolioService.deleteUser(username);
