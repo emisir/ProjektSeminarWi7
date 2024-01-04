@@ -31,7 +31,7 @@ export class FavoriteComponent implements OnInit, OnDestroy {
 
   constructor(private portfolioService: PortfolioService, private router: Router) { } // private productsHttpService: ProductHttpService
 
-  
+
   ngOnInit(): void {
     this.portfolioService.getCurrentUser().subscribe((user: UserEntity) => {
       this.portfolioService.getFavoritePortfolioItems(user.username).subscribe((response: PortfolioItem[]) => {
@@ -44,8 +44,12 @@ export class FavoriteComponent implements OnInit, OnDestroy {
       console.error('Error fetching current user:', error);
     });
   }
-  onWknClick(isin: string): void {
-    this.router.navigate(['portfolio/1/detail', isin ]); // Ersetzen Sie den Pfad entsprechend Ihrer Routing-Konfiguration
+
+  buyItem(id: number, isin: string): void {
+    this.router.navigate(['/portfolio/1/buy-item', isin]);
+  }
+  onIsinClick(isin: string): void {
+    this.router.navigate(['portfolio/1/detail', isin]); // Ersetzen Sie den Pfad entsprechend Ihrer Routing-Konfiguration
   }
 
   async sendCurrentItem(isin: string): Promise<void> {

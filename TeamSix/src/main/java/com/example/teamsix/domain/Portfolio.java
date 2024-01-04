@@ -34,10 +34,6 @@ public class Portfolio {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public List<PortfolioItem> getPurchases() {
         return purchases;
     }
@@ -45,7 +41,6 @@ public class Portfolio {
     public void setPurchases(List<PortfolioItem> purchases) {
         this.purchases = purchases;
     }
-
 
 
 }
