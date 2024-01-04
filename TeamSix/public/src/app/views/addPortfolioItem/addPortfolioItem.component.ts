@@ -32,6 +32,7 @@ export class AddPortfolioItemComponent implements OnInit, OnDestroy {
         this.addedSuccessfully = true;
       },
       error: (error) => {
+        console.log(this.formData)
         this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen")
       }
     });

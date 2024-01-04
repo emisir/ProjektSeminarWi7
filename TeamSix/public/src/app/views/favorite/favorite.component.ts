@@ -11,10 +11,10 @@ import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 
 @Component({
   selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss'],
+  templateUrl: './favorite.component.html',
+  styleUrls: ['./favorite.component.scss'],
 })
-export class OverviewComponent implements OnInit, OnDestroy {
+export class FavoriteComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -28,55 +28,36 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public userEntityList: UserEntity[] = [];
   public portfolioDetailItem: PortfolioDetail | undefined;
   private toDestroy$: Subject<void> = new Subject<void>();
-  private currentUsername!: string;
 
+  constructor(private portfolioService: PortfolioService, private router: Router) { } // private productsHttpService: ProductHttpService
 
-  constructor(private portfolioService: PortfolioService, private router: Router) {
-
-  } // private productsHttpService: ProductHttpService
 
   ngOnInit(): void {
-    this.portfolioService.getPortfolioSummary(1).subscribe((response: PortfolioItem[]) => {
-      this.portfolioItemList = response;
-      console.log('Daten empfangen:', this.portfolioItemList);
-    });
-
-    this.portfolioService.getCurrentUser().subscribe((user: any) => {
-      this.currentUsername = user.username;
+    this.portfolioService.getCurrentUser().subscribe((user: UserEntity) => {
+      this.portfolioService.getFavoritePortfolioItems(user.username).subscribe((response: PortfolioItem[]) => {
+        this.portfolioItemList = response;
+        console.log('Favorite data received:', this.portfolioItemList);
+      }, error => {
+        console.error('Error fetching favorite portfolio items:', error);
+      });
     }, error => {
       console.error('Error fetching current user:', error);
     });
   }
 
-
-
-
-  toggleFavorite(itemId: number): void {
-    const item = this.portfolioItemList.find(item => item.id === itemId);
-    if (item) {
-      item.isFavorite = !item.isFavorite;
-      this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
-        response => {
-          console.log('Status aktualisiert', response);
-        },
-        error => {
-          console.error('Fehler beim Aktualisieren des Status', error);
-          console.log("daten", this.currentUsername, itemId);
-        }
-
-      );
-    }
+  buyItem(id: number, isin: string): void {
+    this.router.navigate(['/portfolio/1/buy-item', isin]);
   }
-
-
-
-
-  onWknClick(isin: string): void {
+  onIsinClick(isin: string): void {
     this.router.navigate(['portfolio/1/detail', isin]); // Ersetzen Sie den Pfad entsprechend Ihrer Routing-Konfiguration
   }
 
-  buyItem(id: number, isin: string): void {
-    this.router.navigate(['/portfolio/1/buy-item', isin]);
+  async sendCurrentItem(isin: string): Promise<void> {
+    localStorage.clear()
+    this.portfolioDetailItem = await firstValueFrom(this.portfolioService.getDetailPortfolioList(1, isin));
+    localStorage.setItem('portfolioDetailItem', JSON.stringify(this.portfolioDetailItem));
+    this.router.navigate(['buy-item']);
+
   }
 
 

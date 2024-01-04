@@ -23,6 +23,8 @@ import { OverviewComponent } from './views/overview/overview.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
 import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
 import { BuyItemComponent } from './views/buyItem/buyItem.component';
+import { FavoriteComponent } from './views/favorite/favorite.component';
+
 
 
 
@@ -32,6 +34,7 @@ import { BuyItemComponent } from './views/buyItem/buyItem.component';
   declarations: [
     AppComponent,
     OverviewComponent,
+    FavoriteComponent,
     DetailComponent,
     ImpressumComponent,
     AddPortfolioItemComponent,

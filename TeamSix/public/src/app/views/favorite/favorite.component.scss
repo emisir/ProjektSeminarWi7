@@ -54,60 +54,10 @@ a {
   color: black;
 }
 
-
-.button {
-  border-radius: 50%;
-  color: black;
-
-}
-
-.btn {
-  border-radius: 50%;
-  color: black;
-
-}
-
-p {
-  text-align: right;
-  padding: 10px;
-}
-
-.button {
-  border-radius: 50%;
-  color: black;
-}
-
-.btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #1976d2;
-  color: #ffffff;
-  font-size: 20px;
-  border: none;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background-color: #0056b3;
-
-}
-
-
-.profit {
-  color: green;
-}
-
-.loss {
-  color: red;
-}
-
-.favorite {
-  color: red;
-}
-
-.not-favorite {
-  color: black;
+.buy-p {
+  font-size: 18px;
+  /* Schriftgröße für den Text anpassen */
+  color: #333333;
 }
 
 .button {
@@ -142,7 +92,6 @@ p {
 
 
 .paginator-container {
-
   position: fixed;
   left: 0;
   bottom: 0;

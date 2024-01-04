@@ -1,16 +1,12 @@
 package com.example.teamsix.web;
-import com.example.teamsix.DTO.PortfolioDetailDTO;
-import com.example.teamsix.DTO.SaveItemDTO;
-import com.example.teamsix.DTO.PortfolioSummary;
+import com.example.teamsix.DTO.*;
 
 
-import com.example.teamsix.DTO.StockItemDTO;
 import com.example.teamsix.domain.PortfolioItem;
 import com.example.teamsix.domain.UserEntity;
 import com.example.teamsix.service.PortfolioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -34,6 +30,11 @@ public class PortfolioController {
         return ResponseEntity.ok(portfolioItems);
     }
 
+    @GetMapping("/favorite/{username}")
+    public ResponseEntity<List<PortfolioSummary>> getFavoritePortfolioItems(@PathVariable String username) {
+        List<PortfolioSummary> favoriteItems = portfolioService.getFavPortfolioItemsByUser(username);
+        return ResponseEntity.ok(favoriteItems);
+    }
     @GetMapping("/userTable")
     public ResponseEntity<List<UserEntity>> getUserEntity(){
         List<UserEntity> userEntities = portfolioService.getUserEntities();
@@ -57,12 +58,6 @@ public class PortfolioController {
     }
 
 
-    @GetMapping("/{isin}")
-    public ResponseEntity<StockItemDTO> getStockItems(@PathVariable("isin") String isin){
-        StockItemDTO stockItems = portfolioService.getStockItem(isin);
-        return ResponseEntity.ok(stockItems);
-    }
-
     @PostMapping("/{id}/add-item")
     public ResponseEntity<String> addPortfolioItem(@PathVariable("id") Long id, @RequestBody @Valid SaveItemDTO saveItemDTO) {
         try {
@@ -73,10 +68,10 @@ public class PortfolioController {
         }
     }
 
-    @PostMapping("/{id}/buy-item")
-    public ResponseEntity<String> buyItem(@PathVariable("id") Long id,@Valid @RequestBody SaveItemDTO saveItemDTO) {
+    @PostMapping("/{id}/buy-item/{isin}")
+    public ResponseEntity<String> buyItem(@PathVariable("id") Long id, @PathVariable("isin") String isin, @Valid @RequestBody SaveItemDTO saveItemDTO) {
         try {
-            portfolioService.buyItem(id, saveItemDTO);
+            portfolioService.buyItem(id,isin, saveItemDTO);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -92,6 +87,13 @@ public class PortfolioController {
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PutMapping("/favorite/{username}")
+    public ResponseEntity<?> favoritePortfolioItem(@PathVariable String username, @RequestBody Long itemId) {
+        PortfolioItem item = portfolioService.getPortfolioItemById(itemId);
+        portfolioService.updateFavoriteStatus(username, item);
+        return ResponseEntity.ok().body("Item favorited successfully");
     }
 
     @DeleteMapping("/delete-user/{username}")
@@ -113,6 +115,8 @@ public class PortfolioController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+
 
 
 

@@ -1,9 +1,10 @@
 package com.example.teamsix.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "portfolioitemtable")
@@ -13,51 +14,54 @@ public class PortfolioItem {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Float purchasePrice;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "portfolio_id")
+    @JsonBackReference
+    private Portfolio portfolio;
 
-    private Long quantity;
+    @ManyToMany(mappedBy = "favoritedItems")
+    private List<UserEntity> favoritedByUsers;
 
-    private Date purchaseDate;
+    @ManyToOne
+    @JoinColumn(name = "username")
+    @JsonIgnore
+    private UserEntity user;
+
+    @OneToMany(mappedBy = "portfolioItem", cascade = CascadeType.ALL)
+    private List<StockOrder> stockOrder;
 
     private String name;
 
     @Column(length = 255)
     private String description;
 
-    private String plusButton;
-
     private String type;
     private String isin;
     private Float currentPrice;
 
 
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "portfolio_id")
-    @JsonBackReference
-    private Portfolio portfolio;
-
     public PortfolioItem() {
+    }
+
+    public PortfolioItem(Long id, Portfolio portfolio, List<UserEntity> favoritedByUsers,
+                         UserEntity user, List<StockOrder> stockOrder, String name, String description,
+                         String type, String isin, Float currentPrice) {
+        this.id = id;
+        this.portfolio = portfolio;
+        this.favoritedByUsers = favoritedByUsers;
+        this.user = user;
+        this.stockOrder = stockOrder;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.isin = isin;
+        this.currentPrice = currentPrice;
     }
 
     public PortfolioItem(Long id) {
         this.id = id;
     }
 
-    public PortfolioItem(Long id, Float purchasePrice, Long quantity, Date purchaseDate, String name, String description,
-                         String plusButton, String type, String isin, Float currentPrice, Portfolio portfolio) {
-        this.id = id;
-        this.purchasePrice = purchasePrice;
-        this.quantity = quantity;
-        this.purchaseDate = purchaseDate;
-        this.name = name;
-        this.description = description;
-        this.plusButton = plusButton;
-        this.type = type;
-        this.isin = isin;
-        this.currentPrice = currentPrice;
-        this.portfolio = portfolio;
-    }
 
     public Long getId() {
         return id;
@@ -65,30 +69,6 @@ public class PortfolioItem {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Float getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(Float purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
-
-    public Date getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(Date purchaseDate) {
-        this.purchaseDate = purchaseDate;
     }
 
     public Portfolio getPortfolio() {
@@ -115,16 +95,6 @@ public class PortfolioItem {
         this.description = description;
     }
 
-
-
-    public String getPlusButton() {
-        return plusButton;
-    }
-
-    public void setPlusButton(String plusButton) {
-        this.plusButton = plusButton;
-    }
-
     public String getType() {
         return type;
     }
@@ -147,5 +117,29 @@ public class PortfolioItem {
 
     public void setCurrentPrice(Float currentPrice) {
         this.currentPrice = currentPrice;
+    }
+
+    public List<UserEntity> getFavoritedByUsers() {
+        return favoritedByUsers;
+    }
+
+    public void setFavoritedByUsers(List<UserEntity> favoritedByUsers) {
+        this.favoritedByUsers = favoritedByUsers;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public List<StockOrder> getStockOrder() {
+        return stockOrder;
+    }
+
+    public void setStockOrder(List<StockOrder> stockOrder) {
+        this.stockOrder = stockOrder;
     }
 }

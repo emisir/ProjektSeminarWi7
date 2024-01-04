@@ -13,7 +13,7 @@ export class PortfolioItem {
     totalPrice: number;
     averagePrice: number;
     profitLossSum: number;
-    plusButton: string;
+    isFavorite: boolean;
 
     constructor(
         id: number,
@@ -29,7 +29,7 @@ export class PortfolioItem {
         totalPrice: number,
         averagePrice: number,
         profitLossSum: number,
-        plusButton: string,
+        isFavorite: boolean,
 
     ) {
         this.id = id;
@@ -45,7 +45,7 @@ export class PortfolioItem {
         this.totalPrice = totalPrice;
         this.averagePrice = averagePrice;
         this.profitLossSum = profitLossSum;
-        this.plusButton = plusButton;
+        this.isFavorite = isFavorite;
     }
 
 }

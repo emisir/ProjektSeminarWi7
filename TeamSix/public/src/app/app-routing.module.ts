@@ -10,6 +10,8 @@ import { LoginComponent } from './views/login/login.component';
 import { LogoutComponent } from './views/logout/logout.component';
 import { AuthGuardService } from './shared/auth-core/auth-guard.service';
 import { UserTableComponent } from './views/userTable/userTable.component';
+import { FavoriteComponent } from './views/favorite/favorite.component';
+
 
 
 const routes: Routes = [
@@ -31,6 +33,10 @@ const routes: Routes = [
     path: 'portfolio',
     component: OverviewComponent,
   },
+  {
+    path: 'favorite',
+    component: FavoriteComponent,
+  },
 
   {
     path: 'portfolio/:id/detail/:isin',
@@ -47,7 +53,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'buy-item',
+    path: 'portfolio/:id/buy-item/:isin',
     component: BuyItemComponent,
   },
 

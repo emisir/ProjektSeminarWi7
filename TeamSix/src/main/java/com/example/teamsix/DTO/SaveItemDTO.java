@@ -16,6 +16,7 @@ public class SaveItemDTO {
     @NotNull(message = "Kaufdatum darf nicht null sein")
     private Date purchaseDate;
 
+
     public SaveItemDTO() {
     }
 

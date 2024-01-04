@@ -1,6 +1,7 @@
 package com.example.teamsix.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import javax.sound.sampled.Port;
@@ -19,10 +20,22 @@ public class UserEntity  {
     @JoinColumn(name = "portfolio_id")
     @JsonBackReference
     private Portfolio portfolio;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_favorites",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "portfolio_item_id")
+    )
+    @JsonIgnore
+    private List<PortfolioItem> favoritedItems;
+
     private String name;
     private String password;
 
     private String role;
+
+
 
     public UserEntity() {
     }
@@ -65,5 +78,13 @@ public class UserEntity  {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<PortfolioItem> getFavoritedItems() {
+        return favoritedItems;
+    }
+
+    public void setFavoritedItems(List<PortfolioItem> favoritedItems) {
+        this.favoritedItems = favoritedItems;
     }
 }

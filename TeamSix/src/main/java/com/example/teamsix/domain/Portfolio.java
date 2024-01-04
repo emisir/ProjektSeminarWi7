@@ -34,18 +34,6 @@ public class Portfolio {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public List<UserEntity> getUserEntities() {
-        return userEntities;
-    }
-
-    public void setUserEntities(List<UserEntity> userEntities) {
-        this.userEntities = userEntities;
-    }
-
     public List<PortfolioItem> getPurchases() {
         return purchases;
     }
@@ -53,7 +41,6 @@ public class Portfolio {
     public void setPurchases(List<PortfolioItem> purchases) {
         this.purchases = purchases;
     }
-
 
 
 }

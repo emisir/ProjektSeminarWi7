@@ -3,7 +3,7 @@
     <form (ngSubmit)="onSubmit()" #portfolioItemForm="ngForm" class="content">
 
         <div>
-            <label for="isin">Wkn/Isin:</label>
+            <label for="isin">Isin:</label>
             <input type="text" name="isin" [(ngModel)]="formData.isin">
         </div>
         <div>
@@ -21,23 +21,3 @@
     <button (click)="clean()">Erneut Hinzufügen</button>
     <button routerLink="/portfolio">Zurück zu Portfolio</button>
 </div>
-
-
-
-<!-- <div>
-            <label for="name">Name:</label>
-            <input type="text" name="name" required [(ngModel)]="formData.name" disabled>
-        </div>
-
-        <div>
-            <label for="description">Beschreibung:</label>
-            <input type="text" name="description" required [(ngModel)]="formData.description" disabled>
-        </div>
-        <div>
-            <label for="category">Kategorie:</label>
-            <input type="text" name="category" required [(ngModel)]="formData.category" disabled>
-        </div>
-        <div>
-            <label for="purchasePrice">Kaufpreis:</label>
-            <input type="text" name="purchasePrice" required [(ngModel)]="formData.purchasePrice" disabled>
-        </div> -->
