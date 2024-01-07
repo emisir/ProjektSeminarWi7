@@ -1,6 +1,6 @@
 
 export interface PortfolioSummary {
-    wkn: string;
+    isin: string;
     totalQuantity: number;
     totalPrice: number;
 }

@@ -24,12 +24,6 @@ import { ImpressumComponent } from './views/impressum/impressum.component';
 import { FavoriteComponent } from './views/favorite/favorite.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-
-
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

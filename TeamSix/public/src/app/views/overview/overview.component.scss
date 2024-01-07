@@ -88,7 +88,6 @@ td {
 .buy-button,
 .delete-button,
 .favorite-button {
-  color: #1976d2;
   background-color: transparent;
   border: none;
   margin-left: 5vh;
@@ -102,6 +101,10 @@ td {
   transform: scale(1.4);
 }
 
+.buy-button {
+  color: #1976d2;
+}
+
 .delete-button {
   color: #ff0000;
 }
@@ -110,11 +113,15 @@ td {
   color: #c50000;
   transform: scale(1.4);
 }
+.favorite-button {
+  color: black;
+}
 
 .favorite-button:hover {
-  color: #c4c4c4;
+  color: #ff0000;
   transform: scale(1.4);
 }
+
 
 /* Profit and Loss Styles */
 .profit {
@@ -127,9 +134,6 @@ td {
   color: red;
 }
 
-.favorite-button {
-  color: black;
-}
 
 
 /* Paginator */

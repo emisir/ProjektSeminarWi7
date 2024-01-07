@@ -2,12 +2,11 @@
   display: block;
   margin: 0 auto;
   max-width: 500px;
-  padding: 20px;
   background-color: #f5f5f5;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  padding: 200px;
-  margin-top: 200px;
+  padding: 15vh;
+  margin-top: 15vh;
 }
 
 .login-form {
@@ -50,6 +49,14 @@
   .error-message {
     color: red;
     font-size: 0.85em;
-    margin-top: 5px;
+    margin-bottom: 5px;
   }
+}
+
+@media (max-width: 1300px) {
+
+  :host {
+    margin-top: 10vh;
+  }
+
 }

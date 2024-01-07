@@ -22,8 +22,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['isin', 'name', 'totalQuantity', 'profitLossSum', 'plusButton', 'totalPrice'];
-
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
@@ -80,20 +78,17 @@ export class OverviewComponent implements OnInit, OnDestroy {
   toggleFavorite(itemId: number): void {
     const item = this.portfolioItemList.find(item => item.id === itemId);
     if (item) {
-      if (item.isFavorite == true) {
-        this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen")
-      } else {
-        this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
-          response => {
-            console.log('Status aktualisiert', response);
-            item.isFavorite = true;
-          },
-        );
-      }
+      item.isFavorite = !item.isFavorite;
+      this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
+        response => {
+          console.log('Status aktualisiert', response, item.isFavorite);
+        },
+      );
     } else {
       this._snackBar.open("Item nicht gefunden in portfolioItemList", "Schließen")
     }
   }
+
 
   onIsinClick(isin: string): void {
     this.router.navigate(['portfolio/1/detail', isin]);
