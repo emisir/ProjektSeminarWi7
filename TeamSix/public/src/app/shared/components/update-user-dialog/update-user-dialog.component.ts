@@ -78,13 +78,15 @@ export class UpdateUserDialogComponent {
   onSubmit(): void {
     this.portfolioService.updateUserEntity(this.formData.username, this.formData).subscribe({
       next: (response) => {
+        this._snackBar.open('Erfolgreich Bearbeitet', 'Schließen')
         console.log('Erfolgreich Bearbeitet', response);
         this.dialogRef.close('added');
       },
       error: (error) => {
-        console.error('Error:', error);
         this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen");
+        console.error('Error:', error);
       }
+
     });
   }
 

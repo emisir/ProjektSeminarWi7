@@ -53,11 +53,15 @@ export class AddUserDialogComponent {
   onSubmit(): void {
     this.portfolioService.addNewUserEntity(this.formData).subscribe({
       next: (response) => {
-        console.log('Erfolgreich hinzugefügt', response);
+        this._snackBar.open("Benutzer Erfolgreich Hinzugefügt", "Schließen");
+        console.log('Erfolgreich hinzugefügt ', response);
         this.dialogRef.close('added');
+
       },
       error: (error) => {
         this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen");
+        console.log('Fehler bei der eingabe ', error);
+
       }
     });
   }

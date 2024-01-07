@@ -48,11 +48,13 @@ export class AddItemDialogComponent {
   onSubmit(): void {
     this.portfolioService.addPortfolioItems(1, this.formData).subscribe({
       next: (response) => {
-        this._snackBar.open("Item Erfolgreich Hinzugefügt" + response, "Schließen");
+        this._snackBar.open("Item Erfolgreich Hinzugefügt", "Schließen");
+        console.log(response)
         this.dialogRef.close('added');
       },
       error: (error) => {
-        this._snackBar.open("Es gab ein Fehler bei der Eingabe" + error, "Schließen")
+        this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen")
+        console.log(error)
       }
     });
   }
