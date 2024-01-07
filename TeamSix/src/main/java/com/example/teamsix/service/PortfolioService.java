@@ -152,27 +152,31 @@ public class PortfolioService {
         }
     }
 
+
+    @Transactional
     public boolean deletePortfolioItem(Long portfolioItemId) {
-        // Find the PortfolioItem by ID
         Optional<PortfolioItem> portfolioItemOptional = portfolioItemRepository.findById(portfolioItemId);
 
         if (portfolioItemOptional.isPresent()) {
             PortfolioItem portfolioItem = portfolioItemOptional.get();
+
+            List<UserEntity> users = userRepository.findAll();
+            for (UserEntity user : users) {
+                user.getFavoritedItems().remove(portfolioItem);
+                userRepository.save(user);
+            }
+
             Portfolio portfolio = portfolioItem.getPortfolio();
-
-            // Remove the PortfolioItem from the Portfolio's purchases list
             portfolio.getPurchases().remove(portfolioItem);
-
-            // Save the updated Portfolio
             portfolioRepository.save(portfolio);
 
-            // Delete the PortfolioItem
             portfolioItemRepository.delete(portfolioItem);
             return true;
         } else {
             return false;
         }
     }
+
     public void updateUserEntity(String username, UserEntity userEntityDetails) {
         UserEntity userEntity = userRepository.findByUsername(username);
 
