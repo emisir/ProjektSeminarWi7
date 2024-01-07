@@ -38,8 +38,6 @@ export class AddItemDialogComponent {
     purchaseDate: this.portfolioService.getCurrentDate()
   };
 
-  addedSuccessfully: boolean = false;
-
   constructor(private portfolioService: PortfolioService, private fb: FormBuilder, private _snackBar: MatSnackBar, private dialogRef: MatDialogRef<AddItemDialogComponent>) {
     this.myForm = this.fb.group({
       isin: ['', Validators.required],
@@ -47,24 +45,14 @@ export class AddItemDialogComponent {
     });
   }
 
-  clean() {
-    this.formData = {
-      isin: '',
-      quantity: '',
-      purchaseDate: this.portfolioService.getCurrentDate(),
-    }
-    this.addedSuccessfully = false;
-  }
-
   onSubmit(): void {
     this.portfolioService.addPortfolioItems(1, this.formData).subscribe({
       next: (response) => {
-        console.log('Erfolgreich hinzugefügt', response);
-        this._snackBar.open("Item successfully added", "Close");
+        this._snackBar.open("Item Erfolgreich Hinzugefügt" + response, "Schließen");
         this.dialogRef.close('added');
       },
       error: (error) => {
-        this._snackBar.open("Error adding item", "Close");
+        this._snackBar.open("Es gab ein Fehler bei der Eingabe" + error, "Schließen")
       }
     });
   }

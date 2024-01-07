@@ -67,18 +67,6 @@ export class BuyStockItemDialogComponent {
 
   }
 
-  clean() {
-    this.formData = {
-      name: "",
-      isin: "",
-      description: "",
-      type: "",
-      quantity: "",
-      purchaseDate: this.portfolioService.getCurrentDate(),
-    }
-    this.addedSuccessfully = false;
-  }
-
   ngOnInit(): void {
     const { isin } = this.data;
     if (isin) {
@@ -87,10 +75,10 @@ export class BuyStockItemDialogComponent {
           this.portfolioDetailItem = it;
           this.updateFormData();
         }
-        this.loading = false; // Data is loaded, hide the spinner
+        this.loading = false;
       });
     } else {
-      this.loading = false; // No ISIN provided, hide the spinner
+      this.loading = false;
     }
   }
 
@@ -105,15 +93,14 @@ export class BuyStockItemDialogComponent {
 
     this.portfolioService.buyItem(1, this.formData.isin, this.formData).subscribe({
       next: (response) => {
-        console.log('Erfolgreich hinzugefügt', response);
+        this._snackBar.open("Item Erfolgreich Hinzugefügt" + response, "Schließen");
         this.dialogRef.close('added');
       },
       error: (error) => {
-        this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen")
+        this._snackBar.open("Es gab ein Fehler bei der Eingabe" + error, "Schließen")
       }
     });
   }
-
 
   private updateFormData() {
     if (this.portfolioDetailItem) {
@@ -125,7 +112,5 @@ export class BuyStockItemDialogComponent {
       });
     }
   }
-
-
 
 }
