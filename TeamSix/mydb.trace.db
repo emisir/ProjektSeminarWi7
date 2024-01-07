@@ -1,48 +1,9 @@
-2024-01-07 14:30:39 jdbc[3]: exception
+2024-01-07 21:55:25 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
 The object is already closed [90007-214]
-2024-01-07 14:31:37 jdbc[3]: exception
+2024-01-07 21:55:31 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
 The object is already closed [90007-214]
-2024-01-07 14:32:22 jdbc[5]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 14:33:53 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 14:40:53 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 15:17:55 jdbc[22]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 15:18:05 jdbc[23]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 15:18:20 jdbc[23]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 15:25:04 jdbc[24]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 15:25:14 jdbc[24]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 15:25:33 jdbc[24]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 15:45:21 jdbc[24]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 15:54:37 jdbc[34]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 16:01:35 jdbc[34]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 16:14:52 jdbc[36]: exception
-org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
-The object is already closed [90007-214]
-2024-01-07 19:22:59 jdbc[14]: exception
+2024-01-07 22:10:12 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLNonTransientException: Das Objekt wurde bereits geschlossen
 The object is already closed [90007-214]

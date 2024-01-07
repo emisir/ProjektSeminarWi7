@@ -30,12 +30,11 @@ export class UserTableComponent implements OnInit, OnDestroy {
 
   addedSuccessfully: boolean = false;
   updatedSuccessfully: boolean = false;
-
   resultsLength = 0;
   isRateLimitReached = false;
-
   public userEntityList: UserEntity[] = [];
   private toDestroy$: Subject<void> = new Subject<void>();
+  pagedUserEntities: UserEntity[] = [];
 
   constructor(private portfolioService: PortfolioService, public dialog: MatDialog,
     private router: Router, private _snackBar: MatSnackBar) { } // private productsHttpService: ProductHttpService
@@ -47,6 +46,9 @@ export class UserTableComponent implements OnInit, OnDestroy {
       this.userEntityList = response;
       console.log('Daten empfangen:', this.userEntityList);
     });
+    this.resultsLength = this.userEntityList.length;
+    this.changePage({ pageIndex: 0, pageSize: 5 });
+
   }
 
   maskPassword(password: string): string {
@@ -57,6 +59,8 @@ export class UserTableComponent implements OnInit, OnDestroy {
     this.portfolioService.getUserEntity().subscribe({
       next: (users) => {
         this.userEntityList = users;
+        this.resultsLength = users.length;
+        this.changePage({ pageIndex: 0, pageSize: 5 });
         this.addedSuccessfully = true;
       },
       error: (error) => {
@@ -134,6 +138,12 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this._snackBar.open("Fehler beim Abrufen des eingeloggten Benutzers", "Close");
       }
     );
+  }
+
+  changePage(event: any) {
+    const start = event.pageIndex * event.pageSize;
+    const end = start + event.pageSize;
+    this.pagedUserEntities = this.userEntityList.slice(start, end);
   }
 
   ngOnDestroy(): void {

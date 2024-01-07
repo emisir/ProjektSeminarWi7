@@ -152,7 +152,6 @@ public class PortfolioService {
         }
     }
 
-
     @Transactional
     public boolean deletePortfolioItem(Long portfolioItemId) {
         Optional<PortfolioItem> portfolioItemOptional = portfolioItemRepository.findById(portfolioItemId);
@@ -191,27 +190,22 @@ public class PortfolioService {
         UserEntity user = userRepository.findById(username).orElseThrow();
         List<PortfolioItem> favorites = user.getFavoritedItems();
 
-        if (item.isFavorite()) {
-            if (favorites.contains(item)) {
-                favorites.remove(item);
-                item.setFavorite(false);
-                user.setFavoritedItems(favorites);
-                userRepository.save(user);
-            } else {
-                throw new IllegalArgumentException("Item ist nicht in der Favoritenliste.");
-            }
-        } else {
-            item.setFavorite(true);
-            if (!favorites.contains(item)) {
-                favorites.add(item);
-                user.setFavoritedItems(favorites);
-                userRepository.save(user);
-            } else {
-                throw new IllegalArgumentException("Item ist bereits in der Favoritenliste.");
+        PortfolioItem foundItem = null;
+        for (PortfolioItem favoriteItem : favorites) {
+            if (favoriteItem.getId().equals(item.getId())) {
+                foundItem = favoriteItem;
+                break;
             }
         }
-    }
 
+        if (foundItem != null) {
+            favorites.remove(foundItem);
+        } else {
+            favorites.add(item);
+        }
+        user.setFavoritedItems(favorites);
+        userRepository.save(user);
+    }
 
 //private Methods
 

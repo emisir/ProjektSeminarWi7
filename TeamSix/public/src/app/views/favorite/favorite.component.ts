@@ -33,6 +33,7 @@ export class FavoriteComponent implements OnInit, OnDestroy {
   public portfolioDetailItem: PortfolioDetail | undefined;
   private toDestroy$: Subject<void> = new Subject<void>();
   private currentUsername!: string;
+
   isLoadingDelete = false;
   isLoadingAdd = false;
   pagedPortfolioItems: PortfolioItem[] = [];
@@ -52,6 +53,12 @@ export class FavoriteComponent implements OnInit, OnDestroy {
       });
     }, error => {
       console.error('Error fetching current user:', error);
+    });
+
+    this.portfolioService.getCurrentUser().subscribe((user: any) => {
+      this.currentUsername = user.username;
+    }, error => {
+      console.error('Fehler:', error);
     });
     this.loadFavPortfolioList();
     this.resultsLength = this.portfolioItemList.length;
@@ -83,21 +90,25 @@ export class FavoriteComponent implements OnInit, OnDestroy {
   }
 
   toggleFavorite(itemId: number): void {
-    const item = this.portfolioItemList.find(item => item.id === itemId);
-    if (item) {
-      if (item.isFavorite == true) {
-        this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen")
-      } else {
-        this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
-          response => {
-            console.log('Status aktualisiert', response);
-            item.isFavorite = true;
-          },
-        );
+    this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
+      response => {
+        if (response.isFavorite !== undefined) {
+          const item = this.portfolioItemList.find(item => item.id === itemId);
+          if (item) {
+            item.isFavorite = response.isFavorite;
+            const message = item.isFavorite ? "Erfolgreich favorisiert" : "Favorisierung aufgehoben";
+            this._snackBar.open(message, "Schließen");
+          }
+        } else {
+          this._snackBar.open("Fehler beim Aktualisieren des Favoritenstatus", "Schließen");
+        }
+      },
+      error => {
+        console.error('Fehler beim Toggle des Favoritenstatus', error);
+
       }
-    } else {
-      this._snackBar.open("Item not found in the portfolioItemList", "Schließen")
-    }
+    );
+    this.loadFavPortfolioList();
   }
 
   openBuyStockItemDialog(isin: string): void {

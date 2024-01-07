@@ -54,30 +54,32 @@ export class OverviewComponent implements OnInit, OnDestroy {
       console.error('Fehler:', error);
     });
 
-    this.portfolioService.getCurrentUser().subscribe((user: any) => {
-      this.currentUser = user.name;
-    }, error => {
-      console.error('Fehler:', error);
-    });
     this.loadPortfolioList();
     this.resultsLength = this.portfolioItemList.length;
     this.changePage({ pageIndex: 0, pageSize: 5 });
   }
 
-  
   toggleFavorite(itemId: number): void {
-    const item = this.portfolioItemList.find(item => item.id === itemId);
-    if (item) {
-      item.isFavorite = !item.isFavorite;
-      this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
-        response => {
-          console.log('Status aktualisiert', response, item.isFavorite);
-        },
-      );
-    } else {
-      this._snackBar.open("Item nicht gefunden in portfolioItemList", "Schließen")
-    }
+    this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
+      response => {
+        if (response.isFavorite !== undefined) {
+          const item = this.portfolioItemList.find(item => item.id === itemId);
+          if (item) {
+            item.isFavorite = response.isFavorite;
+            const message = item.isFavorite ? "Erfolgreich favorisiert" : "Favorisierung aufgehoben";
+            this._snackBar.open(message, "Schließen");
+          }
+        } else {
+          this._snackBar.open("Fehler beim Aktualisieren des Favoritenstatus", "Schließen");
+        }
+      },
+      error => {
+        console.error('Fehler beim Toggle des Favoritenstatus', error);
+      }
+    );
+
   }
+
 
 
   onIsinClick(isin: string): void {

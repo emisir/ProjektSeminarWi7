@@ -22,7 +22,6 @@ public class PortfolioItem {
     @ManyToMany(mappedBy = "favoritedItems", cascade = CascadeType.ALL)
     private List<UserEntity> favoritedByUsers;
 
-    private boolean isFavorite;
 
     @ManyToOne
     @JoinColumn(name = "username")
@@ -45,13 +44,12 @@ public class PortfolioItem {
     public PortfolioItem() {
     }
 
-    public PortfolioItem(Long id, Portfolio portfolio, List<UserEntity> favoritedByUsers, boolean isFavorite,
+    public PortfolioItem(Long id, Portfolio portfolio, List<UserEntity> favoritedByUsers,
                          UserEntity user, List<StockOrder> stockOrder, String name, String description,
                          String type, String isin, Float currentPrice) {
         this.id = id;
         this.portfolio = portfolio;
         this.favoritedByUsers = favoritedByUsers;
-        this.isFavorite = isFavorite;
         this.user = user;
         this.stockOrder = stockOrder;
         this.name = name;
@@ -128,14 +126,6 @@ public class PortfolioItem {
 
     public void setFavoritedByUsers(List<UserEntity> favoritedByUsers) {
         this.favoritedByUsers = favoritedByUsers;
-    }
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
     }
 
     public UserEntity getUser() {
