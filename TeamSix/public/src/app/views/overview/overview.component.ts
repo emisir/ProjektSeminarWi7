@@ -36,6 +36,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public currentUser: string = "";
   isLoadingDelete = false;
   isLoadingAdd = false;
+  pagedPortfolioItems: PortfolioItem[] = []; // Für paginierte Items
+
 
 
   constructor(private portfolioService: PortfolioService, private router: Router, private _snackBar: MatSnackBar, public dialog: MatDialog) {
@@ -61,7 +63,19 @@ export class OverviewComponent implements OnInit, OnDestroy {
     });
 
     this.loadPortfolioList();
+
+    this.resultsLength = this.portfolioItemList.length;
+    this.changePage({ pageIndex: 0, pageSize: 5 });
+
   }
+
+  changePage(event: any) {
+    const start = event.pageIndex * event.pageSize;
+    const end = start + event.pageSize;
+    this.pagedPortfolioItems = this.portfolioItemList.slice(start, end);
+  }
+
+
 
   toggleFavorite(itemId: number): void {
     const item = this.portfolioItemList.find(item => item.id === itemId);
@@ -107,6 +121,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.portfolioService.getPortfolioSummary(1).subscribe({
       next: (items) => {
         this.portfolioItemList = items;
+        this.resultsLength = items.length;
+        this.changePage({ pageIndex: 0, pageSize: 5 });
         console.log("laden", items);
         this.isLoadingResults = false; // Stop loading
       },

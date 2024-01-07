@@ -116,10 +116,29 @@ td {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1440px) {
 
   .buy-container,
   .table-container {
-    margin: 0 2vh;
+    margin: 10vh 2vh;
+  }
+
+  .buy-button,
+  .favorite-button {
+    transform: scale(1);
+  }
+
+  th,
+  td {
+    padding: 1vh;
+  }
+
+  .table-header {
+    font-size: 14px;
+  }
+
+  .paginator-container {
+    padding: 5px 0;
+    font-size: 14px;
   }
 }

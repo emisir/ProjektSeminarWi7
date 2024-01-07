@@ -135,6 +135,7 @@ td {
 /* Paginator */
 .paginator-container {
   position: fixed;
+  margin-top: 5vh;
   left: 0;
   bottom: 0;
   width: 100%;
@@ -145,10 +146,35 @@ td {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1440px) {
 
   .buy-container,
   .table-container {
     margin: 0 2vh;
+  }
+
+  .buy-p {
+    font-size: 16px;
+  }
+
+  .btn,
+  .buy-button,
+  .delete-button,
+  .favorite-button {
+    transform: scale(1);
+  }
+
+  th,
+  td {
+    padding: 1vh;
+  }
+
+  .table-header {
+    font-size: 14px;
+  }
+
+  .paginator-container {
+    padding: 5px 0;
+    font-size: 14px;
   }
 }
