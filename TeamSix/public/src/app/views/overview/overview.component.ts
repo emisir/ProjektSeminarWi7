@@ -59,22 +59,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
     }, error => {
       console.error('Fehler:', error);
     });
-
     this.loadPortfolioList();
-
     this.resultsLength = this.portfolioItemList.length;
     this.changePage({ pageIndex: 0, pageSize: 5 });
-
   }
 
-  changePage(event: any) {
-    const start = event.pageIndex * event.pageSize;
-    const end = start + event.pageSize;
-    this.pagedPortfolioItems = this.portfolioItemList.slice(start, end);
-  }
-
-
-
+  
   toggleFavorite(itemId: number): void {
     const item = this.portfolioItemList.find(item => item.id === itemId);
     if (item) {
@@ -156,11 +146,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  changePage(event: any) {
+    const start = event.pageIndex * event.pageSize;
+    const end = start + event.pageSize;
+    this.pagedPortfolioItems = this.portfolioItemList.slice(start, end);
+  }
+
 
   ngOnDestroy(): void {
     this.toDestroy$.next();
     this.toDestroy$.complete();
   }
-
 
 }

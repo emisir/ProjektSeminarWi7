@@ -39,12 +39,9 @@
               <mat-icon>delete</mat-icon>
             </button>
             <button class="favorite-button">
-              <mat-icon
-              [class.red-icon]="row.isFavorite"
-              (click)="toggleFavorite(row.id)"
-              matTooltip="Favorisieren">
-                favorite_border
-            </mat-icon>            </button>
+              <mat-icon [class.red-icon]="row.isFavorite" (click)="toggleFavorite(row.id)" matTooltip="Favorisieren">
+                favorite
+              </mat-icon> </button>
           </td>
         </tr>
       </tbody>

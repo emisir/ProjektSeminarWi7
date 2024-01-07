@@ -35,6 +35,7 @@ export class FavoriteComponent implements OnInit, OnDestroy {
   private currentUsername!: string;
   isLoadingDelete = false;
   isLoadingAdd = false;
+  pagedPortfolioItems: PortfolioItem[] = [];
 
 
 
@@ -53,7 +54,8 @@ export class FavoriteComponent implements OnInit, OnDestroy {
       console.error('Error fetching current user:', error);
     });
     this.loadFavPortfolioList();
-
+    this.resultsLength = this.portfolioItemList.length;
+    this.changePage({ pageIndex: 0, pageSize: 5 });
   }
 
   loadFavPortfolioList(): void {
@@ -62,6 +64,8 @@ export class FavoriteComponent implements OnInit, OnDestroy {
       this.portfolioService.getFavoritePortfolioItems(user.username).subscribe({
         next: (items) => {
           this.portfolioItemList = items;
+          this.resultsLength = items.length;
+          this.changePage({ pageIndex: 0, pageSize: 5 });
           console.log("laden", items);
           this.isLoadingResults = false; // Stop loading
         },
@@ -111,6 +115,11 @@ export class FavoriteComponent implements OnInit, OnDestroy {
     });
   }
 
+  changePage(event: any) {
+    const start = event.pageIndex * event.pageSize;
+    const end = start + event.pageSize;
+    this.pagedPortfolioItems = this.portfolioItemList.slice(start, end);
+  }
 
   ngOnDestroy(): void {
     this.toDestroy$.next();
