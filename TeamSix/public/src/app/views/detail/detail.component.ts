@@ -17,19 +17,17 @@ export class DetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns: string[] = ['id', 'isin', 'name', 'description', 'type', 'totalQuantity', 'averagePrice', 'purchaseDate', 'quantity',
-    'purchasePrice', 'totalPrice', 'plusButton', 'currentPrice', 'isin', 'type', 'profitLossPerStock', 'profitLossSum'];
+    'purchasePrice', 'totalPrice', 'currentPrice', 'isin', 'type', 'profitLossPerStock', 'profitLossSum'];
 
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
-
 
   public portfolioDetailItem: PortfolioDetail | undefined;
 
   private toDestroy$: Subject<void> = new Subject<void>();
 
   constructor(public portfolioService: PortfolioService, private route: ActivatedRoute) {
-
 
   };
 
