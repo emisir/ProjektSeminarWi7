@@ -8,8 +8,10 @@
     <span class="spacer"></span>
   </mat-toolbar>
 
-  <div class="buy-container">
-    <p class="buy-p">kaufen <button class="btn" (click)="openAddDialog()">+</button></p>
+  <div class="add-container">
+    <p class="add-p">Portfolioitem kaufen
+      <mat-icon class="add-button" (click)="openAddDialog()">add_circle</mat-icon>
+    </p>
   </div>
 
   <div class="table-container">
@@ -36,7 +38,7 @@
             <button class="buy-button" (click)="openBuyStockItemDialog(row.isin)"><mat-icon>add_circle</mat-icon>
             </button>
             <button class="delete-button" (click)="deletePortfolioItem(row.id)">
-              <mat-icon>delete</mat-icon>
+              <mat-icon>sell</mat-icon>
             </button>
             <button class="favorite-button">
               <mat-icon [class.red-icon]="row.isFavorite" (click)="toggleFavorite(row.id)" matTooltip="Favorisieren">

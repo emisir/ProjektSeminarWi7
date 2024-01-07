@@ -24,6 +24,7 @@
   z-index: 1000;
 }
 
+
 .mat-spinner {
   margin: 20px auto;
   display: block;
@@ -62,27 +63,32 @@ td {
   font-weight: bold;
 }
 
-
-.btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #1976d2;
-  color: #ffffff;
-  font-size: 20px;
-  border: none;
-  cursor: pointer;
-}
-
-.buy-container {
+.add-container {
   text-align: end;
-  margin: 2vh 5vh;
+  padding: 2vh 0;
+  margin-right: 5vh;
 }
 
-.buy-p {
+.add-p {
   font-size: 18px;
-  color: #333333;
+  font-weight: bold;
+  color: #333;
+
 }
+
+.add-button {
+  overflow: visible;
+  color: #06ac00;
+  transform: scale(1.3);
+  transition: transform 0.3s, color 0.3s;
+  height: 0;
+}
+
+.add-button:hover {
+  color: #059400;
+  transform: scale(1.4);
+}
+
 
 /* Button Styles */
 .buy-button,
@@ -95,7 +101,6 @@ td {
   transition: transform 0.3s, color 0.3s;
 }
 
-.add-button:hover,
 .buy-button:hover {
   color: #14599f;
   transform: scale(1.4);
@@ -113,6 +118,7 @@ td {
   color: #c50000;
   transform: scale(1.4);
 }
+
 .favorite-button {
   color: black;
 }
@@ -121,7 +127,6 @@ td {
   color: #ff0000;
   transform: scale(1.4);
 }
-
 
 /* Profit and Loss Styles */
 .profit {
@@ -133,8 +138,6 @@ td {
   font-weight: bolder;
   color: red;
 }
-
-
 
 /* Paginator */
 .paginator-container {
@@ -157,11 +160,14 @@ td {
     margin: 0 2vh;
   }
 
-  .buy-p {
+  .add-p {
     font-size: 16px;
   }
 
-  .btn,
+  .add-container {
+    padding: 0;
+  }
+
   .buy-button,
   .delete-button,
   .favorite-button {
