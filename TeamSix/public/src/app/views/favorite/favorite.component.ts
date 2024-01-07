@@ -52,24 +52,26 @@ export class FavoriteComponent implements OnInit, OnDestroy {
     }, error => {
       console.error('Error fetching current user:', error);
     });
-    this.loadPortfolioList();
+    this.loadFavPortfolioList();
 
   }
 
-  loadPortfolioList(): void {
+  loadFavPortfolioList(): void {
     this.isLoadingResults = true; // Start loading
-    this.portfolioService.getPortfolioSummary(1).subscribe({
-      next: (items) => {
-        this.portfolioItemList = items;
-        console.log("laden", items);
-        this.isLoadingResults = false; // Stop loading
-      },
-      error: (error) => {
-        console.error('Fehler beim Laden der Liste', error);
-        this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen");
-        this.isLoadingResults = false; // Stop loading even on error
-      }
-    });
+    this.portfolioService.getCurrentUser().subscribe((user: UserEntity) => {
+      this.portfolioService.getFavoritePortfolioItems(user.username).subscribe({
+        next: (items) => {
+          this.portfolioItemList = items;
+          console.log("laden", items);
+          this.isLoadingResults = false; // Stop loading
+        },
+        error: (error) => {
+          console.error('Fehler beim Laden der Liste', error);
+          this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen");
+          this.isLoadingResults = false; // Stop loading even on error
+        }
+      });
+    })
   }
 
   onIsinClick(isin: string): void {
@@ -104,7 +106,7 @@ export class FavoriteComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       this.isLoadingAdd = false; // Stop loading
       if (result === 'added') {
-        this.loadPortfolioList();
+        this.loadFavPortfolioList();
       }
     });
   }

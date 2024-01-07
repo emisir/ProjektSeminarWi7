@@ -38,6 +38,7 @@ export class BuyStockItemDialogComponent {
   public myForm: FormGroup;
   public portfolioDetailItem: PortfolioDetail | undefined;
   loading: boolean = true;
+  addedSuccessfully: boolean = false;
 
 
   formData: any = {
@@ -49,7 +50,6 @@ export class BuyStockItemDialogComponent {
     purchaseDate: this.portfolioService.getCurrentDate(),
   };
 
-  addedSuccessfully: boolean = false;
   constructor(
     private portfolioService: PortfolioService,
     private fb: FormBuilder,
@@ -93,9 +93,9 @@ export class BuyStockItemDialogComponent {
       this.loading = false; // No ISIN provided, hide the spinner
     }
   }
+
   onSubmit(): void {
     if (!this.portfolioDetailItem || !this.myForm.valid) return;
-
     this.formData = {
       ...this.formData,
       quantity: this.myForm.value.quantity,

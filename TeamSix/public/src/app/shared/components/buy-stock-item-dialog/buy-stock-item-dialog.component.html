@@ -4,8 +4,7 @@
 </div>
 <mat-dialog-content>
   <div *ngIf="!loading">
-
-    <div *ngIf="!addedSuccessfully">
+    <div>
       <form (ngSubmit)="onSubmit()" class="content" [formGroup]="myForm">
         <mat-form-field>
           <input matInput placeholder="Name" [formControlName]="'name'" readonly>
@@ -22,12 +21,14 @@
         <mat-form-field>
           <input matInput placeholder="Anzahl" [formControlName]="'quantity'" required>
         </mat-form-field>
+        <mat-dialog-actions>
+          <button class="btn" type="submit" mat-raised-button color="primary"
+            [disabled]="!myForm.valid">Hinzufügen</button>
+          <button class="btn" mat-button [mat-dialog-close]="'close'">Schließen</button>
+        </mat-dialog-actions>
       </form>
     </div>
-    <mat-dialog-actions>
-      <button class="btn" type="submit" mat-raised-button color="primary" [disabled]="!myForm.valid">Hinzufügen</button>
-      <button class="btn" mat-button [mat-dialog-close]="'close'">Schließen</button>
-    </mat-dialog-actions>
+
   </div>
 
 </mat-dialog-content>
