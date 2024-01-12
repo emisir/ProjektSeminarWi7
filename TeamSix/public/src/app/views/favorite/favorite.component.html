@@ -1,39 +1,51 @@
-<mat-toolbar color="primary">
-  <span class="header-title" [routerLink]="'/portfolio'">Dein Portfolio</span>
-  <span class="spacer"></span>
-
-</mat-toolbar>
-<div class="buy-container">
-  <p class="buy-p">kaufen <a href="http://localhost:4200/add-item"><button class="btn">+</button></a></p>
+<div *ngIf="isLoadingResults" class="spinner-container">
+  <mat-spinner diameter="50"></mat-spinner>
 </div>
 
-<div class="table-container">
+<div *ngIf="!isLoadingResults">
+  <mat-toolbar color="primary">
+    <span class="header-title" [routerLink]="'/portfolio'">Favoriten</span>
+    <span class="spacer"></span>
+  </mat-toolbar>
+  
+  <div class="table-container">
 
-  <table class="portfolio-table">
-    <thead>
-      <tr class="table-header">
-        <th>ISIN</th>
-        <th>Name</th>
-        <th>Anzahl</th>
-        <th>Gewinn/Verlust</th>
-        <th>Aktueller Gesamtpreis</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of portfolioItemList">
-        <td><a (click)="onIsinClick(row.isin)">{{ row.isin}}</a></td>
-        <td>{{ row.name }}</td>
-        <td>{{ row.totalQuantity }}</td>
-        <td [ngClass]="{'profit': row.profitLossSum > 0, 'loss': row.profitLossSum < 0}">
-          {{ row.profitLossSum | currency : ' ' }} €</td>
-
-        <td>{{ row.totalPrice | currency : ' ' }} €</td>
-        <td> <button class="btn" (click)="buyItem(row.id, row.isin)">+</button></td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="portfolio-table">
+      <thead>
+        <tr class="table-header">
+          <th>ISIN</th>
+          <th>Name</th>
+          <th>Anzahl</th>
+          <th>Gewinn/Verlust</th>
+          <th>Aktueller Gesamtpreis</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of pagedPortfolioItems">
+          <td><a (click)="onIsinClick(row.isin)">{{ row.isin}}</a></td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.totalQuantity }}</td>
+          <td [ngClass]="{'profit': row.profitLossSum > 0, 'loss': row.profitLossSum < 0}">
+            {{ row.profitLossSum | currency : ' ' }} €</td>
+          <td>{{ row.totalPrice | currency : ' ' }} €</td>
+          <td class="action-buttons">
+            <button class="buy-button" (click)="openBuyStockItemDialog(row.isin)"><mat-icon>add_circle</mat-icon>
+            </button>
+            <button class="favorite-button">
+              <mat-icon (click)="toggleFavorite(row.id)"
+                [ngClass]="{'favorite': row.isFavorite, 'not-favorite': !row.isFavorite}"
+                matTooltip="Favorisieren">favorite</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
 
 <div class="paginator-container">
-  <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of products"></mat-paginator>
+  <mat-paginator [length]="resultsLength" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" (page)="changePage($event)"
+    aria-label="Select page of portfolio items"></mat-paginator>
 </div>

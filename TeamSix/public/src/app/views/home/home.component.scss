@@ -2,23 +2,52 @@
   display: block;
   margin: 0 auto;
   max-width: 500px;
-  padding: 20px;
   background-color: #f5f5f5;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-
-  padding: 200px;
-  margin-top: 10%;
+  margin-top: 20vh;
+  padding: 20vh;
 }
 
 .home-container {
-  display: flex;
-  flex-flow: column;
+  display: grid;
   justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* Zentriert den Text innerhalb des Containers */
 
   p {
     font-size: 24px;
     color: #333;
   }
+}
 
+.button-container {
+  display: flex;
+  /* Verwendet Flexbox für den Button-Container */
+  justify-content: center;
+  /* Zentriert die Buttons horizontal */
+  align-items: center;
+  /* Zentriert die Buttons vertikal */
+  flex-direction: row;
+  /* Ordnet die Buttons horizontal an */
+}
+
+.button-container button {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #673ab7;
+  color: #ffd740;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto;
+  min-width: 100px;
+  /* Optional: Mindestbreite für die Buttons */
+}
+
+.home-container button:hover {
+  background-color: #52308d;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

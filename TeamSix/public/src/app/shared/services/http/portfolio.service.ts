@@ -99,6 +99,11 @@ export class PortfolioService {
     return this.http.delete<any>(urlWithUsername);
   }
 
+  public deletePortfolioItem(id: number): Observable<any> {
+    const urlWithPortfolioItem = `${this.apiUrl}/portfolio/delete-portfolioItem/${id}`;
+    return this.http.delete<any>(urlWithPortfolioItem);
+  }
+
   public updateUserEntity(username: string, formData: any): Observable<any> {
     const requestData = {
       name: formData.name,

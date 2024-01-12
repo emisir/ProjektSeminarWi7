@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <span class="header-title">Benutzer</span>
-    <button class="add-user-button" (click)="openAddDialog()">Hinzufügen</button>
+  <button class="add-user-button" (click)="openAddDialog()">Hinzufügen</button>
 </mat-toolbar>
 
 <div class="table-container">
@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of userEntityList">
+      <tr *ngFor="let row of pagedUserEntities">
         <td>{{ row.name }}</td>
         <td>{{ row.username }}</td>
         <td>{{ maskPassword(row.password) }}</td>
@@ -28,5 +28,6 @@
 </div>
 
 <div class="paginator-container">
-  <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of products"></mat-paginator>
+  <mat-paginator [length]="resultsLength" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" (page)="changePage($event)"
+    aria-label="Select page of portfolio items"></mat-paginator>
 </div>

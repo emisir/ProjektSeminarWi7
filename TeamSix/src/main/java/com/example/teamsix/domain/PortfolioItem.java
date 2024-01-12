@@ -19,15 +19,16 @@ public class PortfolioItem {
     @JsonBackReference
     private Portfolio portfolio;
 
-    @ManyToMany(mappedBy = "favoritedItems")
+    @ManyToMany(mappedBy = "favoritedItems", cascade = CascadeType.ALL)
     private List<UserEntity> favoritedByUsers;
+
 
     @ManyToOne
     @JoinColumn(name = "username")
     @JsonIgnore
     private UserEntity user;
 
-    @OneToMany(mappedBy = "portfolioItem", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "portfolioItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StockOrder> stockOrder;
 
     private String name;

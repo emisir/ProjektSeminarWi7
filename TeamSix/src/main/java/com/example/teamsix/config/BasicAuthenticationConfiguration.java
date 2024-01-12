@@ -36,7 +36,7 @@ public class BasicAuthenticationConfiguration {
                         httpSecurityCsrfConfigurer.ignoringRequestMatchers(new AntPathRequestMatcher("/**"))
                 )
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

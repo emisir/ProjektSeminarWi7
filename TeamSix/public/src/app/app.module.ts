@@ -21,14 +21,8 @@ import { LoginComponent } from './views/login/login.component';
 import { LogoutComponent } from './views/logout/logout.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { ImpressumComponent } from './views/impressum/impressum.component';
-import { AddPortfolioItemComponent } from './views/addPortfolioItem/addPortfolioItem.component';
-import { BuyItemComponent } from './views/buyItem/buyItem.component';
 import { FavoriteComponent } from './views/favorite/favorite.component';
-
-
-
-
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -37,12 +31,10 @@ import { FavoriteComponent } from './views/favorite/favorite.component';
     FavoriteComponent,
     DetailComponent,
     ImpressumComponent,
-    AddPortfolioItemComponent,
     HomeComponent,
     LoginComponent,
     LogoutComponent,
     UserTableComponent,
-    BuyItemComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -57,7 +49,7 @@ import { FavoriteComponent } from './views/favorite/favorite.component';
     MatButtonModule,
     ReactiveFormsModule,
     RouterModule,
-
+    MatProgressSpinnerModule,
   ],
   providers: [
     {

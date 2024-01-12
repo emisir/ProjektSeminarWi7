@@ -11,6 +11,7 @@ import com.example.teamsix.persistance.PortfolioItemRepository;
 import com.example.teamsix.persistance.PortfolioRepository;
 import com.example.teamsix.persistance.UserRepository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -151,6 +152,30 @@ public class PortfolioService {
         }
     }
 
+    @Transactional
+    public boolean deletePortfolioItem(Long portfolioItemId) {
+        Optional<PortfolioItem> portfolioItemOptional = portfolioItemRepository.findById(portfolioItemId);
+
+        if (portfolioItemOptional.isPresent()) {
+            PortfolioItem portfolioItem = portfolioItemOptional.get();
+
+            List<UserEntity> users = userRepository.findAll();
+            for (UserEntity user : users) {
+                user.getFavoritedItems().remove(portfolioItem);
+                userRepository.save(user);
+            }
+
+            Portfolio portfolio = portfolioItem.getPortfolio();
+            portfolio.getPurchases().remove(portfolioItem);
+            portfolioRepository.save(portfolio);
+
+            portfolioItemRepository.delete(portfolioItem);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void updateUserEntity(String username, UserEntity userEntityDetails) {
         UserEntity userEntity = userRepository.findByUsername(username);
 
@@ -164,11 +189,23 @@ public class PortfolioService {
     public void updateFavoriteStatus(String username, PortfolioItem item) {
         UserEntity user = userRepository.findById(username).orElseThrow();
         List<PortfolioItem> favorites = user.getFavoritedItems();
-        favorites.add(item);
+
+        PortfolioItem foundItem = null;
+        for (PortfolioItem favoriteItem : favorites) {
+            if (favoriteItem.getId().equals(item.getId())) {
+                foundItem = favoriteItem;
+                break;
+            }
+        }
+
+        if (foundItem != null) {
+            favorites.remove(foundItem);
+        } else {
+            favorites.add(item);
+        }
         user.setFavoritedItems(favorites);
         userRepository.save(user);
     }
-
 
 //private Methods
 

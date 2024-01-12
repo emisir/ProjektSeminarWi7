@@ -43,8 +43,6 @@ import { MatSelectModule } from '@angular/material/select';
 export class UpdateUserDialogComponent {
   public myForm: FormGroup;
 
-
-
   formData: any = {
     name: '',
     username: '',
@@ -52,12 +50,7 @@ export class UpdateUserDialogComponent {
     role: ''
   };
 
-
-
-
-  addedSuccessfully: boolean = false;
   public userEntityList: UserEntity[] = [];
-
 
   constructor(private portfolioService: PortfolioService, private fb: FormBuilder, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: UserEntity,
     public dialogRef: MatDialogRef<UpdateUserDialogComponent>
@@ -68,10 +61,9 @@ export class UpdateUserDialogComponent {
       password: ['', Validators.required],
       role: ['', Validators.required]
     });
-
     this.initializeForm(data);
-
   }
+
   private initializeForm(userData: UserEntity): void {
     this.myForm.patchValue({
       name: userData.name,
@@ -83,33 +75,19 @@ export class UpdateUserDialogComponent {
     this.formData = { ...userData };
   }
 
-  clean() {
-    this.formData = {
-      name: '',
-      username: '',
-      password: '',
-      role: ''
-
-    }
-    this.addedSuccessfully = false;
-  }
-
-
-
   onSubmit(): void {
     this.portfolioService.updateUserEntity(this.formData.username, this.formData).subscribe({
       next: (response) => {
+        this._snackBar.open('Erfolgreich Bearbeitet', 'Schließen')
         console.log('Erfolgreich Bearbeitet', response);
-        this.addedSuccessfully = true;
-        this.clean();
+        this.dialogRef.close('added');
       },
       error: (error) => {
-        console.error('Error:', error);
         this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen");
+        console.error('Error:', error);
       }
+
     });
   }
-
-
 
 }

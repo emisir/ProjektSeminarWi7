@@ -19,11 +19,9 @@
         <mat-option value="ROLE_USER">Benutzer</mat-option>
         <mat-option value="ROLE_ADMIN">Administrator</mat-option>
       </mat-select>
-    </mat-form-field>
-
-    <button type="submit" mat-raised-button color="primary">Submit</button>
+    </mat-form-field><mat-dialog-actions>
+      <button type="submit" mat-raised-button color="primary">Hinzufügen</button>
+      <button mat-button [mat-dialog-close]="'close'">Schließen</button>
+    </mat-dialog-actions>
   </form>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="'close'">Close</button>
-</mat-dialog-actions>

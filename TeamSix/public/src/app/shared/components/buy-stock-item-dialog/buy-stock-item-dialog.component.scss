@@ -1,0 +1,32 @@
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; // Adjust height as needed for your dialog
+  background-color: rgba(255, 255, 255, 0.8); // Optional: light background
+}
+
+mat-dialog-actions {
+  justify-content: center;
+  padding: 1rem;
+}
+
+.btn {
+  margin: 0 0.5rem;
+  min-width: 100px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+form {
+  width: 300px;
+  margin: auto;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+mat-form-field input[matInput][readonly] {
+  color: rgb(126, 126, 126);
+}

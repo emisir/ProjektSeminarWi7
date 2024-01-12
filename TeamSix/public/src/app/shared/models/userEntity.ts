@@ -13,7 +13,6 @@ export class UserEntity {
         this.username = username;
         this.password = password;
         this.role = role;
-
     }
 
 }
