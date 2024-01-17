@@ -79,3 +79,22 @@ Auf der Favoriten-Seite sehen Sie alle von Ihnen, in diesem Fall als Benutzer `j
 Die Benutzerseite erlaubt es Ihnen, neue Benutzerkonten anzulegen. Hierzu klicken Sie auf das 'Plus-Icon', woraufhin sich ein Dialogfeld öffnet. Dort können Sie den Namen, den Benutzernamen, das Passwort und die Rolle des neuen Benutzers festlegen. Die Rollen sind in 'User' und 'Admin' unterteilt.
 
 Innerhalb der Benutzertabelle haben Sie die Möglichkeit, Benutzerdaten zu bearbeiten – mit Ausnahme des Benutzernamens, da dieser als eindeutige ID fungiert – oder Benutzer zu löschen.
+
+
+## Schlusswort
+
+Wir hoffen, dass dieses Projekt Ihnen nützlich ist und freuen uns auf Ihr Feedback und Ihre Beiträge, um es weiter zu verbessern.
+
+
+## Mitwirkende
+
+Wir möchten uns bei allen Teammitgliedern bedanken, die dieses Projekt zum Leben erweckt haben:
+
+- Atilla Durdu
+- Aylin Yamac
+- Burak Seyrek
+- Ebubekir Misir
+- Veronica Nicola
+
+Ihr Einsatz und ihre Beiträge waren entscheidend für den Erfolg dieses Projekts.
+
