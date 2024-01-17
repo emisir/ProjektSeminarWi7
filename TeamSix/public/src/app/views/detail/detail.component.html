@@ -1,12 +1,7 @@
-<mat-toolbar color="primary">
-  <span class="spacer"></span>
-</mat-toolbar>
-
 <div class="container">
   <div class="table-container">
     <div *ngIf="portfolioDetailItem">
-
-      <div>
+      <div class="detail-title">
         <h2>{{portfolioDetailItem.name}}</h2>
         <p>{{portfolioDetailItem.isin }}</p>
       </div>
@@ -58,7 +53,7 @@
       </table>
 
       <h3>Käufe:</h3>
-      <table>
+      <table class="purchase-table">
         <tr>
           <th>Kaufdatum</th>
           <th>Anzahl</th>

@@ -50,6 +50,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
     this.portfolioService.getCurrentUser().subscribe((user: any) => {
       this.currentUsername = user.username;
+      this.currentUser = user.name;
     }, error => {
       console.error('Fehler:', error);
     });
