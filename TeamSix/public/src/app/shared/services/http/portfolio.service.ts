@@ -11,7 +11,9 @@ import { UserEntity } from '../../models/userEntity';
 import { AuthCoreService } from '../../auth-core/auth-core.service';
 
 
-
+/**
+ * Service zur Verwaltung und Abfrage von Portfoliodaten.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -22,15 +24,31 @@ export class PortfolioService {
 
   constructor(private http: HttpClient, private authService: AuthCoreService) { }
 
+   /**
+   * Ruft die Zusammenfassung eines Portfolios anhand seiner ID ab.
+   * @param id Die ID des Portfolios.
+   * @returns Ein Observable mit einer Liste von PortfolioItems.
+   */
   public getPortfolioSummary(id: number): Observable<PortfolioItem[]> {
     const urlWithId = `${this.apiUrl}/portfolio/${id}/summary`;
     return this.http.get<PortfolioItem[]>(urlWithId);
   }
 
+  /**
+   * Ruft detaillierte Informationen zu einem Portfolioelement ab.
+   * @param id Die ID des Portfolios.
+   * @param isin Die ISIN des Portfolioelements.
+   * @returns Ein Observable mit den Details des Portfolioelements.
+   */
   public getDetailPortfolioList(id: number, isin: string): Observable<PortfolioDetail> {
     const urlWithId = `${this.apiUrl}/portfolio/${id}/detail/${isin}`;
     return this.http.get<PortfolioDetail>(urlWithId);
   }
+
+  /**
+   * Ermittelt das aktuelle Datum im Format YYYY-MM-DD.
+   * @returns Das aktuelle Datum als String.
+   */
   public getCurrentDate(): string {
     const today = new Date();
     const year = today.getFullYear();
@@ -39,21 +57,43 @@ export class PortfolioService {
     return `${year}-${month}-${day}`;
   }
 
+   /**
+   * Ruft den derzeit eingeloggten Benutzer ab.
+   * @returns Ein Observable mit Benutzerdaten.
+   */
   public getCurrentUser(): Observable<any> {
     const urlWithCurrentUser = `${this.apiUrl}/login`;
     return this.http.get<string>(urlWithCurrentUser);
   }
 
+   /**
+   * Fügt ein neues Portfolioelement hinzu.
+   * @param id Die ID des Portfolios.
+   * @param formData Die Daten des hinzuzufügenden Elements.
+   * @returns Ein Observable zur Bestätigung der Aktion.
+   */
   public getUserEntity(): Observable<UserEntity[]> {
     const url = `${this.apiUrl}/portfolio/userTable`;
     return this.http.get<UserEntity[]>(url)
   }
 
+   /**
+   * Kauft ein Portfolioelement.
+   * @param id Die ID des Portfolios.
+   * @param isin Die ISIN des zu kaufenden Elements.
+   * @param formData Die Kaufdaten.
+   * @returns Ein Observable zur Bestätigung des Kaufs.
+   */
   public getStockItemInfo(isin: string): Observable<StockItem[]> {
     const url = `${this.apiUrl}/portfolio/v1/stocks/${isin}`;
     return this.http.get<StockItem[]>(url);
   }
 
+  /**
+   * Löscht ein Portfolioelement.
+   * @param id Die ID des zu löschenden Portfolioelements.
+   * @returns Ein Observable zur Bestätigung des Löschvorgangs.
+   */
   public getFavoritePortfolioItems(username: string): Observable<PortfolioItem[]> {
     const url = `${this.apiUrl}/portfolio/favorite/${username}`;
     return this.http.get<PortfolioItem[]>(url);

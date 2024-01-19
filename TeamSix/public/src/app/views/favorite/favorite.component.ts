@@ -1,18 +1,19 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Subject, firstValueFrom } from 'rxjs';
+import { Subject } from 'rxjs';
 import { PortfolioItem } from 'src/app/shared/models/portfolioItem';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 import { Router } from '@angular/router';
 import { UserEntity } from 'src/app/shared/models/userEntity';
 import { PortfolioDetail } from 'src/app/shared/models/portfolioDetail';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AddItemDialogComponent } from 'src/app/shared/components/add-item-dialog/add-item-dialog.component';
 import { BuyStockItemDialogComponent } from 'src/app/shared/components/buy-stock-item-dialog/buy-stock-item-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
-
+/**
+ * Komponente zur Übersicht der Favorisierten Portfolioelementen.
+ */
 @Component({
   selector: 'app-overview',
   templateUrl: './favorite.component.html',
@@ -43,74 +44,111 @@ export class FavoriteComponent implements OnInit, OnDestroy {
   constructor(private portfolioService: PortfolioService, public dialog: MatDialog, private router: Router, private _snackBar: MatSnackBar) { } // private productsHttpService: ProductHttpService
 
 
-  ngOnInit(): void {
-    this.portfolioService.getCurrentUser().subscribe((user: UserEntity) => {
-      this.portfolioService.getFavoritePortfolioItems(user.username).subscribe((response: PortfolioItem[]) => {
-        this.portfolioItemList = response;
-        console.log('Favorite data received:', this.portfolioItemList);
-      }, error => {
-        console.error('Error fetching favorite portfolio items:', error);
-      });
+/**
+ * Wird beim Initialisieren der Komponente aufgerufen.
+ * Lädt die favorisierten Portfolioelemente und setzt den aktuellen Benutzernamen.
+ */
+ngOnInit(): void {
+  // Ruft den derzeit eingeloggten Benutzer ab und lädt dessen favorisierte Portfolioelemente
+  this.portfolioService.getCurrentUser().subscribe((user: UserEntity) => {
+    this.portfolioService.getFavoritePortfolioItems(user.username).subscribe((response: PortfolioItem[]) => {
+      this.portfolioItemList = response;
+      console.log('Favorite data received:', this.portfolioItemList);
     }, error => {
-      console.error('Error fetching current user:', error);
+      console.error('Error fetching favorite portfolio items:', error);
     });
+  }, error => {
+    console.error('Error fetching current user:', error);
+  });
 
-    this.portfolioService.getCurrentUser().subscribe((user: any) => {
-      this.currentUsername = user.username;
-    }, error => {
-      console.error('Fehler:', error);
-    });
-    this.loadFavPortfolioList();
-    this.resultsLength = this.portfolioItemList.length;
-    this.changePage({ pageIndex: 0, pageSize: 5 });
-  }
+  // Setzt den aktuellen Benutzernamen
+  this.portfolioService.getCurrentUser().subscribe((user: any) => {
+    this.currentUsername = user.username;
+  }, error => {
+    console.error('Fehler:', error);
+  });
 
-  loadFavPortfolioList(): void {
-    this.isLoadingResults = true; // Start loading
-    this.portfolioService.getCurrentUser().subscribe((user: UserEntity) => {
-      this.portfolioService.getFavoritePortfolioItems(user.username).subscribe({
-        next: (items) => {
-          this.portfolioItemList = items;
-          this.resultsLength = items.length;
-          this.changePage({ pageIndex: 0, pageSize: 5 });
-          console.log("laden", items);
-          this.isLoadingResults = false; // Stop loading
-        },
-        error: (error) => {
-          console.error('Fehler beim Laden der Liste', error);
-          this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen");
-          this.isLoadingResults = false; // Stop loading even on error
-        }
-      });
-    })
-  }
-
-  onIsinClick(isin: string): void {
-    this.router.navigate(['portfolio/1/detail', isin]); // Ersetzen Sie den Pfad entsprechend Ihrer Routing-Konfiguration
-  }
-
-  toggleFavorite(itemId: number): void {
-    this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
-      response => {
-        if (response.isFavorite !== undefined) {
-          const item = this.portfolioItemList.find(item => item.id === itemId);
-          if (item) {
-            item.isFavorite = response.isFavorite;
-            const message = item.isFavorite ? "Erfolgreich favorisiert" : "Favorisierung aufgehoben";
-            this._snackBar.open(message, "Schließen");
-          }
-        } else {
-          this._snackBar.open("Fehler beim Aktualisieren des Favoritenstatus", "Schließen");
-        }
+  // Initialisiert die Ladevorgänge für die Liste der favorisierten Portfolioelemente
+  this.loadFavPortfolioList();
+  this.resultsLength = this.portfolioItemList.length;
+  // Setzt die Anfangsseitenparameter für die Paginierung
+  this.changePage({ pageIndex: 0, pageSize: 5 });
+}
+/**
+ * Lädt die Liste der favorisierten Portfolioelemente des derzeit eingeloggten Benutzers.
+ * Setzt den Ladestatus beim Beginn und Ende des Ladeprozesses.
+ */
+loadFavPortfolioList(): void {
+  this.isLoadingResults = true; // Startet den Ladevorgang
+  this.portfolioService.getCurrentUser().subscribe((user: UserEntity) => {
+    // Ruft die favorisierten Portfolioelemente des Benutzers ab
+    this.portfolioService.getFavoritePortfolioItems(user.username).subscribe({
+      next: (items) => {
+        this.portfolioItemList = items;
+        this.resultsLength = items.length;
+        // Aktualisiert die Anzeige für die neue Seite
+        this.changePage({ pageIndex: 0, pageSize: 5 });
+        console.log("laden", items);
+        this.isLoadingResults = false; // Beendet den Ladevorgang
       },
-      error => {
-        console.error('Fehler beim Toggle des Favoritenstatus', error);
-
+      error: (error) => {
+        // Fehlerbehandlung
+        console.error('Fehler beim Laden der Liste', error);
+        this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen");
+        this.isLoadingResults = false; // Beendet den Ladevorgang auch im Fehlerfall
       }
-    );
-    this.loadFavPortfolioList();
+    });
+  });
+}
+
+  /**
+   * Navigiert zur Detailansicht eines Portfolioelements.
+   * @param isin Die ISIN des betreffenden Portfolioelements.
+   */
+  onIsinClick(isin: string): void {
+    this.router.navigate(['portfolio/1/detail', isin]);
   }
 
+  /**
+ * Wechselt den Favoritenstatus eines Portfolioelements.
+ * Schickt eine Anfrage an den PortfolioService, um den Status zu ändern,
+ * und aktualisiert die Liste der favorisierten Elemente entsprechend der Antwort.
+ * @param itemId Die ID des Portfolioelements, dessen Favoritenstatus geändert werden soll.
+ */
+toggleFavorite(itemId: number): void {
+  // Aufruf des PortfolioService, um den Favoritenstatus zu ändern
+  this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
+    response => {
+      // Überprüfen, ob die Antwort einen definierten Favoritenstatus enthält
+      if (response.isFavorite !== undefined) {
+        // Finden des entsprechenden Portfolioelements in der Liste
+        const item = this.portfolioItemList.find(item => item.id === itemId);
+        if (item) {
+          // Aktualisieren des Favoritenstatus des Elements
+          item.isFavorite = response.isFavorite;
+          // Anzeige einer Benachrichtigung über den geänderten Status
+          const message = item.isFavorite ? "Erfolgreich favorisiert" : "Favorisierung aufgehoben";
+          this._snackBar.open(message, "Schließen");
+        }
+      } else {
+        // Anzeige einer Fehlermeldung, wenn kein Favoritenstatus in der Antwort enthalten ist
+        this._snackBar.open("Fehler beim Aktualisieren des Favoritenstatus", "Schließen");
+      }
+    },
+    error => {
+      // Fehlerbehandlung, wenn ein Fehler beim Wechseln des Favoritenstatus auftritt
+      console.error('Fehler beim Toggle des Favoritenstatus', error);
+    }
+  );
+  // Neuladen der Liste der favorisierten Portfolioelemente
+  this.loadFavPortfolioList();
+}
+
+
+  /**
+   * Öffnet einen Dialog zum Kauf eines Portfolioelements.
+   * @param isin Die ISIN des zu kaufenden Portfolioelements.
+   */
   openBuyStockItemDialog(isin: string): void {
     this.isLoadingAdd = true; // Start loading
 
@@ -126,6 +164,10 @@ export class FavoriteComponent implements OnInit, OnDestroy {
     });
   }
 
+   /**
+   * Ändert die angezeigte Seite der favorisierten Portfolioelemente.
+   * @param event Das Paginierungsereignis mit den neuen Seiteninformationen.
+   */
   changePage(event: any) {
     const start = event.pageIndex * event.pageSize;
     const end = start + event.pageSize;

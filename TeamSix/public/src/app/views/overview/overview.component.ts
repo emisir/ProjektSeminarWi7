@@ -12,7 +12,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddItemDialogComponent } from 'src/app/shared/components/add-item-dialog/add-item-dialog.component';
 import { BuyStockItemDialogComponent } from 'src/app/shared/components/buy-stock-item-dialog/buy-stock-item-dialog.component';
 
-
+/**
+ * Komponente zur Übersicht und Verwaltung von Portfolioelementen.
+ */
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
@@ -40,9 +42,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   constructor(private portfolioService: PortfolioService, private router: Router, private _snackBar: MatSnackBar, public dialog: MatDialog) {
 
-  } // private productsHttpService: ProductHttpService
+  } 
 
   ngOnInit(): void {
+    // Laden der Portfolio-Zusammenfassung und der Benutzerdaten
     this.portfolioService.getPortfolioSummary(1).subscribe((response: PortfolioItem[]) => {
       this.portfolioItemList = response;
       console.log('Daten empfangen:', this.portfolioItemList);
@@ -60,33 +63,50 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.changePage({ pageIndex: 0, pageSize: 5 });
   }
 
-  toggleFavorite(itemId: number): void {
-    this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
-      response => {
-        if (response.isFavorite !== undefined) {
-          const item = this.portfolioItemList.find(item => item.id === itemId);
-          if (item) {
-            item.isFavorite = response.isFavorite;
-            const message = item.isFavorite ? "Erfolgreich favorisiert" : "Favorisierung aufgehoben";
-            this._snackBar.open(message, "Schließen");
-          }
-        } else {
-          this._snackBar.open("Fehler beim Aktualisieren des Favoritenstatus", "Schließen");
+/**
+ * Wechselt den Favoritenstatus eines Portfolioelements.
+ * Aktualisiert den Favoritenstatus auf dem Server und aktualisiert die Ansicht entsprechend.
+ * @param itemId Die ID des Portfolioelements, dessen Favoritenstatus geändert werden soll.
+ */
+toggleFavorite(itemId: number): void {
+  // Aufruf des PortfolioService, um den Favoritenstatus zu ändern
+  this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
+    response => {
+      // Überprüfen, ob die Antwort einen definierten Favoritenstatus enthält
+      if (response.isFavorite !== undefined) {
+        // Finden des entsprechenden Portfolioelements in der Liste
+        const item = this.portfolioItemList.find(item => item.id === itemId);
+        if (item) {
+          // Aktualisieren des Favoritenstatus des Elements
+          item.isFavorite = response.isFavorite;
+          // Anzeige einer Benachrichtigung über den geänderten Status
+          const message = item.isFavorite ? "Erfolgreich favorisiert" : "Favorisierung aufgehoben";
+          this._snackBar.open(message, "Schließen");
         }
-      },
-      error => {
-        console.error('Fehler beim Toggle des Favoritenstatus', error);
+      } else {
+        // Anzeige einer Fehlermeldung, wenn kein Favoritenstatus in der Antwort enthalten ist
+        this._snackBar.open("Fehler beim Aktualisieren des Favoritenstatus", "Schließen");
       }
-    );
+    },
+    error => {
+      // Fehlerbehandlung, wenn ein Fehler beim Wechseln des Favoritenstatus auftritt
+      console.error('Fehler beim Toggle des Favoritenstatus', error);
+    }
+  );
+}
 
-  }
-
-
-
+ /**
+   * Navigiert zur Detailansicht eines Portfolioelements.
+   * @param isin Die ISIN des betreffenden Portfolioelements.
+   */
   onIsinClick(isin: string): void {
     this.router.navigate(['portfolio/1/detail', isin]);
   }
 
+   /**
+   * Löscht ein Portfolioelement anhand seiner ID.
+   * @param id Die ID des zu löschenden Portfolioelements.
+   */
   deletePortfolioItem(id: number): void {
     this.isLoadingDelete = true; // Start loading
     this.portfolioService.deletePortfolioItem(id).subscribe({
@@ -104,6 +124,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+ /**
+   * Lädt die Liste der Portfolioelemente.
+   */
   loadPortfolioList(): void {
     this.isLoadingResults = true; // Start loading
     this.portfolioService.getPortfolioSummary(1).subscribe({
@@ -122,6 +145,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Öffnet einen Dialog zum Hinzufügen eines neuen Portfolioelements.
+   */
   openAddDialog(): void {
     this.isLoadingAdd = true; // Start loading
     const dialogRef = this.dialog.open(AddItemDialogComponent);
@@ -134,6 +160,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Öffnet einen Dialog zum Kauf eines Portfolioelements.
+   * @param isin Die ISIN des zu kaufenden Portfolioelements.
+   */
   openBuyStockItemDialog(isin: string): void {
     this.isLoadingAdd = true; // Start loading
 
@@ -149,12 +179,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Ändert die angezeigte Seite der Portfolioelemente.
+   * @param event Das Paginierungsereignis mit den neuen Seiteninformationen.
+   */
   changePage(event: any) {
     const start = event.pageIndex * event.pageSize;
     const end = start + event.pageSize;
     this.pagedPortfolioItems = this.portfolioItemList.slice(start, end);
   }
-
 
   ngOnDestroy(): void {
     this.toDestroy$.next();
