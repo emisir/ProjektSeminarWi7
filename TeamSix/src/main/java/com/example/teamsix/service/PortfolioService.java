@@ -39,23 +39,44 @@ public class PortfolioService {
         this.stockItemClient = stockItemClient;
     }
 
+    /**
+     * Ruft ein Portfolio-Element anhand seiner ID ab.
+     *
+     * @param itemId Die ID des abzurufenden Portfolio-Elements.
+     * @return Das PortfolioItem-Objekt, das mit der gegebenen ID verknüpft ist.
+     * @throws NoSuchElementException, falls kein Portfolio-Element mit der angegebenen ID gefunden wird.
+     */
     public PortfolioItem getPortfolioItemById(Long itemId) {
         return portfolioItemRepository.findById(itemId).orElseThrow(() -> new NoSuchElementException("Portfolio Item not found with ID: " + itemId));
     }
 
+    /**
+     * Ruft alle Portfolio-Elemente ab.
+     *
+     * @return Eine Liste aller PortfolioItem-Objekte.
+     */
     public List<PortfolioItem> getPortfolioItems() {
         return portfolioItemRepository.findAll();
     }
 
-    private boolean isIsinExistsInPortfolio(Long portfolioId, String isin) {
-        return portfolioItemRepository.existsByIsinAndPortfolioId(isin, portfolioId);
-    }
 
+    /**
+     * Ermittelt eine Zusammenfassung des Portfolios für eine gegebene Portfolio-ID.
+     *
+     * @param portfolioId Die ID des Portfolios.
+     * @return Eine Liste von PortfolioSummary-Objekten für das angegebene Portfolio.
+     */
     public List<PortfolioSummary> getPortfolioSummary(Long portfolioId) {
         List<PortfolioItem> portfolioItems = getPortfolio(portfolioId).getPurchases();
         return getPortfolioSummaries(portfolioItems);
     }
 
+    /**
+     * Ruft bevorzugte Portfolio-Elemente für einen bestimmten Benutzer ab.
+     *
+     * @param username Der Benutzername des Benutzers.
+     * @return Eine Liste von PortfolioSummary-Objekten, die vom Benutzer favorisiert werden.
+     */
     public List<PortfolioSummary> getFavPortfolioItemsByUser(String username) {
         UserEntity user = userRepository.findByUsername(username);
         List<PortfolioItem> favoritedItems = portfolioItemRepository.findByFavoritedByUsersContains(user);
@@ -63,44 +84,75 @@ public class PortfolioService {
 
     }
 
-
+    /**
+     * Ruft Details eines Portfolio-Elements anhand von Portfolio-ID und ISIN ab.
+     *
+     * @param portfolioId Die ID des Portfolios.
+     * @param isin Die ISIN des Portfolio-Elements.
+     * @return PortfolioDetailDTO mit Details des Elements, oder null, falls nicht gefunden.
+     */
     public PortfolioDetailDTO getPortfolioItemsByPortfolioId(Long portfolioId, String isin) {
-        Optional<PortfolioItem> portfolioItemOptional = getPortfolio(portfolioId).getPurchases().stream().filter(item -> item.getIsin().equals(isin)).findFirst();
+        // Suche das Portfolio-Element basierend auf ID und ISIN
+        Optional<PortfolioItem> portfolioItemOptional = getPortfolio(portfolioId).getPurchases().stream()
+                .filter(item -> item.getIsin().equals(isin))
+                .findFirst();
+
+        // Frühzeitige Rückgabe, falls das Element nicht gefunden wird
         if (portfolioItemOptional.isEmpty()) {
             return null;
         }
+
         PortfolioItem portfolioItem = portfolioItemOptional.get();
 
+        // Extrahiere und berechne Details des Portfolio-Elements
         String name = portfolioItem.getName();
         String description = portfolioItem.getDescription();
         String type = portfolioItem.getType();
         Float currentPrice = stockItemClient.getStockItem(apiKey, isin).price();
 
-
         long totalQuantity = portfolioItem.getStockOrder().stream().mapToLong(StockOrder::getQuantity).sum();
-        float totalPrice = (float) portfolioItem.getStockOrder().stream().mapToDouble(stockOrder -> stockOrder.getQuantity() * stockOrder.getPurchasePrice()).sum();
+        float totalPrice = (float) portfolioItem.getStockOrder().stream()
+                .mapToDouble(stockOrder -> stockOrder.getQuantity() * stockOrder.getPurchasePrice()).sum();
         float averagePrice = totalPrice / totalQuantity;
         float profitLossPerStock = currentPrice - averagePrice;
         float profitLossSum = (totalQuantity * currentPrice) - totalPrice;
 
+        List<PortfolioDetailItemDTO> portfolioDetailItemDTO = portfolioItem.getStockOrder().stream()
+                .map(stockOrder -> new PortfolioDetailItemDTO(stockOrder.getPurchaseDate(), stockOrder.getQuantity(),
+                        stockOrder.getPurchasePrice(), stockOrder.getPurchasePrice() * stockOrder.getQuantity()))
+                .toList();
 
-        List<PortfolioDetailItemDTO> portfolioDetailItemDTO = portfolioItem.getStockOrder().stream().map(stockOrder ->
-                new PortfolioDetailItemDTO(stockOrder.getPurchaseDate(), stockOrder.getQuantity(), stockOrder.getPurchasePrice(),
-                        stockOrder.getPurchasePrice() * stockOrder.getQuantity())).toList();
-
-        return new PortfolioDetailDTO(isin, name, description, type, totalQuantity, averagePrice, profitLossPerStock, profitLossSum, currentPrice, portfolioDetailItemDTO);
+        // Erstelle und gib das PortfolioDetailDTO zurück
+        return new PortfolioDetailDTO(isin, name, description, type, totalQuantity, averagePrice,
+                profitLossPerStock, profitLossSum, currentPrice, portfolioDetailItemDTO);
     }
 
+    /**
+     * Ruft den aktuellen Benutzer anhand des Benutzernamens ab.
+     *
+     * @param username Der Benutzername des Benutzers.
+     * @return Das UserEntity-Objekt, das mit dem gegebenen Benutzernamen verknüpft ist.
+     */
     public UserEntity getCurrentUser(String username) {
         userRepository.findByUsername(username);
         return userRepository.findByUsername(username);
     }
 
+    /**
+     * Ruft alle Benutzer-Entitäten ab.
+     *
+     * @return Eine Liste aller UserEntity-Objekte.
+     */
     public List<UserEntity> getUserEntities() {
         return userRepository.findAll();
     }
 
-
+    /**
+     * Fügt einem Portfolio ein neues Portfolio-Element hinzu.
+     *
+     * @param portfolioId Die ID des Portfolios, zu dem das Element hinzugefügt werden soll.
+     * @param saveItemDTO Das Datenübertragungsobjekt, das die Informationen über das zu speichernde Element enthält.
+     */
     public void addPortfolioItem(Long portfolioId, SaveItemDTO saveItemDTO) {
         Portfolio portfolio = getPortfolio(portfolioId);
 
@@ -115,7 +167,14 @@ public class PortfolioService {
         portfolioRepository.save(portfolio);
     }
 
-
+    /**
+     * Kauft ein Portfolio-Element für ein gegebenes Portfolio.
+     * Wenn das angegebene Portfolio-Element nicht existiert, wird die Methode beendet, ohne dass eine Aktion ausgeführt wird.
+     *
+     * @param portfolioId Die ID des Portfolios, in dem das Element gekauft wird.
+     * @param isin Die ISIN des zu kaufenden Elements.
+     * @param saveItemDTO Das DTO mit den Details des zu kaufenden Elements.
+     */
     public void buyItem(Long portfolioId, String isin, SaveItemDTO saveItemDTO) {
         Optional<PortfolioItem> portfolioItemOptional = getPortfolio(portfolioId).getPurchases().stream().filter(item -> item.getIsin().equals(isin)).findFirst();
         if (portfolioItemOptional.isEmpty()) {
@@ -132,7 +191,12 @@ public class PortfolioService {
         portfolioItemRepository.save(portfolioItem);
     }
 
-
+    /**
+     * Fügt eine neue UserEntity hinzu.
+     * Speichert die übergebene UserEntity in der Benutzerdatenbank.
+     *
+     * @param userEntity Die UserEntity, die hinzugefügt werden soll.
+     */
     public void addUserEntity(UserEntity userEntity) {
 
         userEntity.setName(userEntity.getName());
@@ -143,6 +207,13 @@ public class PortfolioService {
         userRepository.save(userEntity);
     }
 
+    /**
+     * Löscht einen Benutzer anhand des Benutzernamens.
+     * Gibt 'true' zurück, wenn der Benutzer erfolgreich gelöscht wurde, andernfalls 'false'.
+     *
+     * @param username Der Benutzername des zu löschenden Benutzers.
+     * @return 'true', wenn der Benutzer gelöscht wurde, sonst 'false'.
+     */
     public boolean deleteUser(String username) {
         if (userRepository.existsById(username)) {
             userRepository.deleteById(username);
@@ -152,30 +223,51 @@ public class PortfolioService {
         }
     }
 
+    /**
+     * Löscht ein Portfolio-Element anhand seiner ID.
+     * Die Operation ist transaktional und aktualisiert auch die Favoritenliste der Benutzer.
+     *
+     * @param portfolioItemId Die ID des zu löschenden Portfolio-Elements.
+     * @return 'true', wenn das Element erfolgreich gelöscht wurde, sonst 'false'.
+     */
     @Transactional
     public boolean deletePortfolioItem(Long portfolioItemId) {
+        // Finde das Portfolio-Element anhand der ID
         Optional<PortfolioItem> portfolioItemOptional = portfolioItemRepository.findById(portfolioItemId);
 
+        // Prüfe, ob das Element vorhanden ist
         if (portfolioItemOptional.isPresent()) {
             PortfolioItem portfolioItem = portfolioItemOptional.get();
 
+            // Aktualisiere die Favoritenliste aller Benutzer
             List<UserEntity> users = userRepository.findAll();
             for (UserEntity user : users) {
                 user.getFavoritedItems().remove(portfolioItem);
                 userRepository.save(user);
             }
 
+            // Entferne das Portfolio-Element aus dem Portfolio und speichere die Änderungen
             Portfolio portfolio = portfolioItem.getPortfolio();
             portfolio.getPurchases().remove(portfolioItem);
             portfolioRepository.save(portfolio);
 
+            // Lösche das Portfolio-Element
             portfolioItemRepository.delete(portfolioItem);
             return true;
         } else {
+            // Rückgabe 'false', wenn das Element nicht gefunden wurde
             return false;
         }
     }
 
+
+    /**
+     * Aktualisiert die Daten einer UserEntity anhand des Benutzernamens.
+     * Nimmt eine UserEntity mit den Details, die aktualisiert werden sollen.
+     *
+     * @param username Der Benutzername der zu aktualisierenden UserEntity.
+     * @param userEntityDetails Die Details der UserEntity, die aktualisiert werden sollen.
+     */
     public void updateUserEntity(String username, UserEntity userEntityDetails) {
         UserEntity userEntity = userRepository.findByUsername(username);
 
@@ -186,10 +278,20 @@ public class PortfolioService {
         userRepository.save(userEntity);
     }
 
+    /**
+     * Aktualisiert den Favoritenstatus eines Portfolio-Elements für einen Benutzer.
+     * Entfernt das Element aus den Favoriten, falls es bereits favorisiert wurde,
+     * oder fügt es hinzu, falls es noch nicht favorisiert ist.
+     *
+     * @param username Der Benutzername des Benutzers.
+     * @param item Das Portfolio-Element, dessen Favoritenstatus aktualisiert wird.
+     */
     public void updateFavoriteStatus(String username, PortfolioItem item) {
+        // Finde den Benutzer basierend auf dem Benutzernamen
         UserEntity user = userRepository.findById(username).orElseThrow();
         List<PortfolioItem> favorites = user.getFavoritedItems();
 
+        // Suche nach dem Portfolio-Element in den Favoriten
         PortfolioItem foundItem = null;
         for (PortfolioItem favoriteItem : favorites) {
             if (favoriteItem.getId().equals(item.getId())) {
@@ -198,14 +300,18 @@ public class PortfolioService {
             }
         }
 
+        // Aktualisiere die Favoritenliste: Entferne, falls vorhanden, füge hinzu, falls nicht
         if (foundItem != null) {
             favorites.remove(foundItem);
         } else {
             favorites.add(item);
         }
         user.setFavoritedItems(favorites);
+
+        // Speichere die aktualisierte Benutzerdaten
         userRepository.save(user);
     }
+
 
 //private Methods
 
@@ -242,4 +348,9 @@ public class PortfolioService {
             return new PortfolioSummary(portfolioItem.getId(), portfolioItem.getIsin(), name, totalQuantity, averagePrice, totalPrice, profitLossSum);
         }).toList();
     }
+
+    private boolean isIsinExistsInPortfolio(Long portfolioId, String isin) {
+        return portfolioItemRepository.existsByIsinAndPortfolioId(isin, portfolioId);
+    }
+
 }

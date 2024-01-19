@@ -29,6 +29,16 @@ public class BasicAuthenticationConfiguration {
     }
 
 
+    /**
+     * Konfiguriert die Sicherheitsfilterkette für HTTP-Anfragen.
+     * Erlaubt CORS und deaktiviert CSRF für alle Anfragen. Ermöglicht den Zugriff auf die H2-Konsole ohne Authentifizierung.
+     * Für alle anderen Anfragen wird eine Authentifizierung verlangt. Deaktiviert außerdem die Frame-Optionen im Header,
+     * um H2-Konsole in einem Frame rendern zu können. Setzt grundlegende HTTP-Authentifizierung als Authentifizierungsmechanismus.
+     *
+     * @param http Das HttpSecurity-Objekt zur Konfiguration der Sicherheitseinstellungen.
+     * @return Die konfigurierte SecurityFilterChain.
+     * @throws Exception bei Fehlern in der Konfiguration.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults())
@@ -44,6 +54,7 @@ public class BasicAuthenticationConfiguration {
 
         return http.build();
     }
+
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
