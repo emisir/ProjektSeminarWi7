@@ -16,7 +16,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
-
+/**
+ * Komponente für den Dialog zum Kauf eines Portfolioelements.
+ */
 @Component({
   selector: 'app-buy-stock-item-dialog',
   standalone: true,
@@ -35,12 +37,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './buy-stock-item-dialog.component.scss',
 })
 export class BuyStockItemDialogComponent {
-  public myForm: FormGroup;
+  public myForm: FormGroup; // Formulargruppe für den Kauf von Portfolioelementen
   public portfolioDetailItem: PortfolioDetail | undefined;
-  loading: boolean = true;
-  addedSuccessfully: boolean = false;
+  loading: boolean = true; // Ladezustand der Komponente
 
-
+  // Struktur für die Formulardaten
   formData: any = {
     name: "",
     isin: "",
@@ -50,6 +51,14 @@ export class BuyStockItemDialogComponent {
     purchaseDate: this.portfolioService.getCurrentDate(),
   };
 
+   /**
+   * Konstruktor der Komponente.
+   * @param portfolioService Service zur Interaktion mit Portfolio-Daten.
+   * @param fb FormBuilder zur Erstellung von reaktiven Formularen.
+   * @param _snackBar Service zur Anzeige von Benachrichtigungen.
+   * @param dialogRef Referenz auf den aktuellen Dialog.
+   * @param data Übergebene Daten an den Dialog (z.B. ISIN des Portfolioelements).
+   */
   constructor(
     private portfolioService: PortfolioService,
     private fb: FormBuilder,
@@ -57,6 +66,7 @@ export class BuyStockItemDialogComponent {
     private dialogRef: MatDialogRef<BuyStockItemDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
+    // Initialisierung des Formulars mit Validatoren
     this.myForm = this.fb.group({
       name: ['', Validators.required],
       isin: ['', Validators.required],
@@ -67,6 +77,10 @@ export class BuyStockItemDialogComponent {
 
   }
 
+   /**
+   * Wird beim Initialisieren der Komponente aufgerufen.
+   * Lädt die Details des Portfolioelements und initialisiert die Formulardaten.
+   */
   ngOnInit(): void {
     const { isin } = this.data;
     if (isin) {
@@ -82,28 +96,42 @@ export class BuyStockItemDialogComponent {
     }
   }
 
-  onSubmit(): void {
-    if (!this.portfolioDetailItem || !this.myForm.valid) return;
-    this.formData = {
-      ...this.formData,
-      quantity: this.myForm.value.quantity,
-      isin: this.portfolioDetailItem.isin,
-      purchaseDate: this.portfolioService.getCurrentDate(),
-    };
+/**
+ * Behandelt die Formularübermittlung.
+ * Sendet die Formulardaten an den PortfolioService, um ein Portfolioelement zu kaufen.
+ * Überprüft zuerst, ob das Formular gültig ist und ein Portfolioelement zur Bearbeitung vorhanden ist.
+ */
+onSubmit(): void {
+  // Prüfung, ob das Formular gültig ist und ein Portfolioelement zur Bearbeitung vorhanden ist
+  if (!this.portfolioDetailItem || !this.myForm.valid) return;
 
-    this.portfolioService.buyItem(1, this.formData.isin, this.formData).subscribe({
-      next: (response) => {
-        this._snackBar.open("Item Erfolgreich Hinzugefügt", "Schließen");
-        console.log(response)
-        this.dialogRef.close('added');
-      },
-      error: (error) => {
-        this._snackBar.open("Es gab ein Fehler bei der Eingabe", "Schließen")
-        console.log(error)
-      }
-    });
-  }
+  // Zusammenstellen der Formulardaten für die Übermittlung
+  this.formData = {
+    ...this.formData,
+    quantity: this.myForm.value.quantity,
+    isin: this.portfolioDetailItem.isin,
+    purchaseDate: this.portfolioService.getCurrentDate(),
+  };
 
+  // Aufruf des PortfolioService, um das Portfolioelement zu kaufen
+  this.portfolioService.buyItem(1, this.formData.isin, this.formData).subscribe({
+    next: (response) => {
+      // Anzeigen einer Erfolgsmeldung und Schließen des Dialogs
+      this._snackBar.open("Item erfolgreich hinzugefügt", "Schließen");
+      console.log(response);
+      this.dialogRef.close('added');
+    },
+    error: (error) => {
+      // Anzeigen einer Fehlermeldung, wenn die Übermittlung fehlschlägt
+      this._snackBar.open("Es gab einen Fehler bei der Eingabe", "Schließen");
+      console.log(error);
+    }
+  });
+}
+
+   /**
+   * Aktualisiert die Formulardaten basierend auf den Detaildaten des Portfolioelements.
+   */
   private updateFormData() {
     if (this.portfolioDetailItem) {
       this.myForm.patchValue({

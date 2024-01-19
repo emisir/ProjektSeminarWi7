@@ -19,16 +19,28 @@ public class LoginController {
         this.portfolioService = portfolioService;
     }
 
+    /**
+     * Liefert den derzeit eingeloggten Benutzer.
+     * Gibt den eingeloggten Benutzer als UserEntity zurück, wenn dieser authentifiziert ist.
+     * Gibt einen UNAUTHORIZED Status zurück, wenn kein Benutzer eingeloggt ist.
+     *
+     * @return ResponseEntity mit dem eingeloggten UserEntity oder UNAUTHORIZED Status.
+     */
     @GetMapping("/login")
     public ResponseEntity<UserEntity> getLoggedInUser() {
+        // Holt die Authentifizierungsinformationen des derzeit eingeloggten Benutzers
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        // Ruft die Details des eingeloggten Benutzers ab
         UserEntity loggedInUser = portfolioService.getCurrentUser(authentication.getName());
 
+        // Gibt die Benutzerdaten zurück, wenn der Benutzer gefunden wird
         if (loggedInUser != null) {
             return new ResponseEntity<>(loggedInUser, HttpStatus.OK);
         } else {
+            // Gibt einen UNAUTHORIZED Status zurück, wenn kein Benutzer eingeloggt ist
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
 }

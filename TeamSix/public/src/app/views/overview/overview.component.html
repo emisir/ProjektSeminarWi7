@@ -2,15 +2,17 @@
   <mat-spinner diameter="50"></mat-spinner>
 </div>
 
+<mat-toolbar color="primary">
+  <span class="header-title" [routerLink]="'/portfolio'">Dein Portfolio -
+    {{currentUser}}</span>
+  <span class="spacer"></span>
+</mat-toolbar>
 <div *ngIf="!isLoadingResults">
-  <mat-toolbar color="primary">
-    <span class="header-title" [routerLink]="'/portfolio'">Dein Portfolio - {{currentUser}}</span>
-    <span class="spacer"></span>
-  </mat-toolbar>
 
   <div class="add-container">
     <p class="add-p">Portfolioitem kaufen
-      <mat-icon class="add-button" (click)="openAddDialog()">add_circle</mat-icon>
+      <mat-icon class="add-button"
+        (click)="openAddDialog()">add_circle</mat-icon>
     </p>
   </div>
 
@@ -31,27 +33,30 @@
           <td><a (click)="onIsinClick(row.isin)">{{ row.isin }}</a></td>
           <td>{{ row.name }}</td>
           <td>{{ row.totalQuantity }}</td>
-          <td [ngClass]="{'profit': row.profitLossSum > 0, 'loss': row.profitLossSum < 0}">
+          <td
+            [ngClass]="{'profit': row.profitLossSum > 0, 'loss': row.profitLossSum < 0}">
             {{ row.profitLossSum | currency : ' ' }} €</td>
           <td>{{ row.totalPrice | currency : ' ' }} €</td>
           <td class="action-buttons">
-            <button class="buy-button" (click)="openBuyStockItemDialog(row.isin)"><mat-icon>add_circle</mat-icon>
+            <button class="buy-button"
+              (click)="openBuyStockItemDialog(row.isin)"><mat-icon>add_circle</mat-icon>
             </button>
             <button class="delete-button" (click)="deletePortfolioItem(row.id)">
               <mat-icon>sell</mat-icon>
             </button>
             <button class="favorite-button">
-              <mat-icon [class.red-icon]="row.isFavorite" (click)="toggleFavorite(row.id)" matTooltip="Favorisieren">
+              <mat-icon [class.red-icon]="row.isFavorite"
+                (click)="toggleFavorite(row.id)" matTooltip="Favorisieren">
                 favorite
               </mat-icon> </button>
           </td>
         </tr>
       </tbody>
     </table>
-
   </div>
-
-  <div class="paginator-container">
-    <mat-paginator [length]="resultsLength" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" (page)="changePage($event)"
-      aria-label="Select page of portfolio items"></mat-paginator>
-  </div>
+</div>
+<div class="paginator-container">
+  <mat-paginator [length]="resultsLength" [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 20]" (page)="changePage($event)"
+    aria-label="Select page of portfolio items"></mat-paginator>
+</div>

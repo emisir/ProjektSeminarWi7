@@ -13,18 +13,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 
 
-
-
-
-
-
-
-// This component is used to add a new item to the list.
-// It is used in the overview.component.html.
-// It is a standalone component.
-
 @Component({
-  selector: 'app-add-item-dialog',
+  selector: 'app-update-user-dialog',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -41,8 +31,9 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './update-user-dialog.component.scss',
 })
 export class UpdateUserDialogComponent {
-  public myForm: FormGroup;
+  public myForm: FormGroup; // Formulargruppe für das Aktualisieren von Benutzern
 
+  // Struktur für die Formulardaten
   formData: any = {
     name: '',
     username: '',
@@ -52,6 +43,16 @@ export class UpdateUserDialogComponent {
 
   public userEntityList: UserEntity[] = [];
 
+
+   /**
+   * Konstruktor der Komponente.
+   * Initialisiert das Formular und setzt die erforderlichen Validatoren.
+   * @param portfolioService Service zur Interaktion mit Portfolio-Daten.
+   * @param fb FormBuilder zur Erstellung von reaktiven Formularen.
+   * @param _snackBar Service zur Anzeige von Benachrichtigungen.
+   * @param data Übergebene Daten an den Dialog (Benutzerdaten zur Aktualisierung).
+   * @param dialogRef Referenz auf den aktuellen Dialog.
+   */
   constructor(private portfolioService: PortfolioService, private fb: FormBuilder, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: UserEntity,
     public dialogRef: MatDialogRef<UpdateUserDialogComponent>
   ) {
@@ -64,6 +65,10 @@ export class UpdateUserDialogComponent {
     this.initializeForm(data);
   }
 
+   /**
+   * Initialisiert das Formular mit den übergebenen Benutzerdaten.
+   * @param userData Die Daten des Benutzers, die aktualisiert werden sollen.
+   */
   private initializeForm(userData: UserEntity): void {
     this.myForm.patchValue({
       name: userData.name,
@@ -75,6 +80,10 @@ export class UpdateUserDialogComponent {
     this.formData = { ...userData };
   }
 
+  /**
+   * Behandelt die Formularübermittlung.
+   * Sendet die aktualisierten Benutzerdaten an den PortfolioService.
+   */
   onSubmit(): void {
     this.portfolioService.updateUserEntity(this.formData.username, this.formData).subscribe({
       next: (response) => {
