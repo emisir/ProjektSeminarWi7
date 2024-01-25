@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { PortfolioService } from 'src/app/shared/services/http/portfolio.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 
 
@@ -24,7 +25,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatInputModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     MatSelectModule
+    
 
   ],
 
@@ -33,7 +36,7 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class AddItemDialogComponent {
   public myForm: FormGroup; // Formulargruppe für das Hinzufügen von Elementen
-
+  isLoading = false;
   formData: any = {
     isin: '',
     quantity: '',
@@ -62,16 +65,20 @@ export class AddItemDialogComponent {
    * Sendet die Formulardaten an den PortfolioService, um ein neues Element hinzuzufügen.
    */
   onSubmit(): void {
-    // Aufruf des PortfolioService, um das Element hinzuzufügen
+    // Verhindere mehrfaches Senden
+    if (this.isLoading) {
+      return;
+    }
+    this.isLoading = true; // Ladezustand aktivieren
     this.portfolioService.addPortfolioItems(1, this.formData).subscribe({
       next: (response) => {
-        // Anzeigen einer Erfolgsmeldung und Schließen des Dialogs
+        this.isLoading = false; // Ladezustand deaktivieren
         this._snackBar.open("Item erfolgreich hinzugefügt", "Schließen", {duration: 3000});
         console.log(response);
         this.dialogRef.close('added');
       },
       error: (error) => {
-        // Anzeigen einer Fehlermeldung, wenn die Übermittlung fehlschlägt
+        this.isLoading = false; // Ladezustand deaktivieren
         this._snackBar.open("Es gab einen Fehler bei der Eingabe", "Schließen",{duration: 3000});
         console.log(error);
       }

@@ -2,14 +2,21 @@
 <mat-dialog-content>
   <form (ngSubmit)="onSubmit()" class="content" [formGroup]="myForm">
     <mat-form-field>
-      <input matInput formControlName="isin" placeholder="Isin" required [(ngModel)]="formData.isin" />
+      <input matInput formControlName="isin" placeholder="Isin" required
+        [(ngModel)]="formData.isin" />
     </mat-form-field>
     <mat-form-field>
-      <input matInput formControlName="quantity" placeholder="Anzahl" required [(ngModel)]="formData.quantity" />
+      <input matInput formControlName="quantity" placeholder="Anzahl" required
+        [(ngModel)]="formData.quantity" />
     </mat-form-field>
     <mat-dialog-actions>
-      <button class="btn" type="submit" mat-raised-button color="primary">Hinzufügen</button>
-      <button class="btn" mat-button [mat-dialog-close]="'close'">Schließen</button>
+      <button mat-raised-button color="primary" [disabled]="isLoading"
+        (click)="onSubmit()">
+        <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+        <span *ngIf="!isLoading">Hinzufügen</span>
+      </button>
+      <button class="btn" mat-button
+        [mat-dialog-close]="'close'">Schließen</button>
     </mat-dialog-actions>
   </form>
 </mat-dialog-content>
