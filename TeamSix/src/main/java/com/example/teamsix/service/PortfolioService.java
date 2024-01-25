@@ -134,7 +134,6 @@ public class PortfolioService {
      * @return Das UserEntity-Objekt, das mit dem gegebenen Benutzernamen verknüpft ist.
      */
     public UserEntity getCurrentUser(String username) {
-        userRepository.findByUsername(username);
         return userRepository.findByUsername(username);
     }
 
