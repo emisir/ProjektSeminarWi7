@@ -73,20 +73,7 @@ toggleFavorite(itemId: number): void {
   this.portfolioService.favoritePortfolioItem(this.currentUsername, itemId).subscribe(
     response => {
       // Überprüfen, ob die Antwort einen definierten Favoritenstatus enthält
-      if (response.isFavorite !== undefined) {
-        // Finden des entsprechenden Portfolioelements in der Liste
-        const item = this.portfolioItemList.find(item => item.id === itemId);
-        if (item) {
-          // Aktualisieren des Favoritenstatus des Elements
-          item.isFavorite = response.isFavorite;
-          // Anzeige einer Benachrichtigung über den geänderten Status
-          const message = item.isFavorite ? "Erfolgreich favorisiert" : "Favorisierung aufgehoben";
-          this._snackBar.open(message, "Schließen");
-        }
-      } else {
-        // Anzeige einer Fehlermeldung, wenn kein Favoritenstatus in der Antwort enthalten ist
-        this._snackBar.open("Fehler beim Aktualisieren des Favoritenstatus", "Schließen");
-      }
+      this._snackBar.open("Aktion war erfolgreich", "Schließen" , {duration: 3000});
     },
     error => {
       // Fehlerbehandlung, wenn ein Fehler beim Wechseln des Favoritenstatus auftritt
@@ -116,7 +103,7 @@ toggleFavorite(itemId: number): void {
       },
       error: (error) => {
         console.error('Fehler beim Löschen', error);
-        this._snackBar.open("Fehler beim Löschen des Portfolioitems", "Close");
+        this._snackBar.open("Fehler beim Löschen des Portfolioitems", "Schließen", {duration: 3000});
       },
       complete: () => {
         this.isLoadingDelete = false; // Stop loading
@@ -139,7 +126,7 @@ toggleFavorite(itemId: number): void {
       },
       error: (error) => {
         console.error('Fehler beim Laden der Liste', error);
-        this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen");
+        this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen", {duration: 3000});
         this.isLoadingResults = false; // Stop loading even on error
       }
     });

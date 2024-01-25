@@ -76,7 +76,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.addedSuccessfully = true;
       },
       error: (error) => {
-        this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen");
+        this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen", {duration: 3000});
       }
     });
   }
@@ -115,7 +115,7 @@ openUpdateDialog(user: UserEntity): void {
     if (loggedInUser.username === user.username) {
       console.log("Du kannst nicht dich selber bearbeiten");
       // Anzeige einer Benachrichtigung, falls der Benutzer sich selbst bearbeiten möchte
-      this._snackBar.open("Du kannst nicht dich selber bearbeiten", "Schließen");
+      this._snackBar.open("Du kannst nicht dich selber bearbeiten", "Schließen", {duration: 3000});
       return;
     }
     
@@ -149,7 +149,7 @@ deleteUser(username: string): void {
       if (loggedInUser && loggedInUser.username) {
         // Verhindert, dass ein Benutzer sich selbst löscht
         if (loggedInUser.username === username) {
-          this._snackBar.open("Du kannst nicht dich selber löschen", "Schließen");
+          this._snackBar.open("Du kannst nicht dich selber löschen", "Schließen", {duration: 3000});
           return;
         } else {
           // Versucht, den Benutzer zu löschen
@@ -162,20 +162,20 @@ deleteUser(username: string): void {
             error: (error) => {
               // Fehlerbehandlung, falls das Löschen fehlschlägt
               console.error('Fehler beim Löschen des Benutzers', error);
-              this._snackBar.open("Fehler beim Löschen des Benutzers", "Schließen");
+              this._snackBar.open("Fehler beim Löschen des Benutzers", "Schließen", {duration: 3000});
             }
           });
         }
       } else {
         // Fehlerbehandlung, falls kein eingeloggter Benutzer gefunden wird
         console.error('Fehler beim Abrufen des eingeloggten Benutzers');
-        this._snackBar.open("Fehler beim Abrufen des eingeloggten Benutzers", "Schließen");
+        this._snackBar.open("Fehler beim Abrufen des eingeloggten Benutzers", "Schließen", {duration: 3000});
       }
     },
     (error) => {
       // Fehlerbehandlung für den Fall, dass der eingeloggte Benutzer nicht abgerufen werden kann
       console.error('Fehler beim Abrufen des eingeloggten Benutzers', error);
-      this._snackBar.open("Fehler beim Abrufen des eingeloggten Benutzers", "Schließen");
+      this._snackBar.open("Fehler beim Abrufen des eingeloggten Benutzers", "Schließen", {duration: 3000});
     }
   );
 }

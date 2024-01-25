@@ -119,8 +119,8 @@ export class PortfolioService {
     return this.http.post<PortfolioItem[]>(`${this.apiUrl}/portfolio/${id}/buy-item/${isin}`, requestData, { headers: this.getAuthHeaders() });
   }
 
-  public favoritePortfolioItem(username: string, itemId: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/portfolio/favorite/${username}`, itemId);
+  public favoritePortfolioItem(username: string, itemId: number): Observable<string> {
+    return this.http.put(`${this.apiUrl}/portfolio/favorite/${username}`, itemId,{responseType:"text"});
   }
 
 

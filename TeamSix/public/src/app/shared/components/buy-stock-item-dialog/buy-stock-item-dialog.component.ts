@@ -117,13 +117,13 @@ onSubmit(): void {
   this.portfolioService.buyItem(1, this.formData.isin, this.formData).subscribe({
     next: (response) => {
       // Anzeigen einer Erfolgsmeldung und Schließen des Dialogs
-      this._snackBar.open("Item erfolgreich hinzugefügt", "Schließen");
+      this._snackBar.open("Item erfolgreich hinzugefügt", "Schließen", {duration: 3000});
       console.log(response);
       this.dialogRef.close('added');
     },
     error: (error) => {
       // Anzeigen einer Fehlermeldung, wenn die Übermittlung fehlschlägt
-      this._snackBar.open("Es gab einen Fehler bei der Eingabe", "Schließen");
+      this._snackBar.open("Es gab einen Fehler bei der Eingabe", "Schließen", {duration: 3000});
       console.log(error);
     }
   });
