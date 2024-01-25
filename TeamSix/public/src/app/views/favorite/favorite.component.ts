@@ -94,7 +94,7 @@ loadFavPortfolioList(): void {
       error: (error) => {
         // Fehlerbehandlung
         console.error('Fehler beim Laden der Liste', error);
-        this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen");
+        this._snackBar.open("Fehler beim Laden der Benutzerliste", "Schließen", {duration: 3000});
         this.isLoadingResults = false; // Beendet den Ladevorgang auch im Fehlerfall
       }
     });
@@ -128,11 +128,11 @@ toggleFavorite(itemId: number): void {
           item.isFavorite = response.isFavorite;
           // Anzeige einer Benachrichtigung über den geänderten Status
           const message = item.isFavorite ? "Erfolgreich favorisiert" : "Favorisierung aufgehoben";
-          this._snackBar.open(message, "Schließen");
+          this._snackBar.open(message, "Schließen", {duration: 3000});
         }
       } else {
         // Anzeige einer Fehlermeldung, wenn kein Favoritenstatus in der Antwort enthalten ist
-        this._snackBar.open("Fehler beim Aktualisieren des Favoritenstatus", "Schließen");
+        this._snackBar.open("Fehler beim Aktualisieren des Favoritenstatus", "Schließen", {duration: 3000});
       }
     },
     error => {
