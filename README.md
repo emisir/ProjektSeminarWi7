@@ -33,7 +33,7 @@ Führen Sie die folgenden Schritte aus, um das Spring Boot Backend über Intelli
 3. Suchen Sie nach der `TeamSixApplication`-Klasse.
 4. Rechtsklicken Sie auf die `TeamSixApplication`-Klasse und wählen Sie `Run 'TeamSixApplication'`, um die Anwendung zu starten.
 
-Das Backend sollte nun auf dem konfigurierten Port 8080 laufen.
+Das Backend sollte nun auf dem konfigurierten Port 8081 laufen.
 
 ### Frontend-Server starten
 
